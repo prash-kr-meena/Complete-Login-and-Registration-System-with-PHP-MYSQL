@@ -1,5 +1,6 @@
 <?php 
 include_once "resource/Database.php";		// soul purpose of this is to make the connection to the database and if there is any error(exception) then it will show it.
+// well we have done that in the index page also so, well if you have an error it will show at that time BUT NOTE : you have to add this everywhere you try to intereact to the database (any where you wanna use SQL statements)
 
 if( isset($_POST['signup_sbt']) ){
 
@@ -9,8 +10,9 @@ if( isset($_POST['signup_sbt']) ){
 	$email = $_POST['email'];
 
 	try{
-				// BEACAUSE OF THE NEW ADDITION OF THE $database VARIABLE --> INSERT INTO register.users (username, <--- we dont need the specify the register database while writing the SQL statement.
-		$sqlInsert = "INSERT INTO users (username, password, email, join_date) #these are the names from the
+				// BEACAUSE OF THE NEW ADDITION OF THE $database VARIABLE --> INSERT INTO register.users ... so on ..  <--- we dont need the specify the register database while writing the SQL statement.
+		// BUT AS ITS NOT WORKING WE HAVE TO SPECIFY THAT 
+		$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) #these are the names from the
 				  	VALUES  (:username, :password,:email, now() ) ";							#  database
 				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )
 
@@ -23,6 +25,7 @@ if( isset($_POST['signup_sbt']) ){
 
 	}catch(PDOException $ex){
 		$result = "<p style='padding:20px; color:red;' >An error occured:".$ex->getMessage()."</p>";#appending 
+		//-->$result = "<p style='padding:20px; color:red;' >An error occured:$ex->getMessage()</p>";
 	}
 
 }

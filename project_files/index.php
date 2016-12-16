@@ -9,6 +9,8 @@
 
  
 <?php include_once 'resource/Database.php' ?>
+<p>You are not currently signin <a href="login.php">login</a> Not a member yet? <a href="signup.php">signup</a></p>
+<p>you are loged in as {username} <a href="logout.php">logout</a></p>
 
 </body>
 </html>
