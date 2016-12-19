@@ -50,16 +50,13 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 		$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
 		if($statement->rowcount()==1){ # ie if one row is changed theb ...
-			$message = "Registration Successfull!";
-	 		$color = 'green';
+			$result = flashMessage("Registration Successfull !", 'green');
 		}else{
-			$message = "Signup unsuccessfull";
-	 		$color = 'red';
+			$result = flashMessage("Signup unsuccessfull");
 		}
 
 	}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
-		$message = "An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage();
-	 	$color = 'red';
+		$result = flashMessage("An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage());
 	}
 
 		
@@ -79,7 +76,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 <h2>User Authentication System </h2><hr/>
 <h3>Sign-up Form</h3>
 
-<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
+<?php  if (isset($result) ) echo $result;  ?>	
 <?php if (!empty($form_errors) )  echo show_errors($form_errors);    ?>
 
 <form action="" method="post" accept-charset="utf-8">

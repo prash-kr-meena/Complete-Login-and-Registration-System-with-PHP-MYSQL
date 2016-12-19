@@ -57,25 +57,21 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 									WHERE email = :email ";
 						$statement = $db->prepare($sqlQuery);
 						$statement->execute( array(':password'=>$hashed_password, ':email'=>$email ) );
-						$message = 'Password Successfully changed';		#to pass into flashMessage function.
-						$color = 'green';
-
+						$result = flashMessage("Password Successfully changed !", 'green');
+						
 					}catch(PDOException $ex){  #to pass into flashMessage function. 
-						$message = "something went wrong! --> while inserting the new_password {$ex->getMessage()}";		
-						$color = 'red'; // no need to specify, as red is the default
+						$result = flashMessage("something went wrong! --> while inserting the new_password {$ex->getMessage()}"); # not specified the color !
 					}
 
 				}else{// ie if no such user exist in the database,
-					$message = 'Passwords does not matche! Please re-enter the password.';
-					$color = 'red'; 
+					$result = flashMessage("Passwords does not match! Please re-enter the password !");
 					}
 			}else{
-				$message = "User with { {$email} } email does not exist";
-				$color = 'red'; 
+				$result = flashMessage("No user with email { {$email} } exist");# not specified the color !
 			}
 		}catch(PDOException $ex){
-			$message = "Something went wrong when searching for the user into database ! {$ex->getMessage()}";
-			$color = 'red'; 
+			$result = flashMessage("Something went wrong when searching for the user into database ! {$ex->getMessage()}");
+			# not specified the color !
 			}
 
 	}else{// if errors exist in the form then show the errors
@@ -97,7 +93,7 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 <h2>User Authentication System </h2><hr>
 
 <?php  if ( !empty($form_errors) )  echo show_errors($form_errors) ?>
-<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
+<?php  if (isset($result) ) echo $result;  ?>
 
 <h3>Password Reset Form</h3>
 <form action="forgot_password.php" method="post">

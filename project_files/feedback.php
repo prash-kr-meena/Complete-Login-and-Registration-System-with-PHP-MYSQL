@@ -29,27 +29,24 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 	# storing the form data
 	$user = $_POST['username'];
 	$email = $_POST['email'];	# storing the form data for further process and verification.
-	$feedback = $_POST['textarea'];
+	$message = $_POST['textarea'];
 
 	# storing this data into the feedback table into the register database
 	try{
 
-		$sqlQuery = "INSERT INTO register.feedback (sender_name, sender_email, message, send_date) 
-				 	VALUES (:Sender_Name, :Sender_Email, :feedback, now())";#the message in here is different from the 		message used in the below code , this one is due to the name of the columns and not to send the message
-
+		$sqlQuery = " INSERT INTO register.feedback (sender_name, sender_email, message, send_date) 
+				 		VALUES (:Sender_Name, :Sender_Email, :message, now())";
 		$statement = $db->prepare($sqlQuery);
-		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':feedback'=>$feedback ) );
+		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':message'=>$message ) );
 
 		if ($statement->rowcount()==1) {
-	 		$message = "Successfully submited.";
-	 		$color = 'green';
+			$result = flashMessage("Successfully submited !", 'green');
 	 	}
 	 	
 	 	$GLOBALS['statement'] = $statement;
 
 	}catch(PDOException $ex){
-		$message = "An error occured: DURING STORING THE FEEDBACK DATA ==> {$ex->getMessage()}";
-	 	$color = 'red';
+		$result = flashMessage("An error occured: DURING STORING THE FEEDBACK DATA ==> {$ex->getMessage()}");# here we dont specify the color as , it will be picker bydefault
 	}
 
 }else{	// there was some errors, show them
@@ -66,7 +63,7 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 <body>
 <h2>User Authentication System </h2><hr>
 
-<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
+<?php  if (isset($result) ) echo $result;  ?>
 <?php if( !empty($form_errors) )   echo show_errors($form_errors);  ?>
 
 <h3>Feed-back form</h3>

@@ -88,12 +88,17 @@ function show_errors($form_errors_array){
 
 }
 
-function flashMessage($message,$color='red'){ //this will act bydefault if we dont specify the second argument
-	if( $color == 'red' ){
-			echo "<p style='padding: 10px; color: red; border:0.5px solid grey' >{$message}</p>";
+function flashMessage($message,$color='red'){ //now this will act bydefault if we dont specify the second argument as now we are doing it in that way , now we call it each time , not as previously , only callin once
+	if( $color === 'red' ){// means its identical
+			$data = "<p style='padding: 10px; color: red; border:0.5px solid grey' >{$message}</p>";
 	}else{
-			echo "<p style='padding: 10px; color: green; border:0.5px solid grey' >{$message}</p>";
+			$data = "<p style='padding: 10px; color: green; border:0.5px solid grey' >{$message}</p>";
 	}
+	return $data;
+}
+
+function redirectTO($page){
+	header("location: {$page}.php");
 }
 
 ?>
