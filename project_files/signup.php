@@ -2,7 +2,25 @@
 include_once "resource/Database.php";		// soul purpose of this is to make the connection to the database and if there is any error(exception) then it will show it.
 // well we have done that in the index page also so, well if you have an error it will show at that time BUT NOTE : you have to add this everywhere you try to intereact to the database (any where you wanna use SQL statements)
 
-if( isset($_POST['signup_sbt']) ){
+// process the form
+if (isset($_POST['signup_sbt'])) {
+	#initialize an array to store any error message from the form
+	$form_errors = array();
+
+	#form validation
+	$required_fields = array('username','email','password'); // these are the name of the fields in the form which forms the key in the associative array (here $_POST)
+
+	#loop through the  required fileds array (for checking a condition)
+	foreach ($required_fields as $key ) {
+		if ( !isset($_POST[$key]) || $_POST[$key]==NULL) {
+			$form_errors[] = $key;
+		}
+	}	
+	# var_dump($form_errors);  -> prints the key (names of the fields) having the error
+
+
+	# check if the error array is empty or not , if yes then process the form data, and insert record
+	if (empty($form_errors)) {
 
 	$username = $_POST['username'];	//the method post is acutally an associative array of the value we passed 
 	$password = $_POST['password'];
@@ -25,9 +43,32 @@ if( isset($_POST['signup_sbt']) ){
 
 	}catch(PDOException $ex){
 		$result = "<p style='padding:20px; color:red;' >An error occured:".$ex->getMessage()."</p>";#appending 
+
 		//-->$result = "<p style='padding:20px; color:red;' >An error occured:$ex->getMessage()</p>";
 	}
 
+		
+	}elseif (count($form_errors)==1 ) {	// ie. if it has one error
+			$result = "<p style='color :red;'>There was one error";  // no ending  </p>
+			$result.= "<ul style='color:red;' >";	//  no ending  </ul>
+			 # loop through the error array and display all the elements
+			foreach ($form_errors as $key ) {
+				$result.= "<li>$key</li>";
+				}
+			$result.="</ul> </p>" ;
+	}else{
+
+		$result = "<p style='color :red;'>There was ".count($form_errors)." error";  // no ending  </p>
+		$result.= "<ul style='color:red;' >";	//  no ending  </ul>
+		 # loop through the error array and display all the elements
+		foreach ($form_errors as $key ) {
+			$result.= "<li>$key</li>";
+			}
+		$result.="</ul> </p>" ;
+
+	}
+
+	
 }
 
 ?>
