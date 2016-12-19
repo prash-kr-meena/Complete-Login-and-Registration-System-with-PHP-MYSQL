@@ -38,44 +38,31 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 		$hashed_password = password_hash($password,PASSWORD_DEFAULT); # immediately hassing the password we got
 		$email = $_POST['email'];
 
-		# NOW , BEFORE CREATING THE USER (ie. entering the user data into the database) WE HAVE TO CHECK WHETHER THIS USERNAME IS TAKEN OR NOT IF IT DOES ,THEN SHOW MESSAGE, "sorry this username is already taken"{
-		try{
-			$sqlQuery = "SELECT username 
-						 FROM register.users 
-						 WHERE username = :username";
-			$statement = $db->prepare($sqlQuery);
-			//while( ){}
-			$statement->execute( array(":username"=>$username) );
+		# NOW , BEFORE CREATING THE USER (ie. entering the user data into the database) WE HAVE TO CHECK WHETHER THIS USERNAME IS TAKEN OR NOT IF IT DOES ,THEN SHOW MESSAGE, "sorry this username is already taken"
 
+ 		# checkDuplicasy($input, $columnName, $databaseName, $tableName)
+		$arrayReturned = checkDuplicasy($username, 'username', 'register', 'users');//returns an array of 'status' and 																				'message' key and their value
+		if ($arrayReturned['status'] == false ) {//ie no duplicasy found in the database, 
+			try{
+				$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) 
+								VALUES  (:username, :password, :email, now() ) ";
 
+				$statement = $db->prepare($sqlInsert);
+				$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
-			if ($statement->rowcount() != 1) {//ie no result found in teh database, 
-
-				try{
-				
-					$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) 
-				  	VALUES  (:username, :password, :email, now() ) ";
-
-					$statement = $db->prepare($sqlInsert);
-					$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
-
-					if($statement->rowcount()==1){ # ie if one row is changed theb ...
-						$result = flashMessage("Registration Successfull !", 'green');
-					}else{
-						$result = flashMessage("Signup unsuccessfull");
-					}
-
-				}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
-					$result = flashMessage("An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage());
+				if($statement->rowcount()==1){ # ie if one row is changed theb ...
+					$result = flashMessage("Registration Successfull !", 'green');
+				}else{
+					$result = flashMessage("Signup unsuccessfull");
 				}
 
-			}else{
-				$result = flashMessage("Sorry, this username is already taken !");
+			}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
+				$result = flashMessage("An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage());
 			}
-		}catch(PDOException $ex){
-			$result = flashMessage("An error occured: DURING CHECING FOR THE USER IN DATABASE ==> {$ex->getMessage()}");
+
+		}else{# here we dont care what is the status of the array( either true OR exception), we have to print the 				message in any case, SO
+			echo $arrayReturned['message'];
 		}
-	
 	} // so if there will be an error then it will be checked and displayed in the html BODY element
 }
 

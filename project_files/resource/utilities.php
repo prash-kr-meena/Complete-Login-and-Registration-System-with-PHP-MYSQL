@@ -1,4 +1,7 @@
 <?php 
+include_once 'Database.php';# added due to the checkDuplicasy() function 
+
+
 /*	@param : $required_fields_array --> an array containing the list of all required fields
 	@return : array containing all errors	, and then this array will be merged with the error array that is declared in 			the signup page.
 */
@@ -20,7 +23,7 @@ function check_empty_fields($required_fields_array){
 	@return : array containgin all errors. which will be merged finally
 
 */
-function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGTH ONLY WHEN THERE IS SOME VALUE IN THE FIELD 												AND NOT WHEN FIELDS ARE EMPTY, ie. if EMPTY THEN ONLY THE REQUIRED FIELDS 													ERROR SHOULD COME AND NOT THE MINIMUM LENGTH ERROR SHOULD COME !!!
+function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGTH ONLY WHEN THERE IS SOME VALUE IN THE 														FIELD AND NOT WHEN FIELDS ARE EMPTY, ie. if EMPTY THEN ONLY THE REQUIRED 													FIELDS ERROR SHOULD COME AND NOT THE MINIMUM LENGTH ERROR SHOULD COME !!!
 	#initialize an array to store any error message from the form
 	$form_errors = array();
 	
@@ -37,7 +40,7 @@ function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGT
 
 }
 
-/*	@param :	$data ,store a key value pair array where key is the name of the html form control in, this case 'email' and 					value is the input entered by the user
+/*	@param :	$data ,store a key value pair array where key is the name of the html form control in, this case 'email' 					and value is the input entered by the user
 	@return : array ,containing email error
 
 */
@@ -99,6 +102,41 @@ function flashMessage($message,$color='red'){ //now this will act bydefault if w
 
 function redirectTO($page){
 	header("location: {$page}.php");
+}
+
+#################################################### PARAMETERS FOR DUPLICASY  #############################################
+
+# parameters : 1. is for which column we have to check the duplicacy, 
+
+# 2. name of the database and table in which you want to check duplicasy (why database name,--> because in my working database connection i am not abale to specify the database,---> BUT THIS GIVES ME ADVANTAGE, TO HAVE ONLY ONE DATABASE CONNECTION STATEMENT AND USE IT EVERY WHERE TO MAKE THE CONNECTION TO THE DATABASE, ie. $db --> so i can include the database.php file in here) BUT, WHAT I HAVE TO DO IS I HAVE TO ALWAYS GIVE THE NAME OF THE DATABASE(eg.register)	
+
+# 3. the value that user inputs , 
+
+# 4. the database string,(well we can include the database file here BUT what if we have to work with different databases,)---> BUT DUE TO THE POINT #2  IT IS NOT REQUIRED,
+
+function checkDuplicasy($input, $columnName, $databaseName, $tableName){
+	try{
+		$sqlQuery = "SELECT {$columnName}
+					FROM {$databaseName}.{$tableName}
+					WHERE {$columnName}=:input";
+		echo "</br>00000000</br>";
+		$statement = $db->prepare($sqlQuery);
+
+		$statement->execute( array(':input'=>$input) );
+		if($statement->rowcount()==1){
+			$status = true;
+			$message = "Sorry this {$columnName} is already taken ";
+		}else{
+			$status = false;# ie no duplicasy if found so user can fo ahead and process further
+			$message = NULL;# as we dont require any message (WE JUST WANT HIM TO GO FURTHER.)
+		}
+	}catch(PDOException $ex){
+		$status = 'exception';
+		$message = "An error occoured : DURING THE CHECKING OF DUPLICASY OF {$columnName} IN {$databaseName}->{$tableName} ==> {$ex->getMessage()}";
+	}
+	$returnThis = array('status'=>$status, 'message'=>$message);
+	return $returnThis;
+
 }
 
 ?>
