@@ -114,12 +114,12 @@ function redirectTO($page){
 
 # 4. the database string,(well we can include the database file here BUT what if we have to work with different databases,)---> BUT DUE TO THE POINT #2  IT IS NOT REQUIRED,
 
-function checkDuplicasy($input, $columnName, $databaseName, $tableName){
-	try{
+function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ // $db --> PDO object
+	try{					# FEEL LIKE THE ERROR WAS DUE TO SCOPE RULE (but i am not geting it , why it worked , in other files, ) EVEN THOUGH I HAVE INCLUDED THE DATABASE.PHP FILE ( see if there is error in including the file)
 		$sqlQuery = "SELECT {$columnName}
 					FROM {$databaseName}.{$tableName}
 					WHERE {$columnName}=:input";
-		echo "</br>00000000</br>";
+
 		$statement = $db->prepare($sqlQuery);
 
 		$statement->execute( array(':input'=>$input) );
