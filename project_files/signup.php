@@ -1,23 +1,31 @@
 <?php 
-include_once "resource/Database.php";		// soul purpose of this is to make the connection to the database and if there is any error(exception) then it will show it.
+include_once "resource/Database.php";		// soule purpose of this is to make the connection to the database and if there is any error(exception) then it will show it.
 // well we have done that in the index page also so, well if you have an error it will show at that time BUT NOTE : you have to add this everywhere you try to intereact to the database (any where you wanna use SQL statements)
 
 // process the form
-if (isset($_POST['signup_sbt'])) {
+include_once "resource/utilities.php";
+
+if (isset($_POST['signup_sbt'])) { ## does both validation and data processing 
+
 	#initialize an array to store any error message from the form
 	$form_errors = array();
-
+	
 	#form validation
-	$required_fields = array('username','email','password'); // these are the name of the fields in the form which forms the key in the associative array (here $_POST)
+	$required_fields = array('username','email','password'); // these are the name of the fields in the html form which forms the key in the associative array (here $_POST)
 
-	#loop through the  required fileds array (for checking a condition)
-	foreach ($required_fields as $key ) {
-		if ( !isset($_POST[$key]) || $_POST[$key]==NULL) {
-			$form_errors[] = $key;
-		}
-	}	
-	# var_dump($form_errors);  -> prints the key (names of the fields) having the error
+	//call the function to check empty field and merge the return data into form_error array
+    $form_errors = array_merge($form_errors, check_empty_fields($required_fields));
 
+    //Fields that requires checking for minimum length ,HERE we declared an array from ourself, here we are defining the minimum length of the element with respect to its key, so we can excess through its key and chek its length.
+    $fields_to_check_length = array('username' => 4, 'password' => 6, 'email'=>12);
+
+    //call the function to check minimum required length and merge the return data into form_error array
+    $form_errors = array_merge($form_errors, check_min_length($fields_to_check_length));
+
+    //email validation / merge the return data into form_error array
+    $form_errors = array_merge($form_errors, check_email($_POST));
+
+    #######################################################################################################################
 
 	# check if the error array is empty or not , if yes then process the form data, and insert record
 	if (empty($form_errors)) {
@@ -35,38 +43,21 @@ if (isset($_POST['signup_sbt'])) {
 				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )
 
 		$statement = $db->prepare($sqlInsert);
-		$statement->execute(array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ));
+		$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
-		if($statement->rowcount()==1){
-			 $result = "<p style='padding: 20px; color: green;' >Registration Successfull.</p>";
+		if($statement->rowcount()==1){ # ie if onw row is changed theb ...
+			 $result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Registration Successfull.</p>";
 		}
 
-	}catch(PDOException $ex){
-		$result = "<p style='padding:20px; color:red;' >An error occured:".$ex->getMessage()."</p>";#appending 
+	}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
+		$result = "<p style='padding:10px; color:red; border:0.5px solid grey' >An error occured:".$ex->getMessage()."</p>";
 
 		//-->$result = "<p style='padding:20px; color:red;' >An error occured:$ex->getMessage()</p>";
+		//notice the -->    ured:".$ex->getMessage()."</       AND       red:$ex->getMessage()</
 	}
 
 		
-	}elseif (count($form_errors)==1 ) {	// ie. if it has one error
-			$result = "<p style='color :red;'>There was one error";  // no ending  </p>
-			$result.= "<ul style='color:red;' >";	//  no ending  </ul>
-			 # loop through the error array and display all the elements
-			foreach ($form_errors as $key ) {
-				$result.= "<li>$key</li>";
-				}
-			$result.="</ul> </p>" ;
-	}else{
-
-		$result = "<p style='color :red;'>There was ".count($form_errors)." error";  // no ending  </p>
-		$result.= "<ul style='color:red;' >";	//  no ending  </ul>
-		 # loop through the error array and display all the elements
-		foreach ($form_errors as $key ) {
-			$result.= "<li>$key</li>";
-			}
-		$result.="</ul> </p>" ;
-
-	}
+	} // so if there will be an error then it will be checked and displayed in teh html BODY element
 
 	
 }
@@ -80,10 +71,9 @@ if (isset($_POST['signup_sbt'])) {
 </head>
 <body>
 <h2>User Authentication System </h2><hr/>
-	
-<!-- <pre>	<?php var_dump($_POST); ?>	</pre> -->
 
 <?php if( isset($result) ) 		echo " $result";?>
+<?php if (!empty($form_errors) )  echo show_errors($form_errors);    ?>
 
 <form action="" method="post" accept-charset="utf-8">
 <table>
