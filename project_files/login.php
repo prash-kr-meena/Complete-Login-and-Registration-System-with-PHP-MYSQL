@@ -69,13 +69,13 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 <form action="" method="post" accept-charset="utf-8">
 <table>
 	<tr>
-		<td>Username:</td>	<td><input type="text" name="username" value=""></td>
+		<td>Username:</td>	<td><input type="text" placeholder="username" name="username" value=""></td>
 	</tr>
 	<tr>
-		<td>Password:</td>	<td><input type="password" name="password" value=""></td>   
+		<td>Password:</td>	<td><input type="password" placeholder="password" name="password" value=""></td>   
 	</tr>
 	<tr>
-		<td></td>	<td><input style="float:right ;" type="submit" name="login_sbt" value="Signin"></td>
+		<td></td>	<td><input style="float:right ;" type="submit"  name="login_sbt" value="Signin"></td>
 	</tr>
 </table>
 </form>

@@ -7,6 +7,8 @@ include_once "resource/utilities.php";
 
 if (isset($_POST['signup_sbt'])) { ## does both validation and data processing 
 
+// form validation BEGINS:==================================================================================================
+
 	#initialize an array to store any error message from the form
 	$form_errors = array();
 	
@@ -24,6 +26,8 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
     //email validation / merge the return data into form_error array
     $form_errors = array_merge($form_errors, check_email($_POST));
+
+// form validation ENDS:==================================================================================================
 
     #############################################   FORM PROCESSING AND ERROR SHOWING   ####################################
 
@@ -45,7 +49,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 		$statement = $db->prepare($sqlInsert);
 		$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
-		if($statement->rowcount()==1){ # ie if onw row is changed theb ...
+		if($statement->rowcount()==1){ # ie if one row is changed theb ...
 			 $result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Registration Successfull.</p>";
 		}
 
@@ -71,6 +75,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 </head>
 <body>
 <h2>User Authentication System </h2><hr/>
+<h3>Sign-up Form</h3>
 
 <?php if( isset($result) ) 		echo " $result";?>
 <?php if (!empty($form_errors) )  echo show_errors($form_errors);    ?>
@@ -78,13 +83,13 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 <form action="" method="post" accept-charset="utf-8">
 <table>
 	<tr>
-		<td>Username:</td>	<td><input type="text" name="username" value=""></td>
+		<td>Username:</td>	<td><input type="text" placeholder="username" name="username" value=""></td>
 	</tr>
 	<tr>
-		<td>Password:</td>	<td><input type="password" name="password" value=""></td>   
+		<td>Password:</td>	<td><input type="password" placeholder="password" name="password" value=""></td>   
 	</tr>
 	<tr>
-		<td>E-mail:</td>	<td><input type="text" name="email" value=""></td>   <!--afterward use the email type for authentication-->
+		<td>E-mail:</td>	<td><input type="text" placeholder="e-mail" name="email" value=""></td>   <!--afterward use the email type for authentication-->
 	</tr>
 	<tr>
 		<td></td>			<td><input style="float:right ;" type="submit" name="signup_sbt" value="Register"></td>

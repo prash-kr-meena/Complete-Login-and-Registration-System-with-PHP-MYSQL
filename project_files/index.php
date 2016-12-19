@@ -16,5 +16,7 @@
 <p>you are loged in as {<?php echo $_SESSION['username'] ?>} <a href="logout.php">logout</a></p>
 <?php endif ?>
 
+<p>Please give us <a href="feedback.php">feed-back</a>.</p>
+
 </body>
 </html>
