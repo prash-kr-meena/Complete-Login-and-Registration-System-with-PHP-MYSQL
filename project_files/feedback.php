@@ -1,3 +1,6 @@
+<!-- NOTE: I HAVE DONE THE VALIDATION ON THE FORM BUT I HAVEN'T CHECK ANY CONDITION WHETHER THIS USER OR THIS EMAIL IS IN OUR DATABASE , IE ANY ONE WITH AN VALID EMAIL ADDRESS CAN GIVE FEEDBACK TILL HE SATISFIES THE CALIDATION VONDITIONS -->
+
+
 <?php  
 include_once 'resource/Database.php';
 include_once 'resource/session.php';// only needed when i do auto complete by using the user session(to get his details)
@@ -26,24 +29,27 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 	# storing the form data
 	$user = $_POST['username'];
 	$email = $_POST['email'];	# storing the form data for further process and verification.
-	$message = $_POST['textarea'];
+	$feedback = $_POST['textarea'];
 
 	# storing this data into the feedback table into the register database
 	try{
 
-		$sqlQuery = "INSERT INTO register.feedback (sender_name, sender_email, message, send_date)
-				 	VALUES (:Sender_Name, :Sender_Email, :Message, now())";
+		$sqlQuery = "INSERT INTO register.feedback (sender_name, sender_email, message, send_date) 
+				 	VALUES (:Sender_Name, :Sender_Email, :feedback, now())";#the message in here is different from the 		message used in the below code , this one is due to the name of the columns and not to send the message
+
 		$statement = $db->prepare($sqlQuery);
-		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':Message'=>$message ) );
+		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':feedback'=>$feedback ) );
 
 		if ($statement->rowcount()==1) {
-	 		$result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Successfully submited.</p>";
+	 		$message = "Successfully submited.";
+	 		$color = 'green';
 	 	}
 	 	
 	 	$GLOBALS['statement'] = $statement;
 
 	}catch(PDOException $ex){
-		$result = "<p style='padding:10px; color:red; border:0.5px solid grey' >An error occured:".$ex->getMessage()."</p>";
+		$message = "An error occured: DURING STORING THE FEEDBACK DATA ==> {$ex->getMessage()}";
+	 	$color = 'red';
 	}
 
 }else{	// there was some errors, show them
@@ -60,7 +66,7 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 <body>
 <h2>User Authentication System </h2><hr>
 
-<?php if( isset($result) ) 		echo " $result";?>
+<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
 <?php if( !empty($form_errors) )   echo show_errors($form_errors);  ?>
 
 <h3>Feed-back form</h3>

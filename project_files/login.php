@@ -41,13 +41,16 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 					$_SESSION['username'] = $username;
 					header("location: index.php"); #to redirect the user to the index page.
 				}else{// ie if no such user exist in the database,
-					$result ="<p style='padding:10px; color:red; border:0.5px solid grey;'>Invalid username or password</p>";
+					$message = "Invalid username or password !";#actually here the username is true but the password is wrong
+	 				$color = 'red';
 				}
 			}else{
-				$result ="<p style='padding:10px; color:red; border:0.5px solid grey;'>Invalid username or password</p>";
+				$message = "Invalid username or password !";// actually here the username does not exist
+		 		$color = 'red';
 			}
 		}catch(PDOException $ex){
-			$result ="<p style='padding:10px; color:red; border:0.5px solid grey;'>Something went wrong while searching for the user in database! </p>";
+			$message = "Something went wrong while searching for the user in database!";
+	 		$color = 'red';
 		}
 	}else{// if errors exist in the form then show teh errors
 		// done in the form html body
@@ -66,7 +69,7 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 <h2>User Authentication System </h2><hr>
 
 <?php if ( !empty($form_errors) )   echo show_errors($form_errors) ?>
-<?php  if(isset($result))  echo $result; ?>
+<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
 
 <h3>Login Form</h3>
 <form action="" method="post" accept-charset="utf-8">

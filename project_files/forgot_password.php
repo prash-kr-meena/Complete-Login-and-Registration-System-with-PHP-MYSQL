@@ -18,7 +18,7 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 	$form_errors = array_merge( $form_errors, check_empty_fields($required_fields) );
 	#error due to minimum length  ->>> not required, for the email as we have to check that from the database, BUT 
 	# IT IS REQUIRED FOR THE PASSWORDS 
-	$fields_to_check_length = array('password'=>6);
+	$fields_to_check_length = array('new_password'=>6, 'confirm_password'=>6);
 	$form_errors = array_merge( $form_errors,check_min_length($fields_to_check_length) );
 	# error due to invalid email address
 	$form_errors = array_merge( $form_errors,check_email($_POST) );
@@ -57,20 +57,25 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 									WHERE email = :email ";
 						$statement = $db->prepare($sqlQuery);
 						$statement->execute( array(':password'=>$hashed_password, ':email'=>$email ) );
+						$message = 'Password Successfully changed';		#to pass into flashMessage function.
+						$color = 'green';
 
-						$result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Password Successfully changed.</p>";
-					}catch(PDOException $ex){
-						$result="<p style='padding:10px; color:red; border:0.5px solid grey;'>Something went wrong! --> while inserting the new_password </p>";
+					}catch(PDOException $ex){  #to pass into flashMessage function. 
+						$message = "something went wrong! --> while inserting the new_password {$ex->getMessage()}";		
+						$color = 'red'; // no need to specify, as red is the default
 					}
 
 				}else{// ie if no such user exist in the database,
-					$result="<p style='padding:10px; color:red; border:0.5px solid grey;'>Passwords does not matche! Please re-enter the password.</p>";
+					$message = 'Passwords does not matche! Please re-enter the password.';
+					$color = 'red'; 
 					}
 			}else{
-				$result="<p style='padding:10px; color:red; border:0.5px solid grey;'>User with { {$email} } email does not exist</p>";
+				$message = "User with { {$email} } email does not exist";
+				$color = 'red'; 
 			}
 		}catch(PDOException $ex){
-			$result="<p style='padding:10px; color:red; border:0.5px solid grey;'>Something went wrong when searching for the user into database !</p>";
+			$message = "Something went wrong when searching for the user into database ! {$ex->getMessage()}";
+			$color = 'red'; 
 			}
 
 	}else{// if errors exist in the form then show the errors
@@ -92,7 +97,7 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 <h2>User Authentication System </h2><hr>
 
 <?php  if ( !empty($form_errors) )  echo show_errors($form_errors) ?>
-<?php  if (isset($result) ) echo $result; ?>
+<?php  if (isset($message) ) echo flashMessage($message, $color);  ?>
 
 <h3>Password Reset Form</h3>
 <form action="forgot_password.php" method="post">
@@ -101,13 +106,13 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 			<td>E-mail: </td>			<td><input type="text" name="email" placeholder="email"></td>
 		</tr>
 		<tr>
-			<td>New-Password: </td>		<td><input type="text" name="new_password" placeholder="Password"></td>
+			<td>New-Password: </td>		<td><input type="password" name="new_password" placeholder="Password"></td>
 		</tr>
 		<tr>
-			<td>Confirm-Password: </td>	<td><input type="text" name="confirm_password" placeholder="Confirm Password"></td>
+			<td>Confirm-Password: </td>	<td><input type="password" name="confirm_password" placeholder="Confirm Password"></td>
 		</tr>
 		<tr>
-			<td></td>					<td><input style='float:right;' type="submit" name="sbt" value="submit" ></td>
+			<td></td>					<td><input style='float:right;' type="submit" name="sbt" value="Reset password" ></td>
 		</tr>
 	</table>
 </form>

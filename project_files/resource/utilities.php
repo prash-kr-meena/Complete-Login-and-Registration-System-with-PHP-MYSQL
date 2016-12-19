@@ -57,7 +57,7 @@ function check_email($data){
 		  	
 		  	# check if input is valid email address  ===> VALIDATE
 		  	if ( filter_var( $_POST[$key],FILTER_VALIDATE_EMAIL ) == false ) {
-		  		$form_errors[] = $_POST[$key]." is not a valid email address";
+		  		$form_errors[] = "{  {$_POST[$key]}  } is not a valid email address";
 		  	}
 		  }  
 	}
@@ -86,6 +86,14 @@ function show_errors($form_errors_array){
 	$errors.="</ul> </p>" ;
 	return $errors;
 
+}
+
+function flashMessage($message,$color='red'){ //this will act bydefault if we dont specify the second argument
+	if( $color == 'red' ){
+			echo "<p style='padding: 10px; color: red; border:0.5px solid grey' >{$message}</p>";
+	}else{
+			echo "<p style='padding: 10px; color: green; border:0.5px solid grey' >{$message}</p>";
+	}
 }
 
 ?>
