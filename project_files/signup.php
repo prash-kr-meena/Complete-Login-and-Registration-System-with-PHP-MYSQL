@@ -43,7 +43,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 				// BEACAUSE OF THE NEW ADDITION OF THE $database VARIABLE --> INSERT INTO register.users ... so on ..  <--- we dont need the specify the register database while writing the SQL statement.
 		// BUT AS ITS NOT WORKING WE HAVE TO SPECIFY THAT 
 		$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) #these are the names from the
-				  	VALUES  (:username, :password,:email, now() ) ";							#  database
+				  	VALUES  (:username, :password, :email, now() ) ";							#  database
 				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )										actually they are the keys , for the associative array in the execute function.
 
 		$statement = $db->prepare($sqlInsert);
@@ -51,7 +51,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
 		if($statement->rowcount()==1){ # ie if one row is changed theb ...
 			 $result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Registration Successfull.</p>";
-		}
+		}	
 
 	}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
 		$result = "<p style='padding:10px; color:red; border:0.5px solid grey' >An error occured:".$ex->getMessage()."</p>";

@@ -1,6 +1,6 @@
 <?php  
 include_once 'resource/Database.php';
-include_once 'resource/session.php';
+include_once 'resource/session.php';// only needed when i do auto complete by using the user session(to get his details)
 include_once 'resource/utilities.php';
 
 
@@ -39,15 +39,16 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 		if ($statement->rowcount()==1) {
 	 		$result = "<p style='padding: 10px; color: green; border:0.5px solid grey' >Successfully submited.</p>";
 	 	}
+	 	
+	 	$GLOBALS['statement'] = $statement;
 
 	}catch(PDOException $ex){
 		$result = "<p style='padding:10px; color:red; border:0.5px solid grey' >An error occured:".$ex->getMessage()."</p>";
 	}
 
-}else{// there was some errors, show them
-	//done in the body element of the form
-}
-
+}else{	// there was some errors, show them
+	}	//done in the body element of the form
+	
 }
 
 ?>
@@ -58,29 +59,42 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 </head>
 <body>
 <h2>User Authentication System </h2><hr>
-<h3>Feed-back form</h3>
 
 <?php if( isset($result) ) 		echo " $result";?>
 <?php if( !empty($form_errors) )   echo show_errors($form_errors);  ?>
 
+<h3>Feed-back form</h3>
 <form action="" method="post">
 	<table>
 		<tr>
 			<td>Username:</td>	<td><input type="text" placeholder="username" name="username"></td>
 		</tr>
 		<tr>
-			<td>E-mail:</td>		<td><input type="text" placeholder="e-mail" name="email"></td>
+			<td>E-mail:</td>	<td><input type="text" placeholder="e-mail" name="email"></td>
 		</tr>
 		<tr>
 			<td>Message:</td>	<td><textarea placeholder="leave your message here" name="textarea"></textarea></td>
 		</tr>
 		<tr>
-			<td></td>			<td><input type="submit"  name="feedback_sbt" value="submit"></td>
+			<td></td>			<td><input style='float:right;' type="submit"  name="feedback_sbt" value="submit"></td>
 		</tr>
 	</table>
-</form>
+</form>	
 
 <a href="index.php">Back</a>
+<!-- ===============================    showing the feedbacks down the feedback form     ================================-->
+<?php while( $row = $GLOBALS['statement']->fetch() ) : ?>
+	<table>
+		<tr>
+			<td><?php echo $row['email']; ?></td>		<td><?php echo $row['message']; ?></td>
+		</tr>
+		<tr>
+			<td><?php echo $row['username']; ?></td>
+		</tr>
+	</table>	 
+<?php  endwhile?>
+
+
 
 
 </body>
