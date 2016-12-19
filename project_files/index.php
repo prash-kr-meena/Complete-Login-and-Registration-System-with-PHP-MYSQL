@@ -6,11 +6,15 @@
 </head>
 <body>
 <h2>User Authentication System </h2><hr>
-
  
 <?php include_once 'resource/Database.php' ?>
-<p>You are not currently signin <a href="login.php">login</a> Not a member yet? <a href="signup.php">signup</a></p>
-<p>you are loged in as {username} <a href="logout.php">logout</a></p>
+<?php include_once 'resource/session.php'  // to start the session. ?> 
+
+<?php if( !isset($_SESSION['username']) ) :?>
+	<p>You are not currently signed in <a href="login.php">login</a> Not a member yet? <a href="signup.php">signup</a></p>
+<?php else: ?>
+<p>you are loged in as {<?php echo $_SESSION['username'] ?>} <a href="logout.php">logout</a></p>
+<?php endif ?>
 
 </body>
 </html>

@@ -10,7 +10,7 @@ function check_empty_fields($required_fields_array){
 	#loop through the  required fileds array (for checking a condition)
 	foreach ($required_fields_array as $key ) {
 		if ( !isset($_POST[$key]) || $_POST[$key]==NULL) { //or i can check that by if( empty($_POST[$key]) ){ #CODE ...}
-			$form_errors[] = $key."is a required field";
+			$form_errors[] = $key." is a required field";
 		}
 	}	
 	return $form_errors;	
@@ -20,16 +20,19 @@ function check_empty_fields($required_fields_array){
 	@return : array containgin all errors. which will be merged finally
 
 */
-function check_min_length($fields_to_check_length){
+function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGTH ONLY WHEN THERE IS SOME VALUE IN THE FIELD 												AND NOT WHEN FIELDS ARE EMPTY, ie. if EMPTY THEN ONLY THE REQUIRED FIELDS 													ERROR SHOULD COME AND NOT THE MINIMUM LENGTH ERROR SHOULD COME !!!
 	#initialize an array to store any error message from the form
 	$form_errors = array();
 	
 	#loop through the  required fileds array (for checking a condition)
 	foreach ($fields_to_check_length as $name_of_the_field => $minimum_length_required	 ) {
+		if (  isset($_POST[$name_of_the_field]) && $_POST[$name_of_the_field] != NULL ) {
 			if ( strlen( trim( $_POST[$name_of_the_field]) ) < $minimum_length_required) {//trim : to trim out all the spaces
-				$form_errors[] = $name_of_the_field . "is too short, must be {$minimum_length_required} characters long";
+				$form_errors[] = $name_of_the_field . " is too short, must be {$minimum_length_required} characters long";
 			}
+		}else{# do nothing
 		}
+	}
 	return $form_errors;
 
 }
@@ -65,7 +68,16 @@ function check_email($data){
 	@return : 	string , list containing all error message
 */
 function show_errors($form_errors_array){
-	$errors = "<p style='color:red; padding:5px; border:0.5px solid grey '>There was ".count($form_errors_array)." error"; 
+	$no_of_errors = count($form_errors_array);
+
+	$errors = "<p style='color:red; padding:5px; border:0.5px solid grey '>There "; 
+
+	if ($no_of_errors==1) {
+		$errors.= "was $no_of_errors error";				// to do the grammer ie    1 error  and  3 errors
+	}else{
+		$errors.= "were $no_of_errors errors";
+	}
+	
 	$errors.= "<ul style='color:red;' >";	//  no ending  </ul>
 	# loop through the error array and display all the elements
 	foreach ($form_errors_array as $the_error) {

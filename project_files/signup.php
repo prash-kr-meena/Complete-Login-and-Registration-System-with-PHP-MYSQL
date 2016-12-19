@@ -25,7 +25,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
     //email validation / merge the return data into form_error array
     $form_errors = array_merge($form_errors, check_email($_POST));
 
-    #######################################################################################################################
+    #############################################   FORM PROCESSING AND ERROR SHOWING   ####################################
 
 	# check if the error array is empty or not , if yes then process the form data, and insert record
 	if (empty($form_errors)) {
@@ -40,7 +40,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 		// BUT AS ITS NOT WORKING WE HAVE TO SPECIFY THAT 
 		$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) #these are the names from the
 				  	VALUES  (:username, :password,:email, now() ) ";							#  database
-				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )
+				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )										actually they are the keys , for the associative array in the execute function.
 
 		$statement = $db->prepare($sqlInsert);
 		$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
