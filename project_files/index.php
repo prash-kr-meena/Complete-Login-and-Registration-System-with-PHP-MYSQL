@@ -18,5 +18,7 @@
 
 <p>Please give us <a href="feedback.php">feed-back</a>.</p>
 
+<a href="test.php">test</a>
+
 </body>
 </html>

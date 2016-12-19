@@ -33,36 +33,50 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
 	# check if the error array is empty or not , if yes then process the form data, and insert record
 	if (empty($form_errors)) {
+		$username = $_POST['username'];	//the method post is acutally an associative array of the value we passed 
+		$password = $_POST['password'];
+		$hashed_password = password_hash($password,PASSWORD_DEFAULT); # immediately hassing the password we got
+		$email = $_POST['email'];
 
-	$username = $_POST['username'];	//the method post is acutally an associative array of the value we passed 
-	$password = $_POST['password'];
-	$hashed_password = password_hash($password,PASSWORD_DEFAULT); # immediately hassing the password we got
-	$email = $_POST['email'];
+		# NOW , BEFORE CREATING THE USER (ie. entering the user data into the database) WE HAVE TO CHECK WHETHER THIS USERNAME IS TAKEN OR NOT IF IT DOES ,THEN SHOW MESSAGE, "sorry this username is already taken"{
+		try{
+			$sqlQuery = "SELECT username 
+						 FROM register.users 
+						 WHERE username = :username";
+			$statement = $db->prepare($sqlQuery);
+			//while( ){}
+			$statement->execute( array(":username"=>$username) );
 
-	try{
-				// BEACAUSE OF THE NEW ADDITION OF THE $database VARIABLE --> INSERT INTO register.users ... so on ..  <--- we dont need the specify the register database while writing the SQL statement.
-		// BUT AS ITS NOT WORKING WE HAVE TO SPECIFY THAT 
-		$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) #these are the names from the
-				  	VALUES  (:username, :password, :email, now() ) ";							#  database
-				#  and the values with ':' are place holders for values which we pass on the execution time ( from the execute 		function, --> this helps in the protection from the SQL INJECTION )										actually they are the keys , for the associative array in the execute function.
 
-		$statement = $db->prepare($sqlInsert);
-		$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
-		if($statement->rowcount()==1){ # ie if one row is changed theb ...
-			$result = flashMessage("Registration Successfull !", 'green');
-		}else{
-			$result = flashMessage("Signup unsuccessfull");
+			if ($statement->rowcount() != 1) {//ie no result found in teh database, 
+
+				try{
+				
+					$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) 
+				  	VALUES  (:username, :password, :email, now() ) ";
+
+					$statement = $db->prepare($sqlInsert);
+					$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
+
+					if($statement->rowcount()==1){ # ie if one row is changed theb ...
+						$result = flashMessage("Registration Successfull !", 'green');
+					}else{
+						$result = flashMessage("Signup unsuccessfull");
+					}
+
+				}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
+					$result = flashMessage("An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage());
+				}
+
+			}else{
+				$result = flashMessage("Sorry, this username is already taken !");
+			}
+		}catch(PDOException $ex){
+			$result = flashMessage("An error occured: DURING CHECING FOR THE USER IN DATABASE ==> {$ex->getMessage()}");
 		}
-
-	}catch(PDOException $ex){ // thsi will be the error from the conection and not from the user
-		$result = flashMessage("An error occured: WHILE INSERTING THE FORM DATA INTO THE DATABASE==>".$ex->getMessage());
-	}
-
-		
-	} // so if there will be an error then it will be checked and displayed in teh html BODY element
-
 	
+	} // so if there will be an error then it will be checked and displayed in the html BODY element
 }
 
 ?>
