@@ -1,3 +1,7 @@
+<!-- sweet alert -->
+    <script src="../js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/sweetalert.css">  
+
 <?php 
 include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this 
 
@@ -134,5 +138,17 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 	}
 	$returnThis = array('status'=>$status, 'message'=>$message);
 	return $returnThis;
+}
+
+function welcomeMessage($username){ # scripts included above
+	echo "$username";
+	echo '<script>
+				swal({
+  					title: "Auto close alert!",
+  					text: "I will close in 2 seconds.",
+  					timer: 2000,
+  					showConfirmButton: false
+					});
+			</script>';
 }
 ?>

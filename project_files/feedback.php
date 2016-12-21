@@ -5,54 +5,8 @@
 include_once 'resource/Database.php';
 include_once 'resource/session.php';// only needed when i do auto complete by using the user session(to get his details)
 include_once 'resource/utilities.php';
-
-
-if ( isset($_POST['feedback_sbt']) ) {
-
-// form validation  BEGINS:==================================================================================================
-# initialize error array to store all the errors
-$form_errors = array();
-# error due to empty fields
-$required_fields_array = array('username','email','textarea');
-$form_errors = array_merge($form_errors,check_empty_fields($required_fields_array));
-# error due to minimum length
-$fields_to_check_length = array('username'=>4, 'email'=>12,'textarea'=>6);
-$form_errors = array_merge($form_errors,check_min_length($fields_to_check_length));
-# error due to invalid email
-$form_errors = array_merge($form_errors,check_email($_POST));
-
-// ==========================================================================================================================
-
-//////////////////////////////////////////////////// PROCESSING  //////////////////////////////////////////////////////////
-# form processing ,ie store data into the feedback table.
-if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process the form
-	# storing the form data
-	$user = $_POST['username'];
-	$email = $_POST['email'];	# storing the form data for further process and verification.
-	$message = $_POST['textarea'];
-
-	# storing this data into the feedback table into the register database
-	try{
-
-		$sqlQuery = " INSERT INTO register.feedback (sender_name, sender_email, message, send_date) 
-				 		VALUES (:Sender_Name, :Sender_Email, :message, now())";
-		$statement = $db->prepare($sqlQuery);
-		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':message'=>$message ) );
-
-		if ($statement->rowcount()==1) {
-			$result = flashMessage("Successfully submited !", 'green');
-	 	}
-	 	
-	 	$GLOBALS['statement'] = $statement;
-
-	}catch(PDOException $ex){
-		$result = flashMessage("An error occured: DURING STORING THE FEEDBACK DATA ==> {$ex->getMessage()}");# here we dont specify the color as , it will be picker bydefault
-	}
-
-}else{	// there was some errors, show them
-	}	//done in the body element of the form
-	
-}
+////////////////////////////////////////////
+include_once 'partials/parseFeedback.php';
 
 ?>
 <!-- **********************************************   HTML PART   *******************************************************-->
@@ -62,8 +16,8 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 
 <h2>Feed-back form</h2><hr>
 
-<div class="container" style="border: 2px solid red";>
-	<section class="col col-lg-7" style="border: 2px solid green";>
+<div class="container" >
+	<section class="col col-lg-7" >
 		<?php  if (isset($result) ) echo $result;  ?>	
 		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
 	</section>
@@ -124,25 +78,25 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 
 
 function showProperly($sender_name, $sender_email, $message, $send_date){
-	$result =	"<div class='container' style='border: 2px solid red';>
-					<section class='col col-lg-7' style='border: 2px solid green'; >
+	$result =	"<div class='container' >
+					<section class='col col-lg-7'  >
 
-						<div class='alert alert-success' style='border: 2px solid red';>
-							<span style='border: 2px solid blue';>	
+						<div class='alert alert-success' >
+							<span >	
 								<b> {$sender_name}</b>
 							</span> 
 							&nbsp;&nbsp;&nbsp;
-							<span style='border: 2px solid blue';>
+							<span >
 								<b> {$send_date} </b>
 							</span>
 						</div>
 
-						<div class='alert alert-success' style='border: 2px solid red';>
-							<span style='border: 2px solid blue';>	
+						<div class='alert alert-success' >
+							<span >	
 								<b> {}</b>
 							</span> 
 							&nbsp;&nbsp;&nbsp;
-							<span style='border: 2px solid blue';>
+							<span >
 								<b> {$message} </b>
 							</span>
 						</div>
