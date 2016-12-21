@@ -51,7 +51,16 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 									WHERE email = :email ";
 						$statement = $db->prepare($sqlQuery);
 						$statement->execute( array(':password'=>$hashed_password, ':email'=>$email ) );
-						$result = flashMessage("Password Successfully changed !", 'green');
+						// NOTE: i want to direct to the signup page automatically after the password is reset successfully
+						# BUT if i used the function redirectTo(), then the below line wil not run as after the result is set it changed the page,it never get to display to the result .,ie if operation was successfull then 
+						# it will directly change to the index page,WITHOUT SHOWING THE SUCCESS MESSAGE (but in the unsuccess full cases, it wil show all the error message ove there only, because at that time we are not redirection to any other page)
+						#  SO
+							# ---  >$result = flashMessage("Password Successfully changed !", 'green');
+						# redirect to login page after successfull change
+							#--->redirectTO(login);
+
+						# popupMessage($title, $text, $type, $page)
+						$result = popupMessage("Updated!",'password reset successfully!','success','login.php');	;
 						
 					}catch(PDOException $ex){  #to pass into flashMessage function. 
 						$result = flashMessage("something went wrong! --> while inserting the new_password {$ex->getMessage()}"); # not specified the color !

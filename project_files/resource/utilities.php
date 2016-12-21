@@ -1,6 +1,3 @@
-<!-- sweet alert -->
-    <script src="../js/sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/sweetalert.css">  
 
 <?php 
 include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this 
@@ -141,14 +138,105 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 }
 
 function welcomeMessage($username){ # scripts included above
-	echo "$username";
-	echo '<script>
+$message ="<script type='text/javascript'>
 				swal({
-  					title: "Auto close alert!",
-  					text: "I will close in 2 seconds.",
-  					timer: 2000,
+  					title: 'Welcome {$username}!',
+  					text: 'Its good to have you here',
+  					timer: 3000,
+  					type: 'success',
   					showConfirmButton: false
-					});
-			</script>';
+				});
+	  				setTimeout(function(){
+	    				window.location.href='index.php'; 
+	  				}, 2000);
+				</script>";
+
+	//$message = "$username";
+	return $message;
 }
+
+function popupMessage($title, $text, $type, $page){ # scripts included above
+$message ="<script type='text/javascript'>
+				swal({
+  					title: '{$title}',
+  					text: '{$text}',
+  					timer: 4000,
+  					type: '{$type}',
+  					showConfirmButton: false
+				});
+	  				setTimeout(function(){
+	    				window.location.href='{$page}'; 
+	  				}, 3000);
+				</script>";
+
+	//$message = "$username";
+	return $message;
+}
+
+
+function confirmLogout(){
+	/*$message ="<script type='text/javascript'>
+				swal({
+				  title: 'Are you sure?',
+				  text: 'You want to log out ?',
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#DD6B55',
+				  confirmButtonText: 'Yes, Logout',
+				  closeOnConfirm: false
+				},
+				function(){
+					swal({
+				  		title: 'Come back',
+				  		text: 'successfully loged out ',
+				  		timer: 5000,
+				  		type: 'success'
+				  		}),
+					".session_destroy().",
+					window.location.href='index.php'
+				}	);
+				</script>";
+*/
+
+	$message = "<script type='text/javascript'>
+					swal({
+		  				title: 'Are you sure?',
+		  				text: 'You want to log out ?',
+		  				type: 'warning',
+		  				
+		  				showCancelButton: true,
+		  				confirmButtonColor: '#DD6B55',
+		  				
+		  				confirmButtonText: 'Yes, Logout',
+		  				cancelButtonText: 'cancel',
+		  				
+		  				closeOnConfirm: false,
+		  				closeOnCancel: false
+						},
+
+					function(isConfirm){
+		  				if (isConfirm) {
+		    				swal({
+				  				title: 'Come later',
+				  				text: 'You are successfully loged out ',
+				  				type: 'success',
+				  				timer: 6000
+				  				}),
+							".session_destroy()."
+		  				} else {
+		    				swal({
+				  				title: 'Hurray!!',
+				  				text: 'Your are currently loged in :)',
+				  				type: 'success',
+				  				timer: 6000
+				  			})
+		  				}
+						});
+				</script>";
+
+	return $message;
+}
+
+
+
 ?>

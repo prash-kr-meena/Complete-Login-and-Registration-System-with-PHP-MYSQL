@@ -49,7 +49,10 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 					$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
 					if($statement->rowcount()==1){ # ie if one row is changed theb ...
-						$result = flashMessage("Registration Successfull !", 'green');
+
+						# popupMessage($title, $text, $type, $page)
+						$result = popupMessage("Hey  {$username}!!",'Hurray, registration successfull','success','index.php');
+
 					}else{
 						$result = flashMessage("Signup unsuccessfull");
 					}

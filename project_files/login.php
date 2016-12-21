@@ -3,21 +3,24 @@ include_once "resource/session.php";
 include_once "resource/Database.php";	
 include_once "resource/utilities.php";
 
-include_once 'partials/parseLogin.php'; #contain all login validation, processing , security
+
 ?>
 
 <!-- **********************************************   HTML PART   *******************************************************-->
 <?php 	$page_title = 'Login form';
-		include_once 'partials/headers.php'; 	
-
-		?>
+		include_once 'partials/headers.php'; 	?>
 <!----  <body> is already into the header file  -- -->
+
+<?php include_once 'partials/parseLogin.php'; #contain all login validation, processing , security 
+    # this should be included after the headers.php as it contains the linking and the path of the Sweet Alert css and js files, which are used in this parseLogin.php file
+?>
+
 <h2>Login form</h2><hr>
 
 <div class="container">
 	<section class="col col-lg-7">
-		<?php  if (isset($result) ) echo $result;  ?>	
-		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+		<?php  if (isset($result) ) echo $result;      # these are for successfull AND unsuccessful  messages  ?>	
+		<?php if (!empty($form_errors) )  echo show_errors($form_errors); # these are for error messages  ?>
 	</section>
 </div>
 

@@ -37,7 +37,14 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 					$_SESSION['id'] = $id;
 					$_SESSION['username'] = $username;
 
-					redirectTO('index'); #new functionality to redirect just by giving the name of the pages
+					# popupMessage($title, $text, $type, $page)
+					$result =  popupMessage("Welcome {$username}!",'Its good to have you here','success','index.php');	
+					
+					// $result =  welcomeMessage($username);
+					# but this will not show up untill we placed the setTImeout function in our sccript, (BECAUSE: what was hapenning before is that the php gets executed but the js does not)
+					# this gives time to run javascript to run.
+
+					//redirectTO('index');  NOW NOT NEEDED
 
 				}else{// ie if no such user exist in the database,
 					$result = flashMessage("Invalid username or password !"); # actually here the username is true but the 																				password is wrong
