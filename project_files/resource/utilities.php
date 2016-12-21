@@ -73,7 +73,7 @@ function check_email($data){
 function show_errors($form_errors_array){
 	$no_of_errors = count($form_errors_array);
 
-	$errors = "<p style='color:red; padding:5px; border:0.5px solid grey '>There "; 
+	$errors = "<div class='alert alert-danger'>There "; 
 
 	if ($no_of_errors==1) {
 		$errors.= "was $no_of_errors error";				// to do the grammer ie    1 error  and  3 errors
@@ -81,21 +81,19 @@ function show_errors($form_errors_array){
 		$errors.= "were $no_of_errors errors";
 	}
 	
-	$errors.= "<ul style='color:red;' >";	//  no ending  </ul>
-	# loop through the error array and display all the elements
 	foreach ($form_errors_array as $the_error) {
 		$errors.= "<li>{$the_error}</li>";
 		}
-	$errors.="</ul> </p>" ;
+	$errors.="</div>" ;
 	return $errors;
 
 }
 
 function flashMessage($message,$color='red'){ //now this will act bydefault if we dont specify the second argument as now we are doing it in that way , now we call it each time , not as previously , only callin once
 	if( $color === 'red' ){// means its identical
-			$data = "<p style='padding: 10px; color: red; border:0.5px solid grey' >{$message}</p>";
+			$data = "<div class='alert alert-danger'>{$message}</div>";
 	}else{
-			$data = "<p style='padding: 10px; color: green; border:0.5px solid grey' >{$message}</p>";
+			$data = "<div class='alert alert-success'>{$message}</div>";
 	}
 	return $data;
 }

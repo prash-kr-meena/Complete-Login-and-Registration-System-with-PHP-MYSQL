@@ -63,28 +63,29 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 <h2>Feed-back form</h2><hr>
 
 <div class="container">
-	<?php  if (isset($result) ) echo $result;  ?>	
-	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	<section class="col col-lg-7">
+		<?php  if (isset($result) ) echo $result;  ?>	
+		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	</section>
 </div>
-
 <!--                                      ---  all have id ending with 3  --                                 -->
 
 <div class="container" >
 
-	<section class="col col-lg-7" style="border:2px solid red";>
+	<section class="col col-lg-7" >
 
 		<form action="" method="post">
 			<div class="form-group">
     			<label for="emailField3">E-mail:</label>
     			<input type="text" class="form-control" name="email"  id="emailField3" placeholder="E-mail">
   			</div>
-  			<div class="form-group" style="border:2px dotted red";>
+  			<div class="form-group" >
     			<label for="usernameField3">Username:</label>
     			<input type="text" class="form-control" name="username"  id="usernameField3" placeholder="Username">
   			</div>
   			<div class="form-group">
     			<label for="messageField3">Message:</label>
-    			<textarea class="form-control"  name="textarea" id="messageField3" placeholder="Leave your message here !"></textarea>
+    			<textarea rows="6" class="form-control"  name="textarea" id="messageField3" placeholder="Leave your message here !"></textarea>
   			</div>
   			<button type="submit" class="btn btn-primary pull-right" name="feedback_sbt">Submit</button>
 		</form>

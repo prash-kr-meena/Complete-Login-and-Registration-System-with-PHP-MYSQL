@@ -79,23 +79,25 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
 <!----  <body> is already into the header file  -- -->
 <h2>Sign-up Form </h2><hr/>
-<div class="container">
-	<?php  if (isset($result) ) echo $result;  ?>	
-	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
-</div>
 
+<div class="container">
+	<section class="col col-lg-7">
+		<?php  if (isset($result) ) echo $result;  ?>	
+		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	</section>
+</div>
 <!--                                      ---  all have id ending with 2  --                                 -->
 
 <div class="container" >
 
-	<section class="col col-lg-7" style="border:2px solid red";>
+	<section class="col col-lg-7">
 
 		<form action="" method="post" >
 			<div class="form-group">
     			<label for="emailField2">E-mail:</label>
     			<input type="text" class="form-control" name="email"  id="emailField2" placeholder="E-mail">
   			</div>
-  			<div class="form-group" style="border:2px dotted red";>
+  			<div class="form-group">
     			<label for="usernameField2">Username:</label>
     			<input type="text" class="form-control" name="username"  id="usernameField2" placeholder="Username">
   			</div>

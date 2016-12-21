@@ -1,5 +1,5 @@
 <!-- IT CONTAINS THE HEADER AND THE NAVIGATION (so it will be present everywheere )-->
-
+<?php include_once 'resource/session.php' ?>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -18,6 +18,7 @@
 <!-- ####################################    from the bootstrap template  ##############################################-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
+
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -25,14 +26,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="index.php">User Authentication System </a>
         </div>
+
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+
+          <!-- WHAT IF I CREATE TWO DIFFERENT NAVIGATION BAR FILES, ie one for loged in user and one for non loged in users  -> THAT WILL BE PAIN IN THE ASS, AS THEN WE HAVE TO INCLUDE THE NAVIGATION BAR IN EACH PAGE, AND ALSO WE HAVE TO CHECK THE CONDITION FOR THAT -> REAL PAIN IN ASS  -->
+          <?php if( !isset($_SESSION['username']) ) :// ie. when user is not loged in?>
+              <li class="active"><a href="login.php">Login</a></li>
+              <li><a href="signup.php">Sign-up</a></li>
+              <li><a href="feedback.php">Feedback</a></li>
+          <?php else: ?>
+              <li><a href="#">My profile</a></li>
+              <li><a href="logout.php">Logout</a></li>
+          <?php endif ?>
+
+            
           </ul>
         </div><!--/.nav-collapse -->
+
       </div>
     </nav>

@@ -91,21 +91,22 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 <h2>Password Reset Form</h2><hr>
 
 <div class="container">
-	<?php  if (isset($result) ) echo $result;  ?>	
-	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	<section class="col col-lg-7">
+		<?php  if (isset($result) ) echo $result;  ?>	
+		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	</section>
 </div>
-
 <!--                                      ---  all have id ending with 4  --                                 -->
 <div class="container" >
 
-	<section class="col col-lg-7" style="border:2px solid red";>
+	<section class="col col-lg-7" >
 
 		<form action="forgot_password.php" method="post" >
 			<div class="form-group">
     			<label for="emailField4">E-mail:</label>
     			<input type="text" class="form-control" name="email"  id="emailField4" placeholder="E-mail">
   			</div>
-  			<div class="form-group" style="border:2px dotted red";>
+  			<div class="form-group" >
     			<label for="newPasswordField4">New-Password:</label>
     			<input type="password" class="form-control" name="new_password"  id="newPasswordField4" placeholder="New Password">
   			</div>

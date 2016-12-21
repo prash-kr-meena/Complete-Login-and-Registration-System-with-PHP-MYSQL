@@ -63,13 +63,15 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 <h2>Login form</h2><hr>
 
 <div class="container">
-	<?php  if (isset($result) ) echo $result;  ?>	
-	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	<section class="col col-lg-7">
+		<?php  if (isset($result) ) echo $result;  ?>	
+		<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+	</section>
 </div>
 
 <!--                                      ---  all have id ending with 1  --                                  -->
 <div class="container">
-<section class="col col-lg-7">
+<section class="col col-lg-7" >
 	<form action="" method="post" >
   		<div class="form-group">
     		<label for="usernameField1">Username:</label>
@@ -83,9 +85,11 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
     		<label>
       		<input type="checkbox" name="remember">Remember me. 
     		</label>
-  		</div>
+
+    		<button type="submit" class="btn btn-primary pull-right" name="login_sbt">Sign in</button>
+  		</div>	
+  		</br>
   		<a href="forgot_password.php">Forgot password ?</a>
-  		<button type="submit" class="btn btn-primary pull-right" name="login_sbt">Sign in</button>
 	</form>
 </section>
 <p><a href="index.php">Back</a></p>

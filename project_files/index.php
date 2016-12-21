@@ -8,8 +8,8 @@
 
 ?>
     <div class="container">
-    	<div class="flag" style='border:1px solid green' >
-        	<h1  >User Authentication System </h1>
+    	<div class="flag" >
+        	<h1  >User Authentication System</h1>
         	<p class="lead">
 
 			<?php if( !isset($_SESSION['username']) ) :?>
