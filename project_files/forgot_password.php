@@ -80,39 +80,45 @@ if ( isset($_POST['sbt']) ) {  //ie. if the password reset form is submitted the
 	// =================================================  processing ENDS =================================================
 }
 
-
-
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>forgot password?</title>
-</head>
-<body>
 
-<h2>User Authentication System </h2><hr>
+<!-- **********************************************   HTML PART   *******************************************************-->
 
-<?php  if ( !empty($form_errors) )  echo show_errors($form_errors) ?>
-<?php  if (isset($result) ) echo $result;  ?>
+<?php 	$page_title = 'Forgot Password';
+		include_once 'partials/headers.php'; 	?>
+<!----  <body> is already into the header file  -- -->
 
-<h3>Password Reset Form</h3>
-<form action="forgot_password.php" method="post">
-	<table>
-		<tr>
-			<td>E-mail: </td>			<td><input type="text" name="email" placeholder="email"></td>
-		</tr>
-		<tr>
-			<td>New-Password: </td>		<td><input type="password" name="new_password" placeholder="Password"></td>
-		</tr>
-		<tr>
-			<td>Confirm-Password: </td>	<td><input type="password" name="confirm_password" placeholder="Confirm Password"></td>
-		</tr>
-		<tr>
-			<td></td>					<td><input style='float:right;' type="submit" name="sbt" value="Reset password" ></td>
-		</tr>
-	</table>
-</form>
-<a href="login.php">Back</a>
+<h2>Password Reset Form</h2><hr>
 
-</body>
-</html>
+<div class="container">
+	<?php  if (isset($result) ) echo $result;  ?>	
+	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+</div>
+
+<!--                                      ---  all have id ending with 4  --                                 -->
+<div class="container" >
+
+	<section class="col col-lg-7" style="border:2px solid red";>
+
+		<form action="forgot_password.php" method="post" >
+			<div class="form-group">
+    			<label for="emailField4">E-mail:</label>
+    			<input type="text" class="form-control" name="email"  id="emailField4" placeholder="E-mail">
+  			</div>
+  			<div class="form-group" style="border:2px dotted red";>
+    			<label for="newPasswordField4">New-Password:</label>
+    			<input type="password" class="form-control" name="new_password"  id="newPasswordField4" placeholder="New Password">
+  			</div>
+  			<div class="form-group">
+    			<label for="confirmPasswordField4">Confirm-Password:</label>
+    			<input type="password" class="form-control" name="confirm_password" id="confirmPasswordField4" placeholder="Confirm Password">
+  			</div>
+  			<button type="submit" class="btn btn-primary pull-right" name="sbt">Reset password</button>
+		</form>
+	</section>
+	<p><a href="login.php">Back</a></p>
+</div>
+
+<?php  include_once 'partials/footers.php'; ?>
+<!----  </body> is already into the fppter file  -- -->
+<!-- **********************************************   HTML PART   *******************************************************-->

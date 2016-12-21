@@ -56,34 +56,41 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 }
 ?>
 
+<!-- **********************************************   HTML PART   *******************************************************-->
+<?php 	$page_title = 'Login form';
+		include_once 'partials/headers.php'; 	?>
+<!----  <body> is already into the header file  -- -->
+<h2>Login form</h2><hr>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>login page</title>
-</head>
-<body>
-<h2>User Authentication System </h2><hr>
+<div class="container">
+	<?php  if (isset($result) ) echo $result;  ?>	
+	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+</div>
 
-<?php if ( !empty($form_errors) )   echo show_errors($form_errors) ?>
-<?php  if (isset($result) ) echo $result;  ?>
-
-<h3>Login Form</h3>
-<form action="" method="post" accept-charset="utf-8">
-<table>
-	<tr>
-		<td>Username:</td>	<td><input type="text" placeholder="username" name="username" value=""></td>
-	</tr>
-	<tr>
-		<td>Password:</td>	<td><input type="password" placeholder="password" name="password" value=""></td>   
-	</tr>
-	<tr>
-		<td><a href="forgot_password.php">forgot password?</a></td>	
-		<td><input style="float:right ;" type="submit"  name="login_sbt" value="Signin"></td>
-	</tr>
-</table>
-</form>
-
+<!--                                      ---  all have id ending with 1  --                                  -->
+<div class="container">
+<section class="col col-lg-7">
+	<form action="" method="post" >
+  		<div class="form-group">
+    		<label for="usernameField1">Username:</label>
+    		<input type="text" class="form-control" name="username"  id="usernameField1" placeholder="Username">
+  		</div>
+  		<div class="form-group">
+    		<label for="password1">Password:</label>
+    		<input type="password" class="form-control" name="password" id="password1" placeholder="Password">
+  		</div>
+  		<div class="checkbox">
+    		<label>
+      		<input type="checkbox" name="remember">Remember me. 
+    		</label>
+  		</div>
+  		<a href="forgot_password.php">Forgot password ?</a>
+  		<button type="submit" class="btn btn-primary pull-right" name="login_sbt">Sign in</button>
+	</form>
+</section>
 <p><a href="index.php">Back</a></p>
-</body>
-</html>
+</div>
+
+<?php  include_once 'partials/footers.php'; ?>
+<!----  </body> is already into the fppter file  -- -->
+<!-- **********************************************   HTML PART   *******************************************************-->

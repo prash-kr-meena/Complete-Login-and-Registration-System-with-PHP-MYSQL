@@ -55,37 +55,47 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 }
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Feed-back page</title>
-</head>
-<body>
-<h2>User Authentication System </h2><hr>
+<!-- **********************************************   HTML PART   *******************************************************-->
 
-<?php  if (isset($result) ) echo $result;  ?>
-<?php if( !empty($form_errors) )   echo show_errors($form_errors);  ?>
+<?php 	$page_title = 'Feedback form';
+		include_once 'partials/headers.php'; 	?>
 
-<h3>Feed-back form</h3>
-<form action="" method="post">
-	<table>
-		<tr>
-			<td>Username:</td>	<td><input type="text" placeholder="username" name="username"></td>
-		</tr>
-		<tr>
-			<td>E-mail:</td>	<td><input type="text" placeholder="e-mail" name="email"></td>
-		</tr>
-		<tr>
-			<td>Message:</td>	<td><textarea placeholder="leave your message here" name="textarea"></textarea></td>
-		</tr>
-		<tr>
-			<td></td>			<td><input style='float:right;' type="submit"  name="feedback_sbt" value="submit"></td>
-		</tr>
-	</table>
-</form>	
+<h2>Feed-back form</h2><hr>
 
-<a href="index.php">Back</a>
+<div class="container">
+	<?php  if (isset($result) ) echo $result;  ?>	
+	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+</div>
+
+<!--                                      ---  all have id ending with 3  --                                 -->
+
+<div class="container" >
+
+	<section class="col col-lg-7" style="border:2px solid red";>
+
+		<form action="" method="post">
+			<div class="form-group">
+    			<label for="emailField3">E-mail:</label>
+    			<input type="text" class="form-control" name="email"  id="emailField3" placeholder="E-mail">
+  			</div>
+  			<div class="form-group" style="border:2px dotted red";>
+    			<label for="usernameField3">Username:</label>
+    			<input type="text" class="form-control" name="username"  id="usernameField3" placeholder="Username">
+  			</div>
+  			<div class="form-group">
+    			<label for="messageField3">Message:</label>
+    			<textarea class="form-control"  name="textarea" id="messageField3" placeholder="Leave your message here !"></textarea>
+  			</div>
+  			<button type="submit" class="btn btn-primary pull-right" name="feedback_sbt">Submit</button>
+		</form>
+	</section>
+	<p><a href="index.php">Back</a></p>
+</div>
+
+
+
 <!-- ===============================    showing the feedbacks down the feedback form     ================================-->
+<!----  make a function for this  -- -->
 <?php while( $row = $GLOBALS['statement']->fetch() ) : ?>
 	<table>
 		<tr>
@@ -97,8 +107,7 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 	</table>	 
 <?php  endwhile?>
 
+<?php  include_once 'partials/footers.php'; ?>
+<!----  </body> is already into the fppter file  -- -->
 
-
-
-</body>
-</html>
+<!-- **********************************************   HTML PART   *******************************************************-->

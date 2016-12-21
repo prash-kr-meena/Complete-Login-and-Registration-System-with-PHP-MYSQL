@@ -72,35 +72,43 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Register page</title>
-</head>
-<body>
-<h2>User Authentication System </h2><hr/>
-<h3>Sign-up Form</h3>
+<!-- **********************************************   HTML PART   *******************************************************-->
+<!-- <body> is already into the header file-->
+<?php 	$page_title = 'Signup form';
+		include_once 'partials/headers.php'; 	?>
 
-<?php  if (isset($result) ) echo $result;  ?>	
-<?php if (!empty($form_errors) )  echo show_errors($form_errors);    ?>
+<!----  <body> is already into the header file  -- -->
+<h2>Sign-up Form </h2><hr/>
+<div class="container">
+	<?php  if (isset($result) ) echo $result;  ?>	
+	<?php if (!empty($form_errors) )  echo show_errors($form_errors);  ?>
+</div>
 
-<form action="" method="post" accept-charset="utf-8">
-<table>
-	<tr>
-		<td>Username:</td>	<td><input type="text" placeholder="username" name="username" value=""></td>
-	</tr>
-	<tr>
-		<td>Password:</td>	<td><input type="password" placeholder="password" name="password" value=""></td>   
-	</tr>
-	<tr>
-		<td>E-mail:</td>	<td><input type="text" placeholder="e-mail" name="email" value=""></td>   <!--afterward use the email type for authentication-->
-	</tr>
-	<tr>
-		<td></td>			<td><input style="float:right ;" type="submit" name="signup_sbt" value="Register"></td>
-	</tr>
-</table>
-</form>
+<!--                                      ---  all have id ending with 2  --                                 -->
 
-<p><a href="index.php">Back</a></p>
-</body>
-</html>
+<div class="container" >
+
+	<section class="col col-lg-7" style="border:2px solid red";>
+
+		<form action="" method="post" >
+			<div class="form-group">
+    			<label for="emailField2">E-mail:</label>
+    			<input type="text" class="form-control" name="email"  id="emailField2" placeholder="E-mail">
+  			</div>
+  			<div class="form-group" style="border:2px dotted red";>
+    			<label for="usernameField2">Username:</label>
+    			<input type="text" class="form-control" name="username"  id="usernameField2" placeholder="Username">
+  			</div>
+  			<div class="form-group">
+    			<label for="password2">Password:</label>
+    			<input type="password" class="form-control" name="password" id="password2" placeholder="Password">
+  			</div>
+  			<button type="submit" class="btn btn-primary pull-right" name="signup_sbt">Sign up</button>
+		</form>
+	</section>
+	<p><a href="index.php">Back</a></p>
+</div>
+
+<?php  include_once 'partials/footers.php'; ?>
+<!----  </body> is already into the fppter file  -- -->
+<!-- **********************************************   HTML PART   *******************************************************-->

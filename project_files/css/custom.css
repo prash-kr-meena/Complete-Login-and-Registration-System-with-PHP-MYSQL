@@ -5,3 +5,6 @@ body{
 	padding:70px 15px;
 	text-align: center;
 }
+.container{
+	border: 3px dashed blue;
+}
