@@ -1,5 +1,5 @@
 <?php 
-include_once 'Database.php';# added due to the checkDuplicasy() function 
+include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this 
 
 
 /*	@param : $required_fields_array --> an array containing the list of all required fields
@@ -134,7 +134,5 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 	}
 	$returnThis = array('status'=>$status, 'message'=>$message);
 	return $returnThis;
-
 }
-
 ?>
