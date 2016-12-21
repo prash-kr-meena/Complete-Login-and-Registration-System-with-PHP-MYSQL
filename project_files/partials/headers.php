@@ -34,7 +34,7 @@
 
           <!-- WHAT IF I CREATE TWO DIFFERENT NAVIGATION BAR FILES, ie one for loged in user and one for non loged in users  -> THAT WILL BE PAIN IN THE ASS, AS THEN WE HAVE TO INCLUDE THE NAVIGATION BAR IN EACH PAGE, AND ALSO WE HAVE TO CHECK THE CONDITION FOR THAT -> REAL PAIN IN ASS  -->
           <?php if( !isset($_SESSION['username']) ) :// ie. when user is not loged in?>
-              <li class="active"><a href="login.php">Login</a></li>
+              <li ><a href="login.php">Login</a></li>
               <li><a href="signup.php">Sign-up</a></li>
               <li><a href="feedback.php">Feedback</a></li>
           <?php else: ?>
