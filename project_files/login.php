@@ -1,11 +1,8 @@
 <?php  
-include_once "resource/session.php";
+include_once "resource/session.php";# session will automatically start when this page is loaded--> so now we will be able to set the session variable  --> ie to set a session variable we have to always start the session first.
 include_once "resource/Database.php";	
 include_once "resource/utilities.php";
-
-
 ?>
-
 <!-- **********************************************   HTML PART   *******************************************************-->
 <?php 	$page_title = 'Login form';
 		include_once 'partials/headers.php'; 	?>

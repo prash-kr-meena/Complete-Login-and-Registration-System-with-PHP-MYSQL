@@ -10,7 +10,10 @@
 
     <div class="container">
     	<div class="flag" >
-        	 <h1  >User Authentication System</h1>		<!-- NOTE : session is deleted each time we close the browser, or if 																			you login from the incognito mode -->
+        	 <h1  >User Authentication System</h1><hr><!-- NOTE : session is deleted each time we close the browser, or if 																			you login from the incognito mode -->
+
+        	 </br></br></br></br></br></br></br></br></br></br> <!-- add an image here -->
+        	 
         	 <p class="lead">							<!-- isset($_COOKIE['authenticationSystem']) -->
         	 <!--BUT NOTE: in this case when we logout the session is distroyed (in both the case either he has choosed the remember me funcionality or not -> see the LOGOUT.PHP file ) 
         	 THE ERROR IS BECAUSE , even after hte logout is done ,the cookie is set,so one of the condition becomes true, and now it want to display the username, which is no longer exists as the session is destroyed so for that we have to set the session when the cookie is not deleted,OR UNSET  -->
