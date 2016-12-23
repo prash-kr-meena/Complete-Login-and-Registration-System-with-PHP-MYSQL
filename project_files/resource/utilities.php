@@ -312,6 +312,7 @@ function isCookieValid($db){
 		}# end try-catch
 	}// end if
 	return $isValid;		# by default it will return false, and returns true if the cookie is set and its valid too..
+	# so for users that are not loged in it will return FALSE value
 }
 ###########################################################################################################################
 
@@ -319,13 +320,14 @@ function guard(){
 $isValid = true;
 $inactive = 60 * 30;  # <-- just for testing period  5 minuits..
 
-$fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
+$fingerPrintnt = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website
 
 /* THE REASON OF USING THE FINGERPRINT IS TO PROTECT THE WEBSITE FROM THE SESSION HIGHJACKING,--> SEE HOW ==>
  suppose if we have not done this fingerprint verification ,--> and only the verifaication is that any cookie of named authentication system is set or not and if the data in it matches our database,or not,---> but what a hacker can do is  , after a man signin the website--> his cookie for that website is set for 30 days, say , and if he didnot logout his cookie remians there  --> so the hacker can steel this cookie for the website and, paste,it in his system and go to the site, --> eventually he has opened the users site whose cookie was created there---> this is because, all the conditions are true, the user never loged out and the browser found the cookie with the same data as it needed, even if the system is changed!
 */
 															#  isset($_SESSION['username']) -->just to double check
+ #this is to secure sesssion highjacking ie. our session is going on (when we loged in) -> so the session variables are also set, ie session[fingerprint] is set , but due to steel of the cookie now the session will be active over there also  as the person never loged out of the website,-> but now we can trac its system information , ie. this is the same pc or not
 	if ( isset($_SESSION['fingerPrint']) && ($fingerPrint != $_SESSION['fingerPrint']) && isset($_SESSION['username']) ) {
 		$isValid = false;
 		redirectTO('logout');
@@ -337,12 +339,18 @@ $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // 
 		
 		# 2.
 		redirectTO('logout');
-	}else{
+	}else{# this variable will not be set for the user which not loged in --> because for them there does not exist such variable--> but this does not give error (when loading the index page when the user is not signed in)--> theis is becasuse  in the header file (in which the guard function is called every time, -> note also every time the session file goes attached to it ,)--> ie session is started and now we can set these session variable
+
 		$_SESSION['lastActive'] = time(); # NOTE : (on click ,every time the page loads,--> adn this is in the header,so)that if the above two conditons are not true , then the last active time is always set to the current time,
 		# that is when the user is loged out(not by pressing the logout button but by any of these two conditions , ) automatically the last inactivetime is set to the time of the system currently (EXample:   if the last active time is greater than the inactve time and we dont do any thing, after an our we refresh the page, --> NOW  this is the time when the script gets run and now THE LAST ACTIVE TIME WILL BE OF ONE HOUR LATE ie. THE TIME OF SYSTEM when the page is loaded)
+
+		$_SESSION['fingerPrint'] = $fingerPrintnt;# now this will also be set for the first time when some one opens the site , and will be keep track of untill he logouts , 
+
+		echo dateTime1($_SESSION['lastActive']);
+		echo "  hello ";#--> it does not show up as it is in a hidden class (YOU CAN SEE THEM IN THE SOURCE CODE)
 	}
 
-return $isValid;	
+return $isValid; # so for an unloged user it gets the value of TRUE automatically --> that is why it prints 1 in the source code
 
 }
 ###########################################################################################################################
