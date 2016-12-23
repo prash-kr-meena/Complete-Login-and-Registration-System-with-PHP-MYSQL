@@ -247,6 +247,7 @@ function confirmLogout(){
 ###########################################################################################################################
 /*	@param: user id
 */
+# i could have stored the username and password in the remember me functionality then storing id , BUT IT WOULD BE NOT SAFE AS THESE REMEMBER ME FUNCTIONALITY STORES DATA INTO THE , COOKIES IN THE LOCAL SUSTEM OF THE USER
 function rememberMe($id){ # encrypted so the user id is not visible
 	$encryptId = base64_encode("7859739".$id."7359837") ; # making it more secure
 	/*this is just to make it more sewcure , adding no , so if it decodes it to then also he will see no. only and not able to know which no is it which will not be possible if we used strings, and the hacker goes into the cookie and decode it by base64_decode */
@@ -315,11 +316,15 @@ function isCookieValid($db){
 ###########################################################################################################################
 
 function guard(){
-$isvalid = true;
-$inactive = 60 * 2;  # 2 minuits..
+$isValid = true;
+$inactive = 60 * 5;  # 5 minuits..
 
 $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website
+
+/* THE REASON OF USING THE FINGERPRINT IS TO PROTECT THE WEBSITE FROM THE SESSION HIGHJACKING,--> SEE HOW ==>
+ suppose if we have not done this fingerprint verification ,--> and only the verifaication is that any cookie of named authentication system is set or not and if the data in it matches our database,or not,---> but what a hacker can do is  , after a man signin the website--> his cookie for that website is set for 30 days, say , and if he didnot logout his cookie remians there  --> so the hacker can steel this cookie for the website and, paste,it in his system and go to the site, --> eventually he has opened the users site whose cookie was created there---> this is because, all the conditions are true, the user never loged out and the browser found the cookie with the same data as it needed, even if the system is changed!
+*/
 															#  isset($_SESSION['username']) -->just to double check
 	if ( isset($_SESSION['fingerPrint']) && ($fingerPrint != $_SESSION['fingerPrint']) && isset($_SESSION['username']) ) {
 		$isValid = false;
@@ -331,6 +336,7 @@ $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // 
 		$_SESSION['lastActive'] = time(); # NOTE : (on click ,every time the page loads,--> adn this is in the header,so)that if the above two conditons are not true , then the last active time is always set to the current time,
 		# that is when the user is loged out(not by pressing the logout button but by any of these two conditions , ) automatically the last inactivetime is set to the time of the system currently (EXample:   if the last active time is greater than the inactve time and we dont do any thing, after an our we refresh the page, --> NOW  this is the time when the script gets run and now THE LAST ACTIVE TIME WILL BE OF ONE HOUR LATE ie. THE TIME OF SYSTEM when the page is loaded)
 	}
+
 return $isValid;	
 
 }

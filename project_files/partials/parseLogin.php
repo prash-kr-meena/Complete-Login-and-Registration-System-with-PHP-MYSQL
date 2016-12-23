@@ -42,7 +42,7 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 					##	ADDING A LITTEL MORE SECURITY TO THE WEBSITE ##
 					# md5(str);			$_SERVER['REMOTE_ADDR']---> returns the ip of the user,		$_SERVER['HTTP_USER_AGENT'] ---> gives the browser information 
 					$fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); # hashing these informatins --> this informatino will be taken when the user loges in to the website..
-					$_SESSION['lastActive'] = time();
+					$_SESSION['lastActive'] = time();# we have created two more session variables, to track our users , with their acitve time and their machine identity, ie. there ip and their browser
 					$_SESSION['fingerPrint'] = $fingerPrint; # there might be a case in which the $fingerprint statement does not work --> or something goes wrong, so for that case in utilities, we also check that the seeion for the user is also set or not
 
 

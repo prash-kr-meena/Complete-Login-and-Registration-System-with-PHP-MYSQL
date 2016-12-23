@@ -97,3 +97,17 @@ include_once "resource/utilities.php";
 				echo '</pre>';
 			}
 ////////////////////////
+
+echo '<br><br><br>';
+
+		$decryptData = base64_decode('Nzg1OTczOTI3MzU5ODM3');// i picked it from the chrome , by searching for the cookie, with the name authenticationSystem in a coockie for the link authentication_system.com--> as i have set the virtual host to oopen up the project with this site name, and configure the xamp apache config file, 
+		echo "----===>".$decryptData."<====-----<br>";
+
+		$break_1 = explode(7859739, $decryptData);
+		echo "----==>".$break_1[0]."<--->".$break_1[1]."====-----<br>";
+
+		$break_2 = explode(7359837, $break_1[1]);
+		echo "----===>".$break_2[0]."<--->".$break_2[1]."<====-----<br>";
+
+		$decryptId = $break_2[0];
+		echo "----===>".$decryptId."<====-----";
