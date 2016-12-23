@@ -345,5 +345,22 @@ $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // 
 return $isValid;	
 
 }
+###########################################################################################################################
+function dateTime1($dateTime){ # convert it to the date time format from the timestamp format
+	$date = new DateTime(); 
+	$date->setTimestamp($dateTime);		
+	$date_string = date_format($date,'U=Y-m-d H:i:s');
 
+	return $date_string;
+}
+#=========================================   another function for time conversion   ========================================
+function dateTime2($dateTime){
+	$date_string = strftime( "%b %d %y", strtotime($dateTime) );
+	return $date_string;
+	# what strtotime() does is it converts the timestamp to the human readable time
+	# what strftime() --> does is it format this time inro more convinent way
+	# ie. %b is for abbrevation of months, eg -> jan, feb etc.
+	# and %d is for showing the 2 digits of the date, eg. 02, 04, 29 etc.
+	# and %y is for showing the 4 digits of the year, eg. 2000, 2004, 1996 etc.
+}
 ?>

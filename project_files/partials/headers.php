@@ -41,9 +41,14 @@
           <ul class="nav navbar-nav">
 
           <!-- WHAT IF I CREATE TWO DIFFERENT NAVIGATION BAR FILES, ie one for loged in user and one for non loged in users  -> THAT WILL BE PAIN IN THE ASS, AS THEN WE HAVE TO INCLUDE THE NAVIGATION BAR IN EACH PAGE, AND ALSO WE HAVE TO CHECK THE CONDITION FOR THAT -> REAL PAIN IN ASS  -->
+
+          <!--what guard actually does is it guards the user from the cookie highjacking attack and from the specific time of inactivity by the user ==> they get automatically logedout -->
           <i class="hide">  <?php echo guard() #--> this will be hidden this is just for debugging purpose ?> </i>
-          <?php $isValid = isCookieValid($db) ; #--> so the value of $isValid is set either yes or no ?>
-          <?php if( isset($_SESSION['username']) || $isValid === 'yes' ) :?>  
+          <!--AND WHAT isCookieValid() function do is it checks is there any cookie previously set or not , if yes then it decode the data of this cookie and then checks is this decoded data matches to any id in our database ,==> so if it maches then by using this id , we collect other information of the user, and we again starts the session by setting the session variables and set the isValid variable to true
+          # but if any of the above thing goes wrong the isValid variable is set to  -->
+          <?php $isValid = isCookieValid($db) ; #--> so the value of $isValid is set either true or no ?>
+          <!--well  if you see the value of isValid is immaterial, if it is valid then the session will already be set by the isCookieValid() function, SO YOU CAN REMOVE IT TO , -->
+          <?php if( isset($_SESSION['username']) || $isValid === 'true' ) :# does not produced error? see above ?>  
               <li><a href="profile.php">My profile</a></li>
               <li><a href="logout.php">Logout</a></li>
           <?php else: ?>

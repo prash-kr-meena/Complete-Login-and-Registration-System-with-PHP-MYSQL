@@ -5,6 +5,7 @@
 <?php include_once 'resource/Database.php';# for database connection to get the other information of the user, 	?>
 
 
+<?php include_once 'partials/parseProfile.php' ?>
 
 	<?php if( !isset($_SESSION['username']) ) : ?>
 
@@ -13,39 +14,12 @@
 			<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member 					please <a href="signup.php">signup</a>! </p>
 			<p class="lead">HACK US !  and please give us <a href="feedback.php">feedback</a>  on our security! </p>
 		</div>
-		
+		<!--####################################  IF TRIES TO OPEN WITH PATH   ###########################################-->
+
 	<?php else : ?>
-
-		<?php 
-		  	# as i have the user session active (ie  how he is able to login ) 
-			$id = $_SESSION['id'];	# it was already set,(IF THE USER DOES NOT DIRECTLY TRIES TO OPEN BY THE PATH,--> so for  path case we provide a security)--> ABOVE
-			$username = $_SESSION['username'];
-
-			$fingerprint = $_SESSION['fingerprint'];
-			$lastActive = $_SESSION['lastActive'];
-			$timeYouLogedIn = time();
-
-			# for email and other data we have to use the sql statement
-			try{
-				$sqlQuery = "SELECT email,join_date FROM register.users WHERE id = :id ";
-				$statement = $db->prepare($sqlQuery);
-				$statement->execute( array(':id'=>$id) );
-				if ($row = $statement->fetch()) {# ie, if some  data is pulled from the database
-					$email = $row[0];
-					$join_date = $row[1];
-				}else{
-					# function flashMessage($message,$color='red')--> red is by default
-					echo flashMessage('Sorry there was some error loading your data!');
-					//echo "11111111";
-				}
-			}catch(PDOException $ex){
-				echo flashMessage("something went wrong while --> FETCHING YOUR DATA FROM THE DATABASE,-->{$ex->getMessage()}",'red');
-				//echo "0000000000000";
-			}
-		?>
 	<!-- ======================================= HTML for loged in user STARTS ========================================= -->
 		<div class="container" style="border: 2px solid red">
-			<h1>Profile</h1>
+			<h1>Profile</h1><hr>
 
 			<section class="col col-lg-7" style="border: 5px dotted  blue"><!--this section is to hold the coverpage and the profile pic of the user-->
 				<div style="border: 1px solid green">
@@ -62,16 +36,13 @@
 					<span>	email : <?php echo $email ?>	</span></br>
 					<span>	join date : <?php echo $join_date ?>	</span></br>
 
-					<?php 	$date = new DateTime(); # convert it to the date time format
-							$date->setTimestamp($lastActive);		
-							$date_string = date_format($date,'U=Y-m-d H:i:s');
-					?>
-					<span>	last active : <?php  echo $lastActive ?>--> this is in timestamp <?php echo $date_string; ?> 	</span></br>
+					<span>	last active : <?php  echo $lastActive ?>--> this is in timestamp <?php echo dateTime1($lastActive); ?> 	</span></br>
 					<span>	fingerprint : <?php echo $fingerprint ?></span></br>
-					<span>	time You Loged In : <?php echo $timeYouLogedIn ?>	</span></br>
+					<span>	time You Loged In : <?php echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn); ?></span></br>
 				</div>
 			</section>
 		</div>
+		<!-- ============================================ END of HTML part ===============================================-->
 <?php endif  ?>
 
 
