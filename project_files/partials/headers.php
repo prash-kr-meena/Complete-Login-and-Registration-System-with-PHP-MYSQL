@@ -58,4 +58,7 @@
 
       </div>
     </nav>
-    
+    <?php   echo  $_SERVER['REMOTE_ADDR'];
+            echo "</br>".$_SERVER['HTTP_USER_AGENT'] ;
+            echo  "</br>".$_SESSION['lastActive'];
+    ?>
