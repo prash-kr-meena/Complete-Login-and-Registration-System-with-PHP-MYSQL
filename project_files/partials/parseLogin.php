@@ -19,8 +19,7 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 		// all good no error , so now collect the form data
 		$user = $_POST['username'];
 		$password =  $_POST['password'];
-		#$remember = $_POST['remember']; this is wrong ,it will give exception when it is not set, SO
-		isset( $_POST['remember'] )? $remember = 'yes' : $remember=''; # empty
+		$remember = $_POST['remember']; # --> takes the value of yes if it is clicked , else no value(MEANS, its NOT SET )
 
 		try{
 			// check if the user exists in the database  --> using the sql statement

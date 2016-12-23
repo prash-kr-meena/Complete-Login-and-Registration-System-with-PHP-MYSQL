@@ -1,9 +1,8 @@
 
 <?php 
-include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this ===> THE REASON WHY ITS NOT WORKING IS THAT WHENWVER A FUNCTION IS CALLED IT DOES NOT GO THROUGH ALL THE SCRIPT OF THE utilities.php file IT SIMPLY GOES TO THE FUNCTION ADN PROCESS , AND NEVER READS THIS STATEMENT , SO DUE TO THIS ===> IT PRODUCES ERROR , WHAT MAY BE THE SOLUTION IS YOU INCLUDE THIS STATEMENT INSIDE THE FUNCTION DEFINATION
+include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this 
 
 
-###########################################################################################################################
 /*	@param : $required_fields_array --> an array containing the list of all required fields
 	@return : array containing all errors	, and then this array will be merged with the error array that is declared in 			the signup page.
 */
@@ -21,7 +20,6 @@ function check_empty_fields($required_fields_array){
 	return $form_errors;	
 }
 
-###########################################################################################################################
 /*	@param : $fields_to_check_length  --> an array containing the name of fields (ie key of the $_POST array) for which we 												want to check min required length eg. array('username' =>4, 'email' =>12)
 	@return : array containgin all errors. which will be merged finally
 
@@ -43,7 +41,6 @@ function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGT
 
 }
 
-###########################################################################################################################
 /*	@param :	$data ,store a key value pair array where key is the name of the html form control in, this case 'email' 					and value is the input entered by the user
 	@return : array ,containing email error
 
@@ -71,7 +68,6 @@ function check_email($data){
 	return $form_errors;
 }
 
-###########################################################################################################################
 /*	@param : 	$form_errors_array  --> the array holding all errors which we want to loop through
 	@return : 	string , list containing all error message
 */
@@ -94,7 +90,6 @@ function show_errors($form_errors_array){
 
 }
 
-###########################################################################################################################
 function flashMessage($message,$color='red'){ //now this will act bydefault if we dont specify the second argument as now we are doing it in that way , now we call it each time , not as previously , only callin once
 	if( $color === 'red' ){// means its identical
 			$data = "<div class='alert alert-danger'>{$message}</div>";
@@ -142,7 +137,6 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 	return $returnThis;
 }
 
-###########################################################################################################################
 function welcomeMessage($username){ # scripts included above
 $message ="<script type='text/javascript'>
 				swal({
@@ -161,7 +155,6 @@ $message ="<script type='text/javascript'>
 	return $message;
 }
 
-###########################################################################################################################
 function popupMessage($title, $text, $type, $page){ # scripts included above
 $message ="<script type='text/javascript'>
 				swal({
@@ -180,7 +173,7 @@ $message ="<script type='text/javascript'>
 	return $message;
 }
 
-###########################################################################################################################
+
 function confirmLogout(){
 	/*$message ="<script type='text/javascript'>
 				swal({
@@ -244,74 +237,12 @@ function confirmLogout(){
 	return $message;
 }
 
-###########################################################################################################################
-/*	@param: user id
-*/
-function rememberMe($id){ # encrypted so the user id is not visible
-	$encryptId = base64_encode("7859739".$id."7359837") ; # making it more secure
-	/*this is just to make it more sewcure , adding no , so if it decodes it to then also he will see no. only and not able to know which no is it which will not be possible if we used strings, and the hacker goes into the cookie and decode it by base64_decode */
+function rememberMe($id){
+	$encryptId = base64_encode($id) ;# for this moment i am giving the id , but its not the most sequre way, the sequre eay is to add this id , with some strings,(better to sandwitch it in between these strings),so if the HACKER DECODES IT THEN ALSO HOE CAN NOT FIND WHICH ONE IS THE ID OF OUR USER.
 
-	//setcookie(NAME of the cookie,DATA to be stored in the cookie, TIME for which the cookie should be there, and then deleted,LOACATION
+	//setcookie(name),DATA to be stored in the cookie, TIME for which the cookie should be there, and then deleted,LOACATION
 	setcookie('authenticationSystem',$encryptId,time()+60*60*24*100,"/");
 }
-
-###########################################################################################################################
-/*	checked if the cookie used is the same with the encrypted cookie
-	@param:	$db --> database connection list
-	@return: bool, true if the user cookie is valid
-*/
-function isCookieValid($db){
-	$isValid = false;
-	if ( isset($_COOKIE['authenticationSystem']) ) {
-		/*	DECODE cookie and extract the user id 
-			--> then with that userid extract its all data,like  username,comments,profile..etc
-		*/
-
-		#$decryptId = base64_decode(authenticationSystem);	---> authenticationSystem  ==> is name of the cookie not the data of the cookie
-		$decryptData = base64_decode($_COOKIE['authenticationSystem']);# now the data is decrypted but we dont have the id yet, we have the string of no that contains our ID too..
-
-		$break_1 = explode(7859739, $decryptData);# got the other half of the string in which our id is 
-		# ie now $break_1[0]= sill have --> 7859739		AND  break_1[1] will have the other half
-
-		$break_2 = explode(7359837, $break_1[1]);# got the other half of the string in which our id is 
-		# ie now $break_2[0]= sill have our ID	AND  break_2[1] will have --->7359837
-
-		$decryptId = $break_2[0];
-
-		/*CHECK WHETHER THE ID in the decrypt id IS IN OUR DATABASE OR NOT (or somebody have changed the cookie data and by 	chance it gets decoded into the id that previously exist into our database, --. chanced of that is very low, )
-		MORE GOOD REASON --> is if we didnt check the id and started processing further ie. getting the users data , like ,USERNAME,PROFILE, etc.. THEN IT WILL GIVE ERROR THAT THE USER ID IS NOT VALID IT DOES NOT EXIST IN  THE TABLE
-		*/
-
-		# CHECK IF THE ID RETREVIED EXISTS IN THE DATABASE OR NOT
-		try{
-			$sqlQuery = "SELECT * 
-						FROM register.users 
-						WHERE id = :id";
-			$statement=$db->prepare($sqlQuery);
-			$statement->execute( array(':id'=>$decryptId) );
-
-			if ($row = $statement->fetch()) {# ie ,user exists, the COOKIE IS A VALID COOKIE
-
-				$username = $row['username'];
-				$id = $row['id'];
-				# now its  confirmed that the cookie is genuine , we got the genuine user id from it , and now we can start its session as NOTE: session of a user is always destroyed as soon as he/she closes the browser  ==> by cookie each time the browser opens(no matter how many times, untill the cookie is not died) the site the user is loged in automatically
-				$_SESSION['id']= $id;
-				$_SESSION['username']= $username; #   AND 
-
-				$isValid = true;
-					# ie ,user exists, the COOKIE IS A VALID COOKIE
-			}else{# no such user exists, IE COOKIE IS INVALID
-					# so cookie id is invalid and -->DESTROY THE SESSION AND LOGOUT THE USER
-				echo popupMessage('Oops..',"this id does not exists in our database",'index.php');
-				$isValid = false;
-				signout();
-			}
-		}catch(PDOException $ex){
-			echo popupMessage('Oops..', "something went wrong ,WHILE CHECKING THE USER'S ID IN THE DATABASE,".$ex->getMessage(),'error','index.php');
-		}
-	}
-}
-###########################################################################################################################
 
 
 ?>

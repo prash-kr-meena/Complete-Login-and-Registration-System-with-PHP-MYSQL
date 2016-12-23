@@ -38,7 +38,7 @@ include_once "resource/utilities.php";
   		</div>
   		<div class="checkbox">
     		<label>
-      		<input type="checkbox" checked="true" value="yes" name="remember">Remember me. <!--the value 'yes' will be sent when it is set and the form is submitted , so in the $_POST['remember']-->
+      		<input type="checkbox" value="yes" name="remember">Remember me. <!--the value 'yes' will be sent when it is set and the form is submitted , so in the $_POST['remember']-->
     		</label>
 
     		<button type="submit" class="btn btn-primary pull-right" name="login_sbt">Sign in</button>

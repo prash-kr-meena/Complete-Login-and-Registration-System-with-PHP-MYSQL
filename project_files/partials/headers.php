@@ -1,9 +1,5 @@
 <!-- IT CONTAINS THE HEADER AND THE NAVIGATION (so it will be present everywheere )-->
 <?php include_once 'resource/session.php' ?>
-<?php  include_once 'resource/utilities.php'; //its not ==> ../resource/utilities because, its the header of login page , so the header page is currently on the login page, and from the login page the address, of the utilities page is this only.WELL NOTE CAREFULLY IT IS IMPORTANT TO MENTION IT HERE AS ITS NOT JUST FOR THE LOGIN PAGE ITS THE HEADER OF ALL THE PAGES, Ie. INDEX (the main part which is loaded bydefault every time)--> and it does not have this file so we have to do that here
-# if you see we already have included this file in  the login page, already so it is not necessary to use it here, well
-# NO ERROR BECASUE its include_once--> thats what it do , it does not produce error in for more than one apperence ?>
-
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -41,14 +37,13 @@
           <ul class="nav navbar-nav">
 
           <!-- WHAT IF I CREATE TWO DIFFERENT NAVIGATION BAR FILES, ie one for loged in user and one for non loged in users  -> THAT WILL BE PAIN IN THE ASS, AS THEN WE HAVE TO INCLUDE THE NAVIGATION BAR IN EACH PAGE, AND ALSO WE HAVE TO CHECK THE CONDITION FOR THAT -> REAL PAIN IN ASS  -->
-          
-          <?php if( isset($_SESSION['username']) || isCookieValid($db) ) :?>  
-              <li><a href="#">My profile</a></li>
-              <li><a href="logout.php">Logout</a></li>
-          <?php else: ?>
+          <?php if( !isset($_SESSION['username']) ) :// ie. when user is not loged in?>
               <li ><a href="login.php">Login</a></li>
               <li><a href="signup.php">Sign-up</a></li>
               <li><a href="feedback.php">Feedback</a></li>
+          <?php else: ?>
+              <li><a href="#">My profile</a></li>
+              <li><a href="logout.php">Logout</a></li>
           <?php endif ?>
 
             
