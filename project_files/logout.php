@@ -25,7 +25,6 @@ if ( isset($_COOKIE['authenticationSystem']) ) {
 
 	//echo popupMessage("if",'Hope you enjoyed it :)','success','index.php');	
 }else{
-	
 	//echo popupMessage("else",'Hope you enjoyed it :)','success','index.php');	
 }
 
