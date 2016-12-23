@@ -44,7 +44,7 @@
           <i class="hide">  <?php echo guard() #--> this will be hidden this is just for debugging purpose ?> </i>
           <?php $isValid = isCookieValid($db) ; #--> so the value of $isValid is set either yes or no ?>
           <?php if( isset($_SESSION['username']) || $isValid === 'yes' ) :?>  
-              <li><a href="#">My profile</a></li>
+              <li><a href="profile.php">My profile</a></li>
               <li><a href="logout.php">Logout</a></li>
           <?php else: ?>
               <li ><a href="login.php">Login</a></li>
@@ -58,7 +58,4 @@
 
       </div>
     </nav>
-    <?php   echo  $_SERVER['REMOTE_ADDR'];
-            echo "</br>".$_SERVER['HTTP_USER_AGENT'] ;
-            echo  "</br>".$_SESSION['lastActive'];
-    ?>
+    

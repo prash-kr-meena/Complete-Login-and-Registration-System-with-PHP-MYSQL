@@ -317,7 +317,7 @@ function isCookieValid($db){
 
 function guard(){
 $isValid = true;
-$inactive = 60 * 5;  # 5 minuits..
+$inactive = 60 * 30;  # <-- just for testing period  5 minuits..
 
 $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website
@@ -331,6 +331,11 @@ $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // 
 		redirectTO('logout');
 	}elseif(isset($_SESSION['lastActive']) && (time()-$_SESSION['lastActive'] > $inactive) && isset($_SESSION['username'])){
 		$isValid = true;
+		$timeOfLogingOut = $_SESSION['lastActive']; # so when the user logs out that time wil be captured and it will be stored in the database --> to show last active time,--> to their friends, after they loged out 
+
+		# NOTE: ITS NOT THAT ACTIVE --> 1. this will work only if the the user is loged out due to the limit of inactivity , and not by if he presses his logout buttton , or if any one uses the above hacking method (--> in these two the user will be loged out but the time  will not be saved into the database,)--> this is because i am coding it in here , so i have TO MAKE A FUNCTION THAT HANDELS THAT LOGOUT AND SIMULTANIOUSLY SAVE THE TIME....
+		
+		# 2.
 		redirectTO('logout');
 	}else{
 		$_SESSION['lastActive'] = time(); # NOTE : (on click ,every time the page loads,--> adn this is in the header,so)that if the above two conditons are not true , then the last active time is always set to the current time,
