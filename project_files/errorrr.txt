@@ -1,0 +1,10 @@
+commit-now it does remember us when we close the browser--> with no error in the navigation bar,  but what the problem is
+ if you didnot applied the remember me (ie when you didnot clicked on it),it will give an error that undefined 
+variable ->isvalid 
+
+
+but when we logout after opening the browser(as it remembers us and we are automatically loged in),
+ therere is an error in the navigation bar (after logout we are directed to the index page,)--->now when the header 
+is included in the index page it does not recognise the isvalid --->because it is not on the right place of return..
+....
+see next commit 

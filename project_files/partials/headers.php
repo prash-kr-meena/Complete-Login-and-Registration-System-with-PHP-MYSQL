@@ -42,7 +42,8 @@
 
           <!-- WHAT IF I CREATE TWO DIFFERENT NAVIGATION BAR FILES, ie one for loged in user and one for non loged in users  -> THAT WILL BE PAIN IN THE ASS, AS THEN WE HAVE TO INCLUDE THE NAVIGATION BAR IN EACH PAGE, AND ALSO WE HAVE TO CHECK THE CONDITION FOR THAT -> REAL PAIN IN ASS  -->
           
-          <?php if( isset($_SESSION['username']) || isCookieValid($db) ) :?>  
+          <?php  isCookieValid($db) ; #--> so the value of $isValid is set either yes or no ?>
+          <?php if( isset($_SESSION['username']) || $isValid === 'yes' ) :?>  
               <li><a href="#">My profile</a></li>
               <li><a href="logout.php">Logout</a></li>
           <?php else: ?>

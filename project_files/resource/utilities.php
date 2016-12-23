@@ -309,6 +309,8 @@ function isCookieValid($db){
 		}catch(PDOException $ex){
 			echo popupMessage('Oops..', "something went wrong ,WHILE CHECKING THE USER'S ID IN THE DATABASE,".$ex->getMessage(),'error','index.php');
 		}
+
+		return $isValid;
 	}
 }
 ###########################################################################################################################
