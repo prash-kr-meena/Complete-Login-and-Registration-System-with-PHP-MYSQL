@@ -237,6 +237,12 @@ function confirmLogout(){
 	return $message;
 }
 
+function rememberMe($id){
+	$encryptId = base64_encode($id) ;# for this moment i am giving the id , but its not the most sequre way, the sequre eay is to add this id , with some strings,(better to sandwitch it in between these strings),so if the HACKER DECODES IT THEN ALSO HOE CAN NOT FIND WHICH ONE IS THE ID OF OUR USER.
+
+	//setcookie(name),DATA to be stored in the cookie, TIME for which the cookie should be there, and then deleted,LOACATION
+	setcookie('authenticationSystem',$encryptId,time()+60*60*24*100,"/");
+}
 
 
 ?>

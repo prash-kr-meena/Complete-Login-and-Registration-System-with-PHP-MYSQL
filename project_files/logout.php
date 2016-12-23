@@ -7,7 +7,13 @@ include_once 'partials/headers.php';# these are only added because of the echo t
 //redirectTO('index'); 
 # popupMessage($title, $text, $type, $page)
 echo popupMessage("Logout Successfull",'Hope you enjoyed it :)','success','index.php');	
-session_destroy();
+
+if ( isset($_COOKIE['authenticationSystem']) ) {
+	unset($_COOKIE['authenticationSystem']);# unset the cookie and then destroy the session(ie now he has no more REMEMBER FUNCTIONALITY)
+	session_destroy();
+}else{
+	session_destroy();//just siply destroy the session (WHEN HE DOES NOT SELECTED THE REMEMBER F=ME FUNCTIONALITY)
+}
 
 include_once "partials/footers.php";
 ?>

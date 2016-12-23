@@ -19,6 +19,7 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 		// all good no error , so now collect the form data
 		$user = $_POST['username'];
 		$password =  $_POST['password'];
+		$remember = $_POST['remember']; # --> takes the value of yes if it is clicked , else no value(MEANS, its NOT SET )
 
 		try{
 			// check if the user exists in the database  --> using the sql statement
@@ -37,6 +38,9 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 					$_SESSION['id'] = $id;
 					$_SESSION['username'] = $username;
 
+					if ( $remember === "yes") {
+							rememberMe($id); # sending the userid to set the cookie
+						}	
 					# popupMessage($title, $text, $type, $page)
 					$result =  popupMessage("Welcome {$username}!",'Its good to have you here','success','index.php');	
 					
