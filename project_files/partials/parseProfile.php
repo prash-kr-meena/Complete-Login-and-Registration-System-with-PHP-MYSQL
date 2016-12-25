@@ -4,7 +4,7 @@ if (isset($_SESSION['username']) ) {
 	$id = $_SESSION['id'];	# it was already set,(IF THE USER DOES NOT DIRECTLY TRIES TO OPEN BY THE PATH,--> so for  path case we provide a security)--> ABOVE ==> this will be set either by the direct sign in or by the cookie signin (ie rememberme functionality)
 	$username = $_SESSION['username'];
 
-	$fingerprint = $_SESSION['fingerprint']; # NOTE: these two below session variables will hold their values in the case only when the user has loged in ie. ehen he entered the login page by fist loging into the website but they will not hold values if the user will come through the remember me functionality..
+	$fingerprint = $_SESSION['fingerPrint']; # NOTE: these two below session variables will hold their values in the case only when the user has loged in ie. ehen he entered the login page by fist loging into the website but they will not hold values if the user will come through the remember me functionality..
 	# THE REASON FOR THAT : when the user login through the cookie -> the main job is done by the isCookieValid() function, now if the cookie exists it will decode it and take the data of the user (who has saved the cookie) and then sets the session variables (above the header file it includes the session variable ) NOTE ; THAT these session variables are just for session[id] and session[username] and no session variable for the keys ==> fingerprint and lastActive has been set so now at the login through cookie these variables are unset so are not defined, and ----> this will give error if we try to work with them
 	# note the previous session variables are deleted when the browser was closed
 

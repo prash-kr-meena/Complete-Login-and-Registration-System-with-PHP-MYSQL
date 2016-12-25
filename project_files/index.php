@@ -2,7 +2,7 @@
 	$page_title = 'User Authentication System';
 	include_once 'partials/headers.php';
 
-
+ 
  	include_once 'resource/Database.php' ;
  	//include_once 'resource/session.php' ; // to start the session. (dont need it ,everywhere as $_SESSION is a global variable so , its needed in the login file only where the session has to start)
 

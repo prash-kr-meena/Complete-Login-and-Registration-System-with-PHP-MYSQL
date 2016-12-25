@@ -1,0 +1,7 @@
+this whole error was due to mistake --> in the spelling of the variable $fingerPrint and the index 'fingerPrint' due
+ to these the error of regeneration_id  is created --> and we were immediately loged out, because --> at the runing of the
+ script when we successfully loged in (-> we see the popup) and we are immediately are redirected to the index page,
+ ==> BUT BEFOR GOING TO THE INDEX PAGE WE HAVE TO GO THROUGH THE partials/headers.php FILE AND --> and the very first
+ function is the guard function --> now due to the mis-match of these variables, according to the condition applied we are directly redirected to the logout page
+
+ ==> BUT THOUGH WHY THE ERROR OF --> session_regeneration_id()  I DONT KNOW

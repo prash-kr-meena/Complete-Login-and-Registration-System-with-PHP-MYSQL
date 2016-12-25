@@ -11,7 +11,7 @@ include_once 'partials/headers.php';# these are only added because of the echo t
 unset($_SESSION['username']); // well session destroy will do this same job , but this is for extra security conformation
 unset($_SESSION['id']);
 
-unset($_SESSION['fingerprint']);
+unset($_SESSION['fingerPrint']);# < this was also written wrong
 unset($_SESSION['lastActive']);
 
 session_regenerate_id(true); # --> its to be safe from the session highjacking attack, stelling the session cookies, mostly-> when using public system services

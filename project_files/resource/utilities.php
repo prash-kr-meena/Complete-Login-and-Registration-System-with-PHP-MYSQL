@@ -318,9 +318,9 @@ function isCookieValid($db){
 
 function guard(){
 $isValid = true;
-$inactive = 60 * 30;  # <-- just for testing period  5 minuits..
+$inactive = 60 * 5;  # <-- just for testing period  5 minuits..
 
-$fingerPrintnt = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
+$fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website
 
 /* THE REASON OF USING THE FINGERPRINT IS TO PROTECT THE WEBSITE FROM THE SESSION HIGHJACKING,--> SEE HOW ==>
@@ -332,8 +332,9 @@ $fingerPrintnt = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); /
 		$isValid = false;
 		redirectTO('logout');
 	}elseif(isset($_SESSION['lastActive']) && (time()-$_SESSION['lastActive'] > $inactive) && isset($_SESSION['username'])){
-		$isValid = true;
-		$timeOfLogingOut = $_SESSION['lastActive']; # so when the user logs out that time wil be captured and it will be stored in the database --> to show last active time,--> to their friends, after they loged out 
+		$isValid = false;
+
+		#$timeOfLogingOut = $_SESSION['lastActive']; # so when the user logs out that time wil be captured and it will be stored in the database --> to show last active time,--> to their friends, after they loged out 
 
 		# NOTE: ITS NOT THAT ACTIVE --> 1. this will work only if the the user is loged out due to the limit of inactivity , and not by if he presses his logout buttton , or if any one uses the above hacking method (--> in these two the user will be loged out but the time  will not be saved into the database,)--> this is because i am coding it in here , so i have TO MAKE A FUNCTION THAT HANDELS THAT LOGOUT AND SIMULTANIOUSLY SAVE THE TIME....
 		
@@ -344,7 +345,7 @@ $fingerPrintnt = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); /
 		$_SESSION['lastActive'] = time(); # NOTE : (on click ,every time the page loads,--> adn this is in the header,so)that if the above two conditons are not true , then the last active time is always set to the current time,
 		# that is when the user is loged out(not by pressing the logout button but by any of these two conditions , ) automatically the last inactivetime is set to the time of the system currently (EXample:   if the last active time is greater than the inactve time and we dont do any thing, after an our we refresh the page, --> NOW  this is the time when the script gets run and now THE LAST ACTIVE TIME WILL BE OF ONE HOUR LATE ie. THE TIME OF SYSTEM when the page is loaded)
 
-		$_SESSION['fingerPrint'] = $fingerPrintnt;# now this will also be set for the first time when some one opens the site , and will be keep track of untill he logouts , 
+		$_SESSION['fingerPrint'] = $fingerPrint;# now this will also be set for the first time when some one opens the site , and will be keep track of untill he logouts , 
 
 		echo dateTime1($_SESSION['lastActive']);
 		echo "  hello ";#--> it does not show up as it is in a hidden class (YOU CAN SEE THEM IN THE SOURCE CODE)
