@@ -3,5 +3,14 @@ this whole error was due to mistake --> in the spelling of the variable $fingerP
  script when we successfully loged in (-> we see the popup) and we are immediately are redirected to the index page,
  ==> BUT BEFOR GOING TO THE INDEX PAGE WE HAVE TO GO THROUGH THE partials/headers.php FILE AND --> and the very first
  function is the guard function --> now due to the mis-match of these variables, according to the condition applied we are directly redirected to the logout page
+|
+|-> now you see what happens when (session highjacking happens,they are loged out) the set fingerprint value does not matches the currently taken fingerprint of your system(in which the page is refreshed and the script is called)
+
 
  ==> BUT THOUGH WHY THE ERROR OF --> session_regeneration_id()  I DONT KNOW
+
+ i thought that the error was corrected but no, this error will come --> in any of the case when it is redirected to the logout page by the condition of if or else-if
+
+ ie iether if the  finger-print variable does not matches the previous fingerprint value OR
+ in the case when the lastActive time is more then the specified time... but why now this error they were not coming before
+ ==> NOTE -> THIS IS NOT ERROR IT IS A WARNING !
