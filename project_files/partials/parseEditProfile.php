@@ -1,5 +1,5 @@
 
-<?php 
+<?php // make this better by makin two parts of the form in the profile page when the user clicks he edit profile he gets to edit teh profile in th esema page, but previously he was not able to click or achange any of the text fields, but after clicking the edit profile they will be able to edit ( actually there will be two form -> created  within  a function,--> one will have readonly true   and then other will have read only  true --> AND THEY APPEAR ON THE condition ie if the edit btn clicked then load the form which can be edited, and if not then user is only able to read it...)--> NOT EDIT PROFILE PAGE SEPARATELY -- every thing in one 
 
 	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
 	######################################################    if he passes the SECURITY     ##################################################
@@ -14,6 +14,9 @@
 		$id = $decodedArray['1'];  # its index 0 have nothing in it as this is the delimeter we exploded with so it is removed, and after removing nothing remains
 		#echo $id;	
 		if ($id === $_SESSION['id']) {
+			#  ==> we are comparing the decoded id with the set session id , because if we directly perform, action on the converted id --> it can casuse hacking too..
+			# as what people can do is they can copy the encrypted link of some other user and put that inside teh addresss bar, or might be ossible they can made up nay stin gand  --> by luck that can result into a valid id , that exist already into the database..
+
 			# it means the same user is comming through the right path(ALTHOUGH WHAT THE USER CAN DO AFTER HE LOGES If he can copy that encrypted link value which is shown then he can write the path and put the value too..==> HE WILL BE ABLE TO DIRECTLY COME TO THE EDIT PROFILE PAGE WITHOUT CLICKING THE LINK)==> as in this case the encrypted id after the decode will match the value of the id which is present in the session
 			try{
 				$sqlQuery = "SELECT *
@@ -31,8 +34,8 @@
 				echo flashMessage("something went wrong, WHILE COLLECTING THE DATA FROM THE DATABASE -->".$ex->getMessage());
 			}
 
-		}else{} #--> do nothing they will be shown the message of autherization later
-	} else{} #--> do nothing they will be shown the message of autherization later
+		}else{} # the resieved id from the url is not of this user!
+	} else{} # either the session is not set --> ie he has not loged in  OR  user_id is not set, ie he has not send any information into the link
 
 
 
