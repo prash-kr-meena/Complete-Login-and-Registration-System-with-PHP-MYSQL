@@ -38,31 +38,34 @@
 
 
 <?php if( !isset($_SESSION['username']) || ($id != $_SESSION['id']) ) :?>
-	<section class="col col-lg-7">
-		<div class="container" align="center" style="padding-top: 20%" >
+	<div class="container" align="center" style="padding-top: 30%" >
+		<section">
 				<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member 					please <a href="signup.php">signup</a>! </p>
 				<p class="lead">HACK US !  and please give us <a href="feedback.php">feedback</a>  on our security! </p>
-		</div>
-	</section>
+		</section>
+	</div>
 <?php else : ?>
-	<section class="col col-lg-7">
-		<div class="container">
-			<table>
-				<tr>
-					<th>E-mail:</th>
-					<td><input type="text" name="email" value="<?php echo $email; ?>"></td>
-				</tr>
-				<tr>
-					<th>Username:</th>
-					<td><input type="text" name="username" value="<?php echo $username; ?>"></td>
-				</tr>
-				<tr>
-					<th>Password:</th>
-					<td><input type="text" name="password" value="<?php echo $password; ?>"></td>
-				</tr>
-			</table>
-		</div>
-	</section>
+	<h2>Edit-Profile</h2><hr>
+	<div class="container">
+		<section class="col col-lg-7"><!--now making it form so that it can fubmet the cahnged values-->
+			<form action="" method="post" >
+		  		<div class="form-group">
+		    		<label for="usernameField1">E-mail:</label>
+		    		<input type="text" class="form-control" name="username"  id="usernameField1" placeholder="Username" value="<?php echo $email; ?> ">
+		  		</div>
+		  		<div class="form-group">
+		    		<label for="password1">Username:</label>
+		    		<input type="type='text" class="form-control" name="password" id="password1" placeholder="Password" value="<?php echo $username;?>">
+		  		</div>
+		  		<div class="form-group">
+		    		<label for="password1">Password:</label>
+		    		<input type="text" class="form-control" name="password" id="password1" placeholder="Password" value="<?php echo $password;?>" >
+		  		</div>
+		    		<button type="submit" class="btn btn-primary pull-right" name="edit_sbt">Save changes</button>
+		  		</div>	
+			</form>
+		</section>
+	</div>
 <?php endif ?>
 
 
