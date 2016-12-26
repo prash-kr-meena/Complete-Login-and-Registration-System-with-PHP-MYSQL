@@ -143,6 +143,29 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 	return $returnThis;
 }
 
+######################################       checks duplicasy for the field from other users data     ########################################
+function checkDuplicasy_filterMe($input, $columnName, $databaseName, $tableName, $db){
+
+	$arrayReturned = checkDuplicasy($input, $columnName, $databaseName, $tableName, $db);  # firstly checkig the duplicasy from all the user 									data ie from the current data to...   --> so i send the same data to the checkDuplicasy() function  
+
+	if ( $arrayReturned['status'] === yes ) { # ie. duplicasy found
+		# now filtering it..
+		/* =====> kind a bad idea...
+		as it is not necessary necessary that the duplicasy occurs only in one case
+
+		 (---> WELL HERE IT SHOULD OCCUR FOR ONE USER ONLY  as one user can unique username throughout, so there must be only one duplicasy if found any ===> BUT THIS IS NOT IN THE CASE OF eMAIL as in mail it is not unique -> in our database, so two people can have similar mail BUT --> we have already applied security for duplicate email in our SIGNUP PAGE... so here also he can not have duplicasy more than once,  ===> WE ARE CONSIDERING THIS JUST FOR THE CASE SENARIO --> for our current situation we have to filter only once for BOTH THE CASES ie. email and username)
+		
+		so if i have more than one duplicasy then you have to counter each of them --> so for that you have to check for duplicasy in a loop 	(while)  untill there is no duplicasy or ,,,
+		------------------------------
+		what you can do is that when you found about any duplicsy in the databse then, -->as the same(checkDuplicasy) function to get you his id or EVEN BETTER--> you can run an sql query that this reterived data is from the user whose session is started(goin on right now)   	by putting the id value as $_SESSION['id']  --> which is of the current user...
+
+		*/
+
+	}
+
+}
+
+
 ###########################################################################################################################
 function welcomeMessage($username){ # scripts included above
 $message ="<script type='text/javascript'>

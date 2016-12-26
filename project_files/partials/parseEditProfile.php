@@ -66,9 +66,9 @@
 			//checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ // $db --> PDO object we pass it because these function calls directly take them to their defination, so no file are added if we write them in the top of the utilities.php file but they will work if we include these file in the function defination
 
 			# checking duplicasy for the email--> firstly
-			$arrayReturned = checkDuplicasy($email, 'email', 'register', 'users', $db);
+			$arrayReturned = checkDuplicasy_filterMe($email, 'email', 'register', 'users', $db);
 			if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for EMAIL in the database 
-					echo '000000';	
+					
 				$arrayReturned = checkDuplicasy($username, 'username', 'register', 'users', $db);
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
 
