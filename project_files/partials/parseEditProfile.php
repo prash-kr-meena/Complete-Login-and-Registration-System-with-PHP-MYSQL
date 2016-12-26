@@ -9,7 +9,9 @@
 
 		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
 		# BUT FOR MORE SECURITY (--> if he got lucky and he found the id form our database --> now all the query are based upon this id only so carefull)WE WILL CHECK WHETHER FOR THIS ID THE USER NAME IS THE SAME OR NOT,-->(ie. the username is equal to the one whose session is set or not ! )
-		$id = base64_decode($user_id);
+		$decode_id = base64_decode($user_id);
+		$decodedArray= explode(24792024278, $decode_id );
+		$id = $decodedArray['1'];  # its index 0 have nothing in it as this is the delimeter we exploded with so it is removed, and after removing nothing remains
 		#echo $id;	
 		if ($id === $_SESSION['id']) {
 			# it means the same user is comming through the right path(ALTHOUGH WHAT THE USER CAN DO AFTER HE LOGES If he can copy that encrypted link value which is shown then he can write the path and put the value too..==> HE WILL BE ABLE TO DIRECTLY COME TO THE EDIT PROFILE PAGE WITHOUT CLICKING THE LINK)==> as in this case the encrypted id after the decode will match the value of the id which is present in the session
@@ -21,7 +23,7 @@
 				$statement->execute( array(':id'=>$id) );
 
 				if ($row = $statement->fetch()) {
-					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE "
+					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE"
 					$current_password = $row['password'];
 					$current_email = $row['email'];
 				}
