@@ -93,8 +93,8 @@ function show_errors($form_errors_array){
 	return $errors;
 
 }
-
 ###########################################################################################################################
+
 function flashMessage($message,$color='red'){ //now this will act bydefault if we dont specify the second argument as now we are doing it in that way , now we call it each time , not as previously , only callin once
 	if( $color === 'red' ){// means its identical
 			$data = "<div class='alert alert-danger'>{$message}</div>";
@@ -103,6 +103,7 @@ function flashMessage($message,$color='red'){ //now this will act bydefault if w
 	}
 	return $data;
 }
+###########################################################################################################################
 
 function redirectTO($page){
 	header("location: {$page}.php");

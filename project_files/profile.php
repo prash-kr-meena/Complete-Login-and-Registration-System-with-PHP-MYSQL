@@ -30,16 +30,36 @@
 			</br></br></br>
 
 			<section class="col col-lg-7" style="border: 5px dotted green">
-				<div class="form-group" style="border: 1px solid red">
-					<span>	id : <?php  echo $id ?>	</span></br>
-					<span>	username : <?php  echo $username ?>	</span></br>
-					<span>	email : <?php echo $email ?>	</span></br>
-					<span>	join date : <?php echo $join_date ?>	</span></br>
-
-					<span>	last active : <?php  echo $lastActive ?>--> this is in timestamp <?php echo dateTime1($lastActive); ?> 	</span></br>
-					<span>	fingerprint : <?php echo $fingerprint ?></span></br>
-					<span>	time You Loged In : <?php echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn);?></span></br>
-					<span><a  href = "edit_profile.php?user_id=<?php if( isset($encodedId) )  echo $encodedId; ?>"  				class=" glyphicon glyphicon-edit pull-right">edit profile</a></span>
+				<div class="container">
+					<table border="1px">
+						<tr>
+							<th>id:</th>	<td><?php  echo $id ?></td>
+						</tr>
+						<tr>
+							<th>Username:</th>	<td><?php  echo $username ?></td>
+						</tr>
+						<tr>
+							<th>E-mail:</th>	<td><?php  echo $email ?></td>
+						</tr>
+						<tr>
+							<th>Join date:</th>	<td><?php  echo $join_date ?></td>
+						</tr>
+						<tr>
+							<th>last Active:</th>
+							<td><?php  echo $lastActive ?>--> this is in timestamp <?php echo dateTime1($lastActive); ?></td>
+						</tr>
+						<tr>
+							<th>Finger Print:</th>	<td><?php  echo $fingerprint ?></td>
+						</tr>
+						<tr>
+							<th>time You Loged In:</th>
+							<td><?php  echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn); ?></td>
+						</tr>
+						<tr>
+							<th></th>
+							<td><a  href = "edit_profile.php?user_id=<?php if( isset($encodedId) )  echo $encodedId; ?>"  				class=" glyphicon glyphicon-edit pull-right">edit profile</a></td>
+						</tr>
+					</table>
 				</div>
 			</section>
 		</div>
