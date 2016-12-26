@@ -145,24 +145,29 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 
 ######################################       checks duplicasy for the field from other users data     ########################################
 function checkDuplicasy_filterMe($input, $columnName, $databaseName, $tableName, $db){
+	# A BETTER WAY TO DO THIS --> just a littel change in the sql statement above
+	try{					# FEEL LIKE THE ERROR WAS DUE TO SCOPE RULE (but i am not geting it , why it worked , in other files, ) EVEN THOUGH I HAVE INCLUDED THE DATABASE.PHP FILE ( see if there is error in including the file)
+		$sqlQuery = "SELECT {$columnName}
+					FROM {$databaseName}.{$tableName}
+					WHERE {$columnName}=:input 
+					AND id != :id";
 
-	$arrayReturned = checkDuplicasy($input, $columnName, $databaseName, $tableName, $db);  # firstly checkig the duplicasy from all the user 									data ie from the current data to...   --> so i send the same data to the checkDuplicasy() function  
+		$statement = $db->prepare($sqlQuery);
 
-	if ( $arrayReturned['status'] === yes ) { # ie. duplicasy found
-		# now filtering it..
-		/* =====> kind a bad idea...
-		as it is not necessary necessary that the duplicasy occurs only in one case
-
-		 (---> WELL HERE IT SHOULD OCCUR FOR ONE USER ONLY  as one user can unique username throughout, so there must be only one duplicasy if found any ===> BUT THIS IS NOT IN THE CASE OF eMAIL as in mail it is not unique -> in our database, so two people can have similar mail BUT --> we have already applied security for duplicate email in our SIGNUP PAGE... so here also he can not have duplicasy more than once,  ===> WE ARE CONSIDERING THIS JUST FOR THE CASE SENARIO --> for our current situation we have to filter only once for BOTH THE CASES ie. email and username)
-		
-		so if i have more than one duplicasy then you have to counter each of them --> so for that you have to check for duplicasy in a loop 	(while)  untill there is no duplicasy or ,,,
-		------------------------------
-		what you can do is that when you found about any duplicsy in the databse then, -->as the same(checkDuplicasy) function to get you his id or EVEN BETTER--> you can run an sql query that this reterived data is from the user whose session is started(goin on right now)   	by putting the id value as $_SESSION['id']  --> which is of the current user...
-
-		*/
-
+		$statement->execute( array(':input'=>$input, ':id'=>$_SESSION['id'] ) );
+		if($statement->rowcount()==1){
+			$status = true;
+			$message = "Sorry this {$columnName} is already taken ";
+		}else{
+			$status = false;# ie no duplicasy is found so user can go ahead and process further
+			$message = NULL;# as we dont require any message (WE JUST WANT HIM TO GO FURTHER.)
+		}
+	}catch(PDOException $ex){
+		$status = 'exception';
+		$message = "An error occoured : DURING THE CHECKING OF DUPLICASY OF {$columnName} IN {$databaseName}->{$tableName} ==> {$ex->getMessage()}";
 	}
-
+	$returnThis = array('status'=>$status, 'message'=>$message);
+	return $returnThis;
 }
 
 
@@ -342,7 +347,7 @@ function isCookieValid($db){
 
 function guard(){
 $isValid = true;
-$inactive = 20;  # <-- just for testing period  3 minuits..
+$inactive = 60*3;  # <-- just for testing period  3 minuits..
 
 $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website

@@ -20,13 +20,12 @@
 				$statement->execute( array(':id'=>$id) );
 
 				if ($row = $statement->fetch()) {
-					$username = $row['username'];
-					$password = $row['password'];
-					$email = $row['email'];
+					$current_username = $row['username']; # these are the current information of  the user in the database..
+					$current_password = $row['password'];
+					$current_email = $row['email'];
 				}
 			}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
 				echo flashMessage("something went wrong, WHILE COLLECTING THE DATA FROM THE DATABASE -->".$ex->getMessage());
-
 			}
 
 		}else{} #--> do nothing they will be shown the message of autherization later
@@ -40,7 +39,7 @@
 	if ( isset($_POST['edit_sbt']) ) { # then only process the form
 
 		$email = $_POST['email'];
-		$username = $_POST['username'];
+		$username = $_POST['username'];# these are the information that the user wants to be saved after editing his profile
 		$password = $_POST['password'];
 
 		#------------------------------------------------		VALIDATION BEGINS 	----------------------------------------------------------
@@ -69,13 +68,37 @@
 			$arrayReturned = checkDuplicasy_filterMe($email, 'email', 'register', 'users', $db);
 			if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for EMAIL in the database 
 					
-				$arrayReturned = checkDuplicasy($username, 'username', 'register', 'users', $db);
+				$arrayReturned = checkDuplicasy_filterMe($username, 'username', 'register', 'users', $db);
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
+					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
+					# ==========================  check if the information written in it is changed or not ==================================
+					if ($current_username === $username  &&  $current_email === $email ) { # ie. nothing has been changed  -> notify that
+						echo "<script>
+							swal({
+								title: \"NO changes made !\",
+							  	text: \"to update your profile please make changes...\",
+							  	timer: 3000,
+							  	showConfirmButton: false
+							});
+						</script>";
+					}# =============================================    end of checking  =====================================================
+					#########################################		PUT DATA INTO THE TABLE 	##############################################
+					try{
+						$sqlInsert = "INSERT INTO register.users (username, email) 
+									VALUES  (:username, :email)";
+						$statement = $db->prepare($sqlInsert	);
+						$statement->execute( array(':username'=>$username, ':email'=>$email) );# these variables corrosponds to the one we 																			got from the edit-profile form
+						if ($row = $statement->rowcount() == 1) { # ie data successfully updated
+							echo popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
+						}else{ # data was not successfully updated
+							echo popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
+						}
 
-					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW ----------------------------------------------------
+					}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
+						echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
+					}#############################################    DATA INSERTION ENDS	##############################################
 
-
-					#----------------------------------------------	PROCESSING ENDS 	------------------------------------------------------
+					#----------------------------------------------	PROCESSING ENDS 	----------------------------------------------------
 				
 				}else{# ie duplicasy was found  for USERNAME
 					# no matter what is the status is either true or exception it will show the message

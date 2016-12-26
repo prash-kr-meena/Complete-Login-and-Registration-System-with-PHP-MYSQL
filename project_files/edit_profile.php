@@ -28,15 +28,15 @@
 			<form action="#" method="post" >
 		  		<div class="form-group">
 		    		<label for="emailField5">E-mail:</label>
-		    		<input type="text" class="form-control" name="email" id="emailField5"  value="<?php echo $email;?>">
+		    		<input type="text" class="form-control" name="email" id="emailField5"  value="<?php echo $current_email;?>">
 		  		</div>
 		  		<div class="form-group">
 		    		<label for="usernameField5">Username:</label>
-		    		<input type="type='text" class="form-control" name="username" id="usernameField5"  value="<?php echo $username;?>">
+		    		<input type="type='text" class="form-control" name="username" id="usernameField5"  value="<?php echo $current_username;?>">
 		  		</div>
 		  		<div class="form-group">
 		    		<label for="password5">Password:</label>
-		    		<input type="text" class="form-control" name="password" id="password5" value="<?php echo $password;?>" >
+		    		<input type="text" class="form-control" name="password" id="password5" readonly="true" value="<?php echo $current_password;?>" >
 		  		</div>
 		    		<button type="submit" class="btn btn-primary pull-right" name="edit_sbt">Save changes</button>
 		  		</div>	
