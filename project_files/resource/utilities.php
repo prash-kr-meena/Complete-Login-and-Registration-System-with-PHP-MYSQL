@@ -392,7 +392,7 @@ function dateTime1($dateTime){ # convert it to the date time format from the tim
 
 	return $date_string;
 }
-#=========================================   another function for time conversion   ========================================
+#=--------------------------------------- another function for time conversion   -----------------------------------------
 function dateTime2($dateTime){
 	$date_string = strftime( "%b %d %y", strtotime($dateTime) );
 	return $date_string;
@@ -402,4 +402,19 @@ function dateTime2($dateTime){
 	# and %d is for showing the 2 digits of the date, eg. 02, 04, 29 etc.
 	# and %y is for showing the 4 digits of the year, eg. 2000, 2004, 1996 etc.
 }
+
+###########################################################################################################################
+function Not_authorized($message,$page,$link_ame){
+	$returnMesssage= "<div class=\"container\" align=\"center\" style=\"padding-top: 30%\" >
+						<section>
+							<p class=\"lead\"> {$message} </br> <a href=\"{$page}\" >{$link_ame} </a> </p>
+							<p class=\"lead\">HACK US !  and please give us <a href=\"feedback.php\">feedback</a>  on our security! </p>
+						</section>
+					</div>";
+	return $returnMesssage;
+
+}
+
+
+
 ?>
