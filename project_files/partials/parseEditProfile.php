@@ -84,10 +84,11 @@
 					}# =============================================    end of checking  =====================================================
 					else{#########################################		PUT DATA INTO THE TABLE 	########################################
 						try{
-							$sqlInsert = "INSERT INTO register.users (username, email) 
-										VALUES  (:username, :email)";
-							$statement = $db->prepare($sqlInsert	);
-							$statement->execute( array(':username'=>$username, ':email'=>$email) );# these variables corrosponds to the one we 																			got from the edit-profile form
+							$sqlQuery= "UPDATE register.users
+										SET username = :username, email = :email
+										WHERE id = :id";
+							$statement = $db->prepare($sqlQuery);
+							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
 							if ($row = $statement->rowcount() == 1) { # ie data successfully updated
 								echo popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
 							}else{ # data was not successfully updated

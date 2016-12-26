@@ -1,0 +1,13 @@
+found the solution of the integrity issue
+
+--> it comes when in the edit profile page i change the email part BUT didn't changed the username
+so it shoes this --> because the same user is present in the database...
+
+
+but according to the function, i have created which allows us to find duplicasy of the data we are entering in the form --> EXCLUDING  user itself
+==> IT WORKS FINE 
+
+--> what is wrong is >> while i inserting the data , i am by mistake entering this data into the database as a new information and NOT EDITING (OR actually UPDATING <--)
+	this data at the users detail.
+
+	--> solution is we have to write the UPDATE QUERY as we have done into the forgot password.
