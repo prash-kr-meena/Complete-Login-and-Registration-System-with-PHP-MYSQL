@@ -10,9 +10,16 @@
 		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
 		# BUT FOR MORE SECURITY (--> if he got lucky and he found the id form our database --> now all the query are based upon this id only so carefull)WE WILL CHECK WHETHER FOR THIS ID THE USER NAME IS THE SAME OR NOT,-->(ie. the username is equal to the one whose session is set or not ! )
 		$decode_id = base64_decode($user_id);
-		$decodedArray= explode(24792024278, $decode_id );
-		$id = $decodedArray['1'];  # its index 0 have nothing in it as this is the delimeter we exploded with so it is removed, and after removing nothing remains
-		#echo $id;	
+		# THERE IS AN ERROR IF WE ARE LOGED IN TO THE SITE AND  if we put a path -> giving the value in the address bar.. then IF THAT STRING WE PASSSED does not contain
+		# the no 24792024278--> (WHICH IT CERTAINLY WOOULD NOT THEN ) --> in this case it would not be able to explode it with this no. so , there WILL NOT BE ANY INDEX 1 in the variable $decodedArray   ====> SO WE HAVE TO CHECK WHETHER THIS CONTAINS TEH REQUIRED STRING of--  24792024278  so if it does then only we will break it down
+		# NOW IT DOESNT MATTER THAT WHETHER THIS TIME THE VALUE IN THE INDEX '1' IS CORRECT --> because in the further condition it will be checked for that and if it passes then only we collect the data  to show him the form in which the values are already put in...
+		if ( strpos($decode_id, '24792024278') !== false) { # then it has this value in it --> now you can explode it  WITH NO WORRY..
+			$decodedArray= explode(24792024278, $decode_id );
+			$id = $decodedArray['1']; 
+		}else{ # just for the sake of initializing  so that the next if condition works fine
+			$id = 'yiyiuyi'; # giving strings as id will nwver be strings .. we have no's as our id's in the databaseecho $id;
+		}
+
 		if ($id === $_SESSION['id']) {
 			#  ==> we are comparing the decoded id with the set session id , because if we directly perform, action on the converted id --> it can casuse hacking too..
 			# as what people can do is they can copy the encrypted link of some other user and put that inside teh addresss bar, or might be ossible they can made up nay stin gand  --> by luck that can result into a valid id , that exist already into the database..

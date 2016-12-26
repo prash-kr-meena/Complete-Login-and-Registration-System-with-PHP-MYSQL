@@ -1,0 +1,10 @@
+i solved some of the errors in here, 
+
+> solved the error of   
+
+===>undefined index 1 --> this comes when user himself puts the address of the page in URL , so  if the vlue fo the user_id put by the user, doesnot contain the 								delimiter string in it then while exploding it the function only one value is made and that value is contained in the 0th index of the array the 							explode function returns
+
+===> undefined variable $id ->  that comes on the when the user put the address on th URL BUT does not give the value to the user_id variable , so if this variable is not set then no exploding gonna happen, (according to the if condition) --> AND EVENTUALLY NO variable $id will be set..(which used to be after the explosing of the data)
+
+
+===> also i have defined different messages on different seciarios that user can try to reach the   edit_profile page..
