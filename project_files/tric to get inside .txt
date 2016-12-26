@@ -1,0 +1,16 @@
+there is a trick OR GLICH YOU MAY SAY
+
+after you loged in to the site, as there is a time lap going on , and when ever your time goes beyond the enactive time you 
+are logedout---> NOTE : you are loged out only in the case when you click or refresh the site (after the inactive time)
+
+BUT 
+==> if YOU close the browser after this enactive time limit rather then clicking any kind of link -> making it to refresh itself
+------> what happens is you automatically loged in by the cookies,
+
+
+-> this is due to the FACT -- WHEN YOU CLOSED THE BROWSER => the session was destroyed automatically AND THE INACTIVE TIME SCRIPT NEVER RAN ...
+AND you are automatically loged in by the browser due to the COOKIE THAT YOU HAVE SAVE --> this has no connection with your inactive time...
+so it automatically loged you in as you have the remember me functionality saved...
+
+
+

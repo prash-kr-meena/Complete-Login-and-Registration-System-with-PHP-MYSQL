@@ -319,7 +319,7 @@ function isCookieValid($db){
 
 function guard(){
 $isValid = true;
-$inactive = 60 * 30;  # <-- just for testing period  3 minuits..
+$inactive = 20;  # <-- just for testing period  3 minuits..
 
 $fingerPrint = md5(  $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']  ); // this information will be takenevery time the user opens the website,(ie we get the ip and the the browser data , of every one who opens our website,)
 #--> NOTE : this server 'REMOTE_ADDR' can be used to count the no of users, on our website -->  what we can do is make a table in which we store the different ip's of the people and we count these ips this will give the no of different ip users visited on our website
