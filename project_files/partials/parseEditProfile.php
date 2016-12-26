@@ -82,22 +82,21 @@
 							});
 						</script>";
 					}# =============================================    end of checking  =====================================================
-					#########################################		PUT DATA INTO THE TABLE 	##############################################
-					try{
-						$sqlInsert = "INSERT INTO register.users (username, email) 
-									VALUES  (:username, :email)";
-						$statement = $db->prepare($sqlInsert	);
-						$statement->execute( array(':username'=>$username, ':email'=>$email) );# these variables corrosponds to the one we 																			got from the edit-profile form
-						if ($row = $statement->rowcount() == 1) { # ie data successfully updated
-							echo popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
-						}else{ # data was not successfully updated
-							echo popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
-						}
-
-					}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
-						echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
-					}#############################################    DATA INSERTION ENDS	##############################################
-
+					else{#########################################		PUT DATA INTO THE TABLE 	########################################
+						try{
+							$sqlInsert = "INSERT INTO register.users (username, email) 
+										VALUES  (:username, :email)";
+							$statement = $db->prepare($sqlInsert	);
+							$statement->execute( array(':username'=>$username, ':email'=>$email) );# these variables corrosponds to the one we 																			got from the edit-profile form
+							if ($row = $statement->rowcount() == 1) { # ie data successfully updated
+								echo popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
+							}else{ # data was not successfully updated
+								echo popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
+							}
+						}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
+							echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
+						}#############################################    DATA INSERTION ENDS	##############################################
+					}
 					#----------------------------------------------	PROCESSING ENDS 	----------------------------------------------------
 				
 				}else{# ie duplicasy was found  for USERNAME
