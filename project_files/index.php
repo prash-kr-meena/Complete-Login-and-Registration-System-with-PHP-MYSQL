@@ -5,7 +5,9 @@
  
  	include_once 'resource/Database.php' ;
  	//include_once 'resource/session.php' ; // to start the session. (dont need it ,everywhere as $_SESSION is a global variable so , its needed in the login file only where the session has to start)
+
 ?>
+
     <div class="container">
     	<div class="flag" >
         	 <h1  >User Authentication System</h1><hr><!-- NOTE : session is deleted each time we close the browser, or if 																			you login from the incognito mode -->

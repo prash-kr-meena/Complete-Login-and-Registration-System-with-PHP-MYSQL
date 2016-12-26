@@ -38,7 +38,8 @@
 
 					<span>	last active : <?php  echo $lastActive ?>--> this is in timestamp <?php echo dateTime1($lastActive); ?> 	</span></br>
 					<span>	fingerprint : <?php echo $fingerprint ?></span></br>
-					<span>	time You Loged In : <?php echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn); ?></span></br>
+					<span>	time You Loged In : <?php echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn);?></span></br>
+					<span><a href="edit_profile.php?user_id=<?php echo $id ?>" class=" glyphicon glyphicon-edit pull-right">edit profile</a></span>
 				</div>
 			</section>
 		</div>

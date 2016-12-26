@@ -51,7 +51,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 					if($statement->rowcount()==1){ # ie if one row is changed theb ...
 
 						# popupMessage($title, $text, $type, $page)
-						$result = popupMessage("Hey {$username}!!",'Hurray, registration successfull','success','index.php');
+						$result = popupMessage("Hey {$username}!!",'Hurray, registration successfull','success','login.php');
 
 					}else{
 						$result = flashMessage("Signup unsuccessfull");
