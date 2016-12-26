@@ -1,0 +1,4 @@
+
+THERE IS ONE MORE ERROR IN THE FILE --> WARINING ACTUALLY --> and due to this our remember me functionality is not working,
+it says can not modify header is already sent..
+its in the last line of the function rememberMe().. 
