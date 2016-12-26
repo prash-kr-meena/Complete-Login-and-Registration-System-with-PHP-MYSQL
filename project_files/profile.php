@@ -20,18 +20,18 @@
 
 	<?php else : ?>
 	<!-- ======================================= HTML for loged in user STARTS ========================================= -->
-		<div class="container" style="border: 2px solid red">
+		<div class="container" >
 			<h1>Profile</h1><hr>
 
-			<section class="col col-lg-7" style="border: 5px dotted  blue"><!--this section is to hold the coverpage and the profile pic of the user-->
-				<div style="border: 1px solid green">
+			<section class="col col-lg-7" ><!--this section is to hold the coverpage and the profile pic of the user-->
+				<div >
 					<span>jflaksjfkljslklsfslk</span> 
 				</div>
 			</section>
 
 			</br></br></br>
 
-			<section class="col col-lg-7" style="border: 5px dotted green">
+			<section class="col col-lg-7" >
 				<div class="container">
 					<table border="1px">
 						<tr>

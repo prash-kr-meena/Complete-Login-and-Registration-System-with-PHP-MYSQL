@@ -1,3 +1,4 @@
+
 <?php 	$titel = 'edit profile' ;
 		include_once 'partials/headers.php' ; 
 
@@ -8,11 +9,11 @@
 		include_once 'partials/parseEditProfile.php';
 ?>
 <!--###################################################     the HTML PART  ###########################################################-->
-<?php if( !isset($_SESSION['username']) || ($id != $_SESSION['id']) ) :?>
+<?php if( !isset($_SESSION['username']) || ($id != $_SESSION['id']) ) :?><!--this is so that if the user himself send a string (this string will surely not match the id 								in the database) eg. if we have done  !isset($_GET['id']) ==> THIS IS THE CASE OF VALNURABLITY  --> 
 	<div class="container" align="center" style="padding-top: 30%" >
 		<section">
-				<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member 					please <a href="signup.php">signup</a>! </p>
-				<p class="lead">HACK US !  and please give us <a href="feedback.php">feedback</a>  on our security! </p>
+			<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member please <a href="signup.php">signup</a>! </p>
+			<p class="lead">HACK US !  and please give us <a href="feedback.php">feedback</a>  on our security! </p>
 		</section>
 	</div>
 <?php else : ?>

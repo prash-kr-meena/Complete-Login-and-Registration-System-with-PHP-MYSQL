@@ -1,0 +1,8 @@
+there is a bug if the user loges in and then try to open the edit_profile page -> by typing the address => without passing the value for the variable $user_id 
+which takes its value from the URL --> gives ERROR
+
+Notice: Undefined index: user_id in D:.....\partials\parseEditProfile.php on line 9		---> this is because the variable is not set at this time
+
+BUT IF YOU WRITE
+/edit_profile.php?user_id=shdfaks   ---> ie whether it is correct or not --> it will not give error till its set (-> not give error according to the condition..)
+																			--> if we want then we can a message of -> NICE ATTEMPT ;)

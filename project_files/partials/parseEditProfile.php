@@ -4,8 +4,9 @@
 	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
 	######################################################    if he passes the SECURITY     ##################################################
 
-	if ( isset($_SESSION['username']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
+	if ( isset($_SESSION['username']) && isset($_GET['user_id']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
 		#$user_id = $_GET[0]; 		# --> it will give me undefined offset
+
 		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
 		# BUT FOR MORE SECURITY (--> if he got lucky and he found the id form our database --> now all the query are based upon this id only so carefull)WE WILL CHECK WHETHER FOR THIS ID THE USER NAME IS THE SAME OR NOT,-->(ie. the username is equal to the one whose session is set or not ! )
 		$id = base64_decode($user_id);
@@ -20,7 +21,7 @@
 				$statement->execute( array(':id'=>$id) );
 
 				if ($row = $statement->fetch()) {
-					$current_username = $row['username']; # these are the current information of  the user in the database..
+					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE "
 					$current_password = $row['password'];
 					$current_email = $row['email'];
 				}
