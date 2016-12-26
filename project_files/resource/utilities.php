@@ -44,7 +44,7 @@ function check_min_length($fields_to_check_length){#NOTE : IT SHOULD CHECK LENGT
 }
 
 ###########################################################################################################################
-/*	@param :	$data ,store a key value pair array where key is the name of the html form control in, this case 'email' 					and value is the input entered by the user
+/*	@param :	$data ,store a key value pair array where key is the name of the html form control in, this case 'email' 									and value is the input entered by the user
 	@return : array ,containing email error
 
 */
@@ -132,7 +132,7 @@ function checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ //
 			$status = true;
 			$message = "Sorry this {$columnName} is already taken ";
 		}else{
-			$status = false;# ie no duplicasy if found so user can fo ahead and process further
+			$status = false;# ie no duplicasy is found so user can go ahead and process further
 			$message = NULL;# as we dont require any message (WE JUST WANT HIM TO GO FURTHER.)
 		}
 	}catch(PDOException $ex){

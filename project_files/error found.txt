@@ -1,0 +1,18 @@
+there is a error so, that -->
+NOTE : Undefined index: user_id in D:\...\partials\parseEditProfile.php on line 9
+ 
+ this is when i log in first and then what i do is --> type the path directly  /..../edit_profile.php
+
+ as now  i have not given any value to the user_id variable which will be set from the value we send form the addressbar, by the 
+ $_GET[] --> gloabal variable
+
+ this error will not come if i type that--> /..../edit_profile?user_id=OM==	   --> which is form mine id --> 2 
+
+
+
+
+==> ONE MORE PROBLEM IS --- afte the duplicasy test ---
+	
+	it also shows the duplicasy for the same user whose data was shown in the fields , so now if he want to change his email then he has to change his username also.
+
+	so do something that -> the data present in the fields --> is of the same user whose session is going on THEN it does not show the duplocasy error
