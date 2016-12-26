@@ -44,6 +44,7 @@ if (isset($_SESSION['username']) ) {
 		echo flashMessage("something went wrong while --> FETCHING YOUR DATA FROM THE DATABASE,-->{$ex->getMessage()}",'red');
 		//echo "0000000000000";
 	}
+	$encodedId = base64_encode($id);
 }// adn if not then he is trying to execess the profile directly--> handeled it
 
  ?>
