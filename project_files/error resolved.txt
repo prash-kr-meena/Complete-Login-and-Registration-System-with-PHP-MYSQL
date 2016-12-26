@@ -1,0 +1,16 @@
+so how did i resolved the error ==>
+FIRSTLY NOTE THAT BOTH THE ERROR WAS DUE TO THE SAME REASON ie , header is already send
+==>  read about this error from the internet OR I WILL PROBABILY SAVE THE PDF's and LINKS to the sources i refered to 
+														 ___
+														('^')
+NOTE : for php file everything outside the <?php?>	   \</|\>/   is an output , output to the site..--> thsi is why i am 
+deleting all the comments								_\|/_    which were outside the php tags, because due to them there is an UNintensional spaces left out..
+spaces restrict headers to add after (some kind of output is produced eg. echo , raw html-->(its not html that you write on the tags, it is the one which is outside the tags, ie when you write something on the texteditor and display on the wsbbrowser,it the raw HTML --> HTML IS NOT CONSIDERED AS THE OUTPUT HERE,--> OTHER THAN HTML IS CONSIDERED ,for eg. echo if not done in any tag, then it is kind of a raw html ultimately )   ie--> see that in the pdf )
+
+there are some type of function and variable which send into header AND 
+some of them are session_start()  regenrate_session_id()  setcookie('name') etc..
+--> read it about in the pdfs
+
+
+for this problem   i have book marked form the uc browser 
+make it pdf and last i will attach the pdf (RESOURCES FOLDER)
