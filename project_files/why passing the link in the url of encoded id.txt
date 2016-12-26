@@ -1,0 +1,21 @@
+QUESTION IS WHY WE ARE PASSING THE ID (encoded) IN THE URL FOR THE EDITPROFILE PAGE--> WHILE WE CAN DO THAT WITHOUT SENDIG THIS LINK too....
+
+--> how without the link
+now as if you see the code in parse_profile.php
+
+				--->	$user_id = $_GET['user_id']
+				--->	$id = base64_decode($user_id);
+				--> 	if ($id === $_SESSION['id']) --> line 14 
+BASICALLY 				
+after we are geting the value  user_id we are comparing it to be equal to the 'id' that is already set in the $_SESSION  global variable,-->  AND IF THEY MATCHES THEN WE WILL PERFORM OUR PROCESS, --> SO why ???
+
+when you have to finally compare it to the  session'id' why cant you directly use them instead of FIRST SENDING A ENCODED STRING INTO THE URL AND THEN COLLECT IT FROM THERE AND AGAIN DECODE IT AND THEN COMPARE THIS DECODED VALUE WITH THE ACTUALL VALUE 
+
+
+==> the whole reason for this shit is providing excess limits, to the user,--> NOW THE USER IS LOGED IN so both  all the SESSION VARIABLE ARE SET ALREADY, so how do we limit their excess to other pages, now this can not be done just by the   --> isset SESSION VARIABLES  conditions,   as was done in the profile page,
+
+so due to this link thing the loged in user can not excess his edit_profile page , just by typing  the path --> /edit_profile.php   
+now this needs another parameter and that can only be send from the edit link .....
+
+will if you type that link down (the encoded one)---> then by typing correct path with puting the user_id ='PAST HERE' ===> you can excess theat page from anywhere...
+BUT ONLY IF YOU KNOW YOUR ENCODED STRING OF ID (show up in the browser in lower side..)
