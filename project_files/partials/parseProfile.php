@@ -2,7 +2,8 @@
 if (isset($_SESSION['username']) ) {
 	# as i have the user session active (ie  how he is able to login ) --> from the isCookieValid() function present after  guard() function in headers
 	$id = $_SESSION['id'];	# it was already set,(IF THE USER DOES NOT DIRECTLY TRIES TO OPEN BY THE PATH,--> so for  path case we provide a security)--> ABOVE ==> this will be set either by the direct sign in or by the cookie signin (ie rememberme functionality)
-	$username = $_SESSION['username'];
+
+	#  $username = $_SESSION['username'];      ----> this is the reason why  the name in the profile page, is not changing , because the name ie set in the session variable is not set.. so , we have to change that..., so now collecting this from the database, directly , it does not matter with the id as we are not allowing himm to change the userid
 
 	$fingerprint = $_SESSION['fingerPrint']; # NOTE: these two below session variables will hold their values in the case only when the user has loged in ie. ehen he entered the login page by fist loging into the website but they will not hold values if the user will come through the remember me functionality..
 	# THE REASON FOR THAT : when the user login through the cookie -> the main job is done by the isCookieValid() function, now if the cookie exists it will decode it and take the data of the user (who has saved the cookie) and then sets the session variables (above the header file it includes the session variable ) NOTE ; THAT these session variables are just for session[id] and session[username] and no session variable for the keys ==> fingerprint and lastActive has been set so now at the login through cookie these variables are unset so are not defined, and ----> this will give error if we try to work with them
@@ -34,6 +35,7 @@ if (isset($_SESSION['username']) ) {
 
 		if ($row = $statement->fetch()) {# ie, if some  data is pulled from the database
 			$email = $row['email'];
+			$username = $row['username'];
 			$join_date = $row['join_date'];
 		}else{
 			# function flashMessage($message,$color='red')--> red is by default
