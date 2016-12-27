@@ -35,7 +35,7 @@
 		</section>
 
 		<section class="col col-lg-7"><!--now making it form so that it can fubmet the cahnged values-->
-			<form action="#" method="post" >
+			<form action="#" method="post" enctype="multipart/form-data">
 		  		<div class="form-group">
 		    		<label for="emailField5">E-mail:</label>
 		    		<input type="text" class="form-control" name="email" id="emailField5"  value="<?php echo $current_email;?>">
@@ -47,12 +47,14 @@
 		  		<div class="form-group">
 		    		<label for="password5">Password:</label>
 		    		<input type="text" class="form-control" name="password" id="password5" readonly="true" value="<?php echo $current_password;?>" >
-		  		</div>
-		    		<button type="submit" class="btn btn-primary pull-right" name="edit_sbt">Save changes</button>
-		  		</div>	
+		  		<div class="form-group">
+		          <label for="fileField5">Profile photo:</label>
+		          <input type="file" name="avatar" id="fileField5" >
+		          <button type="submit" class="btn btn-primary pull-right" name="edit_sbt">Save changes</button>
+		        </div>
 			</form>
 		</section>
-
+	
 	</div>
 	<?php  if (isset($toEcho) ) echo $toEcho;  # now the form will be loaded with thw new values and then after that the popup message will come   ?>	
 <?php else: ?>

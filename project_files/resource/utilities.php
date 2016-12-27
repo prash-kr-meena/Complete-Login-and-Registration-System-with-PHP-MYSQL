@@ -394,7 +394,7 @@ function dateTime1($dateTime){ # convert it to the date time format from the tim
 }
 #=--------------------------------------- another function for time conversion   -----------------------------------------
 function dateTime2($dateTime){
-	$date_string = strftime( "%b %d %y", strtotime($dateTime) );
+	$date_string = strftime( "%d %b %y", strtotime($dateTime) );
 	return $date_string;
 	# what strtotime() does is it converts the timestamp to the human readable time
 	# what strftime() --> does is it format this time inro more convinent way
@@ -412,7 +412,28 @@ function Not_authorized($message,$page,$link_ame){
 						</section>
 					</div>";
 	return $returnMesssage;
+}
+###########################################################################################################################
+function isValidImage($file){
+	$form_errors = array(); # empty array
 
+	# finding the image extension by spliting it by period '.'
+	$part = explode(".", $file);
+	$ext = end($part);
+
+	$ext = strtolower($ext); # so that there is no conflict in the types 
+	switch ($ext) {
+		case 'jpg':
+		case 'png':
+		case 'gif':
+		case 'bmp':
+		# case 'doc':  --> for example
+		#--> if any of these will be true then i will return a empty array in the $form_errors  --> so finally there is no error
+		return $form_errors;  
+	}
+	# otherwise we will report an error in the form error array
+	$form_errors[] = $ext." is not a valid image file extension";
+	return $form_errors;
 }
 
 

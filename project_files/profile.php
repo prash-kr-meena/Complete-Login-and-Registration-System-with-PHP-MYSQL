@@ -20,22 +20,23 @@
 
 	<?php else : ?>
 	<!-- ======================================= HTML for loged in user STARTS ========================================= -->
+		
 		<div class="container" >
 			<h1>Profile</h1><hr>
 
-			<section class="col col-lg-7" ><!--this section is to hold the coverpage and the profile pic of the user-->
-				<div >
-					<span>jflaksjfkljslklsfslk</span> 
+			<section style="margin:0px"><!--this section is to hold the coverpage and the profile pic of the user-->
+				<div class="row col-lg-3">
+					<img src="<?php if (isset($userProfile)) echo $userProfile; ?>" alt="image" class="img img-rounded" width="200" >	
 				</div>
 			</section>
 
 			</br></br></br>
 
 			<section class="col col-lg-7" >
-				<div class="container">
-					<table border="1px">
-						<tr>
-							<th>id:</th>	<td><?php  echo $id ?></td>
+				<div >
+					<table >
+						<tr 		>
+							<th>Id:</th>	<td><?php  echo $id ?></td>
 						</tr>
 						<tr>
 							<th>Username:</th>	<td><?php  echo $username ?></td>
@@ -44,22 +45,17 @@
 							<th>E-mail:</th>	<td><?php  echo $email ?></td>
 						</tr>
 						<tr>
-							<th>Join date:</th>	<td><?php  echo $join_date ?></td>
+							<th>Join date:</th>	<td><?php  echo dateTime2($join_date); ?></td>
 						</tr>
-						<tr>
-							<th>last Active:</th>
-							<td><?php  echo $lastActive ?>--> this is in timestamp <?php echo dateTime1($lastActive); ?></td>
-						</tr>
-						<tr>
+						<!-- WE CANNOT DO last active AND  time loged out    without saving it in the database, -->
 							<th>Finger Print:</th>	<td><?php  echo $fingerprint ?></td>
 						</tr>
 						<tr>
-							<th>time You Loged In:</th>
-							<td><?php  echo $timeYouLogedIn  ?>	---> <?php echo dateTime2($timeYouLogedIn); ?></td>
+							<th>Your IP:</th>	<td> <?php  echo $_SERVER['REMOTE_ADDR'] ?> </td>
 						</tr>
 						<tr>
 							<th></th>
-							<td><a  href = "edit_profile.php?user_id=<?php if( isset($encodedId) )  echo $encodedId; ?>"  				class=" glyphicon glyphicon-edit pull-right">edit profile</a></td>
+							<td><a  href = "edit_profile.php?user_id=<?php if( isset($encodedId) )  echo $encodedId; ?>" class=" glyphicon glyphicon-edit pull-right"> edit</a></td>
 						</tr>
 					</table>
 				</div>

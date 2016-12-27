@@ -23,6 +23,11 @@
 		# error due to invalid email address
 		$form_errors = array_merge($form_errors, check_email($_POST)); #  check email requires an array ie. key value pair
 
+		# check for valid image, BUT before that we have to check whether the user is trying to upload the image or not
+		isset( $_FILES['avatar']['name']) ? $avatar = $_FILES['avatar']['name'] : $avatar = null;
+		if($avatar != null)
+			$form_errors = array_merge($form_errors, isValidImage($avatar));
+
 		#---------------------------------------------------	**	ENDS  **	------------------------------------------------------------
 
 		#--------------------------------    after validation this data should not CLASH with another user     ------------------------------
@@ -40,7 +45,7 @@
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
 					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
 					# ==========================  check if the information written in it is changed or not ==================================
-					if ($_SESSION['username']  === $username  &&  $_SESSION['email']  === $email ) { #  now these are called befor the below code so thery are unset.. so for using them i am making them in session variable...
+					if ($_SESSION['username']  === $username  &&  $_SESSION['email']  === $email &&  !isset($avatar) ) { #  now these are called befor the below code so thery are unset.. so for using them i am making them in session variable...
 						echo "<script>
 							swal({
 								title: \"NO changes made !\",

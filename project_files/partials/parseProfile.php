@@ -37,6 +37,15 @@ if (isset($_SESSION['username']) ) {
 			$email = $row['email'];
 			$username = $row['username'];
 			$join_date = $row['join_date'];
+
+			$userPic = "uploads/".$username.'jpg';
+			$default = "uploads/default.jpg";
+
+			if (file_exists($userPic)) 
+				$userProfile = $userPic;
+			else
+				$userProfile = $default;
+
 		}else{
 			# function flashMessage($message,$color='red')--> red is by default
 			echo flashMessage('Sorry there was some error loading your data!');
