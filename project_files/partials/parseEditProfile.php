@@ -1,9 +1,6 @@
 
 <?php 
 
-
-
-
 	############################################### 	for submiting the edit profile form   ##############################################
 	########################################   its validation and processing to change into database   #####################################
 	if ( isset($_POST['edit_sbt']) ) { # then only process the form
@@ -43,7 +40,7 @@
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
 					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
 					# ==========================  check if the information written in it is changed or not ==================================
-					if ($current_username === $username  &&  $current_email === $email ) { # ie. nothing has been changed  -> notify that
+					if ($_SESSION['username']  === $username  &&  $_SESSION['email']  === $email ) { #  now these are called befor the below code so thery are unset.. so for using them i am making them in session variable...
 						echo "<script>
 							swal({
 								title: \"NO changes made !\",
@@ -61,6 +58,8 @@
 							$statement = $db->prepare($sqlQuery);
 							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
 							if ($row = $statement->rowcount() == 1) { # ie data successfully updated
+								 # now if every thing was successfull i can fo ahead and delete the session variable of the emil...
+								unset($_SESSION['email']);
 								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
 								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
 							}else{ # data was not successfully updated
@@ -124,6 +123,11 @@
 					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE"
 					$current_password = $row['password'];
 					$current_email = $row['email'];
+
+					#  making these in session so as to check the duplicasy in the above if code block--> the next time when when the script will run and goes in the above code .. i will delete the sessio variable of the email --> as not needed  
+					$_SESSION['username'] = $current_username;
+					$_SESSION['email'] = $current_email;
+
 				}
 			}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
 				echo flashMessage("something went wrong, WHILE COLLECTING THE DATA FROM THE DATABASE -->".$ex->getMessage());
