@@ -54,6 +54,7 @@
 		</section>
 
 	</div>
+	<?php  if (isset($toEcho) ) echo $toEcho;  # now the form will be loaded with thw new values and then after that the popup message will come   ?>	
 <?php else: ?>
 	<p>Sorrey something went wrorng...! </p>
 <?php endif ?>

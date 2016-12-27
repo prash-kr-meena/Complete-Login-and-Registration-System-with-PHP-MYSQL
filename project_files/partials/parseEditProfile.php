@@ -4,7 +4,9 @@
 	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
 	######################################################    if he passes the SECURITY     ##################################################
 
-	if ( isset($_SESSION['username']) && isset($_GET['user_id']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
+	if ( isset($_SESSION['username']) && isset($_GET['user_id']) && !isset($_POST['edit_sbt']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
+		# note that this is the better condition, as when we press the submit buttotn the value of the user_id will be still present in the url, so starting two condition will always be present when we press the submit button, so---> it will run every time we press the submit button --> whether we want or not, so this is to prevent that.
+
 		#$user_id = $_GET[0]; 		# --> it will give me undefined offset
 
 		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
@@ -82,6 +84,7 @@
 			if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for EMAIL in the database 
 					
 				$arrayReturned = checkDuplicasy_filterMe($username, 'username', 'register', 'users', $db);
+
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
 					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
 					# ==========================  check if the information written in it is changed or not ==================================
@@ -103,9 +106,10 @@
 							$statement = $db->prepare($sqlQuery);
 							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
 							if ($row = $statement->rowcount() == 1) { # ie data successfully updated
-								echo popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
+								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
+								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
 							}else{ # data was not successfully updated
-								echo popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
+								$toEcho = popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
 							}
 						}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
 							echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
@@ -122,13 +126,8 @@
 				# no matter what is the status is either true or exception it will show the message
 				$result = flashMessage($arrayReturned['message']);# by default it is red
 			}
-
 		}
-
-
 	}
-
-
 
 ?>
 
