@@ -38,14 +38,22 @@ if (isset($_SESSION['username']) ) {
 			$username = $row['username'];
 			$join_date = $row['join_date'];
 
-			$userPic = "uploads/".$username.'jpg';
+			# searching for the users profile with his name, --> but extension can be any of them
+			$extensions = array('jpg', 'png', 'gif', 'bmp');
+			for ($i=0; $i<3 ; $i++) { 
+				$userPic = "uploads/".$username.$extensions[$i];
+				if (file_exists($userPic)) {
+					$found = true;
+					break;
+				}# -> so as soon as i found the file in the uploads folder i break out of the loop and check that if i have found then uplod that file else upload the default file
+			}
 			$default = "uploads/default.jpg";
 
-			if (file_exists($userPic)) 
-				$userProfile = $userPic;
-			else
+			if ( isset($found) && $found === true  ) {
+				$userProfile = $userPic; # now if i have found that image store its name int this variable
+			}else
 				$userProfile = $default;
-
+			
 		}else{
 			# function flashMessage($message,$color='red')--> red is by default
 			echo flashMessage('Sorry there was some error loading your data!');

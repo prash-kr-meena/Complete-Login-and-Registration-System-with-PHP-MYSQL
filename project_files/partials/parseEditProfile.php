@@ -24,7 +24,7 @@
 		$form_errors = array_merge($form_errors, check_email($_POST)); #  check email requires an array ie. key value pair
 
 		# check for valid image, BUT before that we have to check whether the user is trying to upload the image or not
-		isset( $_FILES['avatar']['name']) ? $avatar = $_FILES['avatar']['name'] : $avatar = null;
+		isset( $_FILES['avatar']['name'] ) ? $avatar = $_FILES['avatar']['name'] : $avatar = null; # this gives avatar the file name which user uploads, and if he does not uploads then it would give null to avatar
 		if($avatar != null)
 			$form_errors = array_merge($form_errors, isValidImage($avatar));
 
@@ -44,8 +44,9 @@
 
 				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
 					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
+
 					# ==========================  check if the information written in it is changed or not ==================================
-					if ($_SESSION['username']  === $username  &&  $_SESSION['email']  === $email &&  !isset($avatar) ) { #  now these are called befor the below code so thery are unset.. so for using them i am making them in session variable...
+					if ($_SESSION['username'] === $username  &&  $_SESSION['email'] === $email  &&  ($avatar == null) ) { # avatar will always be set whether by null or by the actuall file name 
 						echo "<script>
 							swal({
 								title: \"NO changes made !\",
@@ -54,17 +55,40 @@
 							  	showConfirmButton: false
 							});
 						</script>";
+						echo $avatar;
+							// make a note of the current working directory relative to root. 
+							$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']); 
+
+							echo $_SERVER['PHP_SELF']."<br>";
+							echo basename($_SERVER['PHP_SELF'])."<br>";
+							echo $directory_self."<br>";
+
+							// make a note of the location of the upload handler script 
+							$uploadHandler = 'http://'. $_SERVER['HTTP_HOST'] . $directory_self . 'upload.processor.php'; 
+							echo $_SERVER['HTTP_HOST']."<br>";
+							echo $uploadHandler."<br>";
+							echo $_SERVER['DOCUMENT_ROOT']."<br>";
+
 					}# =============================================    end of checking  =====================================================
 					else{#########################################		PUT DATA INTO THE TABLE 	########################################
+
 						try{
 							$sqlQuery= "UPDATE register.users
 										SET username = :username, email = :email
 										WHERE id = :id";
 							$statement = $db->prepare($sqlQuery);
 							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
-							if ($row = $statement->rowcount() == 1) { # ie data successfully updated
-								 # now if every thing was successfull i can fo ahead and delete the session variable of the emil...
+							if ($row = $statement->rowcount() == 1  || $row = $statement->rowcount() == 1  ) { # NOTE: --> THE REASON why it is giving error when we 		only just upload image and not change any other data in the field, ---> BECAUSE now when this sql runs ,,, if the data is not changed OR 	if we rewrite the same data in it , then this sql statement says, NO ROW EFFECTED.. --> ie. nothing has changed.. yet
+								# so we have to include both the case ie. whether the fetched row is 1 OR  is 0 
+								# --> well dont wory it wil no give any problem as if the fields -->( any of them not changed then it will show the above message)
 								unset($_SESSION['email']);
+
+
+							if ($avatar != null) {
+								$fileName = $_FILES['avatar']['name']; # gives the original name of the file it also contains the extension with it..
+								$firstName = 
+								$fileName = ;
+							}
 								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
 								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
 							}else{ # data was not successfully updated

@@ -432,7 +432,7 @@ function isValidImage($file){
 		return $form_errors;  
 	}
 	# otherwise we will report an error in the form error array
-	$form_errors[] = $ext." is not a valid image file extension";
+	$form_errors[] = " \" {$ext} \" is not a valid image file extension";
 	return $form_errors;
 }
 
