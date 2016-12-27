@@ -78,9 +78,23 @@
 
 								$fileName =$firstName.".".$ext ;# --> now the file name is replaced by the username and the extension
 
+								# if the file of this name exists then we have to delete that file --> so that no user uploads a now file
+								$extensions = array('jpg', 'png', 'gif', 'bmp');
+								for ($i=0; $i<3 ; $i++) { 
+									$userPic = "uploads/".$firstName.".".$extensions[$i];
+									if (file_exists($userPic)) {
+										$found = true;
+										break;
+									}
+								}
+								if ( isset($found) && $found === true  ) {
+									 $userPic; # now if i have found that image store its name int this variable
+									 unlink($userPic);
+								}
+
 								$target = "uploads/".$fileName;
 								move_uploaded_file( $_FILES["avatar"]["tmp_name"], $target);
-								echo $_FILES["avatar"]["tmp_name"];
+								// echo $_FILES["avatar"]["tmp_name"];
 							}
 								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
 								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
