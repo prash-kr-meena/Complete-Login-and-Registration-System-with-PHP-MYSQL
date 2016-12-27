@@ -5,6 +5,7 @@
 	########################################   its validation and processing to change into database   #####################################
 	if ( isset($_POST['edit_sbt']) ) { # then only process the form
 
+		//echo $_SESSION['username'];
 		$email = $_POST['email'];
 		$username = $_POST['username'];# these are the information that the user wants to be saved after editing his profile
 		$password = $_POST['password'];
@@ -25,8 +26,26 @@
 
 		# check for valid image, BUT before that we have to check whether the user is trying to upload the image or not
 		isset( $_FILES['avatar']['name'] ) ? $avatar = $_FILES['avatar']['name'] : $avatar = null; # this gives avatar the file name which user uploads, and if he does not uploads then it would give null to avatar
-		if($avatar != null)
+		if($avatar != null){
 			$form_errors = array_merge($form_errors, isValidImage($avatar));
+		
+		 # ---> delete the previous image if any found with this username --> whose session is going on
+			$extensions = array('jpg', 'png', 'gif', 'bmp');
+			for ($i=0; $i<3 ; $i++) { 
+			$userPic = "uploads/".$_SESSION['username'].".".$extensions[$i]; #--> image with this username which can be later on changed --> if username changes for that the code is below where the change takes place..
+				if (file_exists($userPic)) {
+					$found = true;
+					break;
+				}
+			}
+			if ( isset($found) && $found === true  ) {
+				$userPic; # now if i have found that image store its name int this variable
+				unlink($userPic);
+				unset($found); #  --> as we have to use it later also
+			}
+		}
+	
+
 
 		#---------------------------------------------------	**	ENDS  **	------------------------------------------------------------
 
@@ -70,7 +89,7 @@
 								unset($_SESSION['email']);
 
 
-							if ($avatar != null) {
+							if ($avatar != null) { # IE. IF THERE IS IMAGE UPLOADED THEN 
 								$fileName = $_FILES['avatar']['name']; # gives the original name of the file it also contains the extension with it..
 								$firstName = $username; # so if he is uploading a new image while changing his username --> so the same username will be used to save his image in the upload folder
 								$part = explode(".", $fileName); # will return an array --> the last one will be the index
@@ -78,7 +97,7 @@
 
 								$fileName =$firstName.".".$ext ;# --> now the file name is replaced by the username and the extension
 
-								# if the file of this name exists then we have to delete that file --> so that no user uploads a now file
+								# if the file of this name exists then we have to delete that file --> so that no user uploads a now file--> ie if the username is not changed and the image is only added
 								$extensions = array('jpg', 'png', 'gif', 'bmp');
 								for ($i=0; $i<3 ; $i++) { 
 									$userPic = "uploads/".$firstName.".".$extensions[$i];

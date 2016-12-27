@@ -1,0 +1,6 @@
+there  are hell lot of bugs in this image upload 
+==> the reason is we are not saving the images inour database, but in a specific folder so due to this 
+--> the CRUD (create, read, update, delete ) application becomes very hard to handel
+
+
+---> next time TASK IS TO COMPRESS THE IMAGE THEN put THIS IMAGE into the DATABASE...
