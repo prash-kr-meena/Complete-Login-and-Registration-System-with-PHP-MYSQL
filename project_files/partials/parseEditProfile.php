@@ -55,20 +55,6 @@
 							  	showConfirmButton: false
 							});
 						</script>";
-						echo $avatar;
-							// make a note of the current working directory relative to root. 
-							$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']); 
-
-							echo $_SERVER['PHP_SELF']."<br>";
-							echo basename($_SERVER['PHP_SELF'])."<br>";
-							echo $directory_self."<br>";
-
-							// make a note of the location of the upload handler script 
-							$uploadHandler = 'http://'. $_SERVER['HTTP_HOST'] . $directory_self . 'upload.processor.php'; 
-							echo $_SERVER['HTTP_HOST']."<br>";
-							echo $uploadHandler."<br>";
-							echo $_SERVER['DOCUMENT_ROOT']."<br>";
-
 					}# =============================================    end of checking  =====================================================
 					else{#########################################		PUT DATA INTO THE TABLE 	########################################
 
@@ -78,7 +64,7 @@
 										WHERE id = :id";
 							$statement = $db->prepare($sqlQuery);
 							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
-							if ($row = $statement->rowcount() == 1  || $row = $statement->rowcount() == 1  ) { # NOTE: --> THE REASON why it is giving error when we 		only just upload image and not change any other data in the field, ---> BECAUSE now when this sql runs ,,, if the data is not changed OR 	if we rewrite the same data in it , then this sql statement says, NO ROW EFFECTED.. --> ie. nothing has changed.. yet
+							if ($row = $statement->rowcount() == 1  || $row = $statement->rowcount() == 0  ) { # NOTE: --> THE REASON why it is giving error when we 		only just upload image and not change any other data in the field, ---> BECAUSE now when this sql runs ,,, if the data is not changed OR 	if we rewrite the same data in it , then this sql statement says, NO ROW EFFECTED.. --> ie. nothing has changed.. yet
 								# so we have to include both the case ie. whether the fetched row is 1 OR  is 0 
 								# --> well dont wory it wil no give any problem as if the fields -->( any of them not changed then it will show the above message)
 								unset($_SESSION['email']);
@@ -86,8 +72,15 @@
 
 							if ($avatar != null) {
 								$fileName = $_FILES['avatar']['name']; # gives the original name of the file it also contains the extension with it..
-								$firstName = 
-								$fileName = ;
+								$firstName = $username; # so if he is uploading a new image while changing his username --> so the same username will be used to save his image in the upload folder
+								$part = explode(".", $fileName); # will return an array --> the last one will be the index
+								$ext = end($part);
+
+								$fileName =$firstName.".".$ext ;# --> now the file name is replaced by the username and the extension
+
+								$target = "uploads/".$fileName;
+								move_uploaded_file( $_FILES["avatar"]["tmp_name"], $target);
+								echo $_FILES["avatar"]["tmp_name"];
 							}
 								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
 								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...

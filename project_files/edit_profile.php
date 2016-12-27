@@ -1,5 +1,5 @@
 	
-<?php 	$titel = 'edit profile' ;
+<?php 	$titel = 'edit-profile' ;
 		include_once 'partials/headers.php' ; 
 
 		include_once 'resource/Database.php'; # --> for data base connection in try catch (--> parseEditProfile.php)

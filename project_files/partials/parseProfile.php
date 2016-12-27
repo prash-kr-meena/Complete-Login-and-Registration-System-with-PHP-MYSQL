@@ -41,7 +41,7 @@ if (isset($_SESSION['username']) ) {
 			# searching for the users profile with his name, --> but extension can be any of them
 			$extensions = array('jpg', 'png', 'gif', 'bmp');
 			for ($i=0; $i<3 ; $i++) { 
-				$userPic = "uploads/".$username.$extensions[$i];
+				$userPic = "uploads/".$username.".".$extensions[$i];
 				if (file_exists($userPic)) {
 					$found = true;
 					break;
