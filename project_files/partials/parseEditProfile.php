@@ -1,50 +1,5 @@
 
-<?php // make this better by makin two parts of the form in the profile page when the user clicks he edit profile he gets to edit teh profile in th esema page, but previously he was not able to click or achange any of the text fields, but after clicking the edit profile they will be able to edit ( actually there will be two form -> created  within  a function,--> one will have readonly true   and then other will have read only  true --> AND THEY APPEAR ON THE condition ie if the edit btn clicked then load the form which can be edited, and if not then user is only able to read it...)--> NOT EDIT PROFILE PAGE SEPARATELY -- every thing in one 
-
-	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
-	######################################################    if he passes the SECURITY     ##################################################
-
-	if ( isset($_SESSION['username']) && isset($_GET['user_id']) && !isset($_POST['edit_sbt']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
-		# note that this is the better condition, as when we press the submit buttotn the value of the user_id will be still present in the url, so starting two condition will always be present when we press the submit button, so---> it will run every time we press the submit button --> whether we want or not, so this is to prevent that.
-
-		#$user_id = $_GET[0]; 		# --> it will give me undefined offset
-
-		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
-		# BUT FOR MORE SECURITY (--> if he got lucky and he found the id form our database --> now all the query are based upon this id only so carefull)WE WILL CHECK WHETHER FOR THIS ID THE USER NAME IS THE SAME OR NOT,-->(ie. the username is equal to the one whose session is set or not ! )
-		$decode_id = base64_decode($user_id);
-		# THERE IS AN ERROR IF WE ARE LOGED IN TO THE SITE AND  if we put a path -> giving the value in the address bar.. then IF THAT STRING WE PASSSED does not contain
-		# the no 24792024278--> (WHICH IT CERTAINLY WOOULD NOT THEN ) --> in this case it would not be able to explode it with this no. so , there WILL NOT BE ANY INDEX 1 in the variable $decodedArray   ====> SO WE HAVE TO CHECK WHETHER THIS CONTAINS TEH REQUIRED STRING of--  24792024278  so if it does then only we will break it down
-		# NOW IT DOESNT MATTER THAT WHETHER THIS TIME THE VALUE IN THE INDEX '1' IS CORRECT --> because in the further condition it will be checked for that and if it passes then only we collect the data  to show him the form in which the values are already put in...
-		if ( strpos($decode_id, '24792024278') !== false) { # then it has this value in it --> now you can explode it  WITH NO WORRY..
-			$decodedArray= explode(24792024278, $decode_id );
-			$id = $decodedArray['1']; 
-		}else{ # just for the sake of initializing  so that the next if condition works fine
-			$id = 'yiyiuyi'; # giving strings as id will nwver be strings .. we have no's as our id's in the databaseecho $id;
-		}
-
-		if ($id === $_SESSION['id']) {
-			#  ==> we are comparing the decoded id with the set session id , because if we directly perform, action on the converted id --> it can casuse hacking too..
-			# as what people can do is they can copy the encrypted link of some other user and put that inside teh addresss bar, or might be ossible they can made up nay stin gand  --> by luck that can result into a valid id , that exist already into the database..
-
-			# it means the same user is comming through the right path(ALTHOUGH WHAT THE USER CAN DO AFTER HE LOGES If he can copy that encrypted link value which is shown then he can write the path and put the value too..==> HE WILL BE ABLE TO DIRECTLY COME TO THE EDIT PROFILE PAGE WITHOUT CLICKING THE LINK)==> as in this case the encrypted id after the decode will match the value of the id which is present in the session
-			try{
-				$sqlQuery = "SELECT *
-							FROM register.users 
-							WHERE id = :id";
-				$statement = $db->prepare($sqlQuery);
-				$statement->execute( array(':id'=>$id) );
-
-				if ($row = $statement->fetch()) {
-					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE"
-					$current_password = $row['password'];
-					$current_email = $row['email'];
-				}
-			}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
-				echo flashMessage("something went wrong, WHILE COLLECTING THE DATA FROM THE DATABASE -->".$ex->getMessage());
-			}
-
-		}else{} # the resieved id from the url is not of this user!
-	} else{} # either the session is not set --> ie he has not loged in  OR  user_id is not set, ie he has not send any information into the link
+<?php 
 
 
 
@@ -128,6 +83,55 @@
 			}
 		}
 	}
+
+	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
+	######################################################    if he passes the SECURITY     ##################################################
+
+	if ( isset($_SESSION['username']) && isset($_GET['user_id']) ) {  #--> ie if the user seession is set, then only he will be able to change, it
+		# note that this is the better condition, as when we press the submit buttotn the value of the user_id will be still present in the url, so starting two condition will always be present when we press the submit button, so---> it will run every time we press the submit button --> whether we want or not, so this is to prevent that.
+		#---> BUT THIS GIVES THE PROBLEM AS NOW  after we press the submit button it will again run the home script, and  now  ALL THE VARIABLES WHICH ARE PREVIOULSY SET IN THIS SCOPE OF THE STATEMENTS ARE NOT SET..  so  the variable like   current email , current username and id these all are unset so produces  ERROR
+
+		# now what i need to do is i have to put the submit button block code above this, so that if we edit the data and then clicked the submit button then so, due to this block the update will happen and then , after the update in the database has been taken place the data extraction code will run and all the variables like current email, current username
+
+		#$user_id = $_GET[0]; 		# --> it will give me undefined offset
+
+		$user_id = $_GET['user_id'];# --> due to this the user can not directly come to the editpage--> well if they are loged in then they can come --> but as we are not taking their ID from the session variable (as they are only taken by the decoded value pased by the edit profile link ) so if the user is loged in and he put the address with the value ,eg. edit_profile?user_id=8=-8043209  THEN MUCH CHANCES ARE THAT HE WILL GET AFCAURCE A WRONG ID -=>
+		# BUT FOR MORE SECURITY (--> if he got lucky and he found the id form our database --> now all the query are based upon this id only so carefull)WE WILL CHECK WHETHER FOR THIS ID THE USER NAME IS THE SAME OR NOT,-->(ie. the username is equal to the one whose session is set or not ! )
+		$decode_id = base64_decode($user_id);
+		# THERE IS AN ERROR IF WE ARE LOGED IN TO THE SITE AND  if we put a path -> giving the value in the address bar.. then IF THAT STRING WE PASSSED does not contain
+		# the no 24792024278--> (WHICH IT CERTAINLY WOOULD NOT THEN ) --> in this case it would not be able to explode it with this no. so , there WILL NOT BE ANY INDEX 1 in the variable $decodedArray   ====> SO WE HAVE TO CHECK WHETHER THIS CONTAINS TEH REQUIRED STRING of--  24792024278  so if it does then only we will break it down
+		# NOW IT DOESNT MATTER THAT WHETHER THIS TIME THE VALUE IN THE INDEX '1' IS CORRECT --> because in the further condition it will be checked for that and if it passes then only we collect the data  to show him the form in which the values are already put in...
+		if ( strpos($decode_id, '24792024278') !== false) { # then it has this value in it --> now you can explode it  WITH NO WORRY..
+			$decodedArray= explode(24792024278, $decode_id );
+			$id = $decodedArray['1']; 
+		}else{ # just for the sake of initializing  so that the next if condition works fine
+			$id = 'yiyiuyi'; # giving strings as id will nwver be strings .. we have no's as our id's in the databaseecho $id;
+		}
+
+		if ($id === $_SESSION['id']) {
+			#  ==> we are comparing the decoded id with the set session id , because if we directly perform, action on the converted id --> it can casuse hacking too..
+			# as what people can do is they can copy the encrypted link of some other user and put that inside teh addresss bar, or might be ossible they can made up nay stin gand  --> by luck that can result into a valid id , that exist already into the database..
+
+			# it means the same user is comming through the right path(ALTHOUGH WHAT THE USER CAN DO AFTER HE LOGES If he can copy that encrypted link value which is shown then he can write the path and put the value too..==> HE WILL BE ABLE TO DIRECTLY COME TO THE EDIT PROFILE PAGE WITHOUT CLICKING THE LINK)==> as in this case the encrypted id after the decode will match the value of the id which is present in the session
+			try{
+				$sqlQuery = "SELECT *
+							FROM register.users 
+							WHERE id = :id";
+				$statement = $db->prepare($sqlQuery);
+				$statement->execute( array(':id'=>$id) );
+
+				if ($row = $statement->fetch()) {
+					$current_username = $row['username']; # these are the current information of  the user in the database.. which we will use to show up in the edit 													profile form in the textboxes(so editable) bw the value=" HERE"
+					$current_password = $row['password'];
+					$current_email = $row['email'];
+				}
+			}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
+				echo flashMessage("something went wrong, WHILE COLLECTING THE DATA FROM THE DATABASE -->".$ex->getMessage());
+			}
+
+		}else{} # the resieved id from the url is not of this user!
+	} else{} # either the session is not set --> ie he has not loged in  OR  user_id is not set, ie he has not send any information into the link
+
 
 ?>
 

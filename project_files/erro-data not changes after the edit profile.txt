@@ -6,9 +6,7 @@ found one more error in the application
 BUT 
  the MAIN CONCERN is the username  is not updating after this updation it only updates the email part.. but does not update the username, ---> NOTE THIS SI HAPNENING INSTEAD  THE DATA IN THE DATABASE HAS BEEN CHANGE.... 
  BUT ON SITE IT DOES NOT CHANGES EVEN AFTER WE REFRESH 
- 	|
- 	|----> solved this one.
- 	
+
 
  --> BUT FOR NEXT TIME WE CAN (after doing logout ) WE ARE ABLE TO LOGOUT WITH THE USERNAME, THAT WE HAVE JUST CHANGED....
 
