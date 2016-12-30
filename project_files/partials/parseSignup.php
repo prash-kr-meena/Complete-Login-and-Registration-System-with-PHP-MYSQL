@@ -3,7 +3,7 @@ include_once 'resource/send-email-gmail.php';
 
 if (isset($_POST['signup_sbt'])) { ## does both validation and data processing 
 
-// form validation BEGINS:==================================================================================================
+	// form validation BEGINS:==================================================================================================
 
 	#initialize an array to store any error message from the form
 	$form_errors = array();
@@ -23,7 +23,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
     //email validation / merge the return data into form_error array
     $form_errors = array_merge($form_errors, check_email($_POST));
 
-// form validation ENDS:==================================================================================================
+	// form validation ENDS:==================================================================================================
 
     #############################################   FORM PROCESSING AND ERROR SHOWING   ####################################
 
@@ -51,7 +51,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 
 					if($statement->rowcount()==1){ # ie if one row is changed theb ...
 						$user_id = $db->lastInsertId();
-						$encode_id = base64_encode("encodeUserid$user_id");
+						$encode_id = base64_encode("encodeUserid{$user_id}");
 						//prepare email body
 						$mail_body = '<html>
 										<body style="background-color:#CCCCCC; color:#000; font-family: Arial, Helvetica, sans-serif;
@@ -73,7 +73,7 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 							# popupMessage($title, $text, $type, $page)
 							$result = popupMessage("Hey {$username}!!",'Hurray, registration successfull.<br>Please check your email for conformation link!','success','login.php');
 						}else{
-							$result = popupMessage("E-mail sending FAILED!!",$mail->ErrorInfo,'error','#');
+							$result = popupMessage("E-mail sending FAILED!!",$mail->ErrorInfo,'error','signup.php');
 						}	
 					
 					}else{
@@ -89,6 +89,26 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 			$result =  flashMessage($arrayReturned['message']);
 		}
 	} // so if there will be an error then it will be checked and displayed in the html BODY element
-}
 
+}else{			//activation code
+	if(isset($_GET['id'])) {
+		$encoded_id = $_GET['id'];
+		$decode_id = base64_decode($encoded_id);
+		$user_id_array = explode("encodeuserid", $decode_id);
+		$id = $user_id_array[1];
+
+		$sql = "UPDATE users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work
+
+		$statement = $db->prepare($sql);
+		$statement->execute(array(':activated' => "1", ':id' => $id));
+
+		if ($statement->rowCount() == 1) {
+			$result = "<h2>Email Confirmed </h2>
+			<p class='lead'>Your email address has been verified, you can now <a href=\"login.php\">login</a> with your email and password.</p>";
+		} else {
+			$result = "<p class='lead'>No changes made please contact site admin,
+		    if you have not confirmed your email before</p>";
+		}
+	}
+}
 ?>
