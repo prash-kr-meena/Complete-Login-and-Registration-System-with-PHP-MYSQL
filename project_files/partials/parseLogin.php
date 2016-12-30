@@ -33,8 +33,9 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 				$id = $row['id'];						# storing the data from the databases  for further checking 
 				$hashed_password = $row['password'];	# for further verification and processing
 				$username = $row['username'];
-
-				if ( password_verify($password, $hashed_password) ) {  # password_verify() --> inbuilt function for 										comparing the hashed pasword by the nohashed password -> entered by the user
+				$activated = $row['activated'];
+				if ($activated === "1") {
+					if ( password_verify($password, $hashed_password) ) {  # password_verify() --> inbuilt function for comparing the hashed pasword by the nohashed															 password -> entered by the user
 					// IF VERIFIED , we have to start the SESSION FOR THIS USER..
 					$_SESSION['id'] = $id;
 					$_SESSION['username'] = $username;
@@ -58,9 +59,13 @@ if ( isset($_POST['login_sbt']) ) {  //ie. if the login form is submitted then f
 
 					//redirectTO('index');  NOW NOT NEEDED
 
-				}else{// ie if no such user exist in the database,
-					$result = flashMessage("Invalid username or password !"); # actually here the username is true but the 																				password is wrong
+					}else{// ie if no such user exist in the database,
+						$result = flashMessage("Invalid username or password !"); # actually here the username is true but the 	password is wrong
+					}
+				}else{
+					$result = flashMessage("Please activate your account first !");
 				}
+				
 			}else{
 				$result = flashMessage("Invalid username or password !");// actually here the username does not exist
 			}
