@@ -41,6 +41,7 @@ include_once "partials/parseSignup.php";
     			<label for="password2">Password:</label>
     			<input type="password" class="form-control" name="password" id="password2" placeholder="Password">
   			</div>
+        <input type="hidden" name="token" value="<?php echo _token() ?>">
   			<button type="submit" class="btn btn-primary pull-right" name="signup_sbt">Sign up</button>
 		</form>
 	</section>

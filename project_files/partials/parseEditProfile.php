@@ -3,138 +3,142 @@
 
 	############################################### 	for submiting the edit profile form   ##############################################
 	########################################   its validation and processing to change into database   #####################################
-	if ( isset($_POST['edit_sbt']) ) { # then only process the form
+	if (isset($_POST['edit_sbt'], $_POST['token'] ) ) { # then only process the form
 
-		//echo $_SESSION['username'];
-		$email = $_POST['email'];
-		$username = $_POST['username'];# these are the information that the user wants to be saved after editing his profile
-		$password = $_POST['password'];
+		if ( validate_token($_POST['token']) ) {
+			//echo $_SESSION['username'];
+			$email = $_POST['email'];
+			$username = $_POST['username'];# these are the information that the user wants to be saved after editing his profile
+			$password = $_POST['password'];
 
-		#------------------------------------------------		VALIDATION BEGINS 	----------------------------------------------------------
-		$form_errors = array(); # to store all the array
+			#------------------------------------------------		VALIDATION BEGINS 	----------------------------------------------------------
+			$form_errors = array(); # to store all the array
 
-		# errors due to empty fields
-		$required_fields_array = array('email', 'username', 'password');
-		$form_errors = array_merge( $form_errors, check_empty_fields($required_fields_array) );
+			# errors due to empty fields
+			$required_fields_array = array('email', 'username', 'password');
+			$form_errors = array_merge( $form_errors, check_empty_fields($required_fields_array) );
 
-		# error due to minimum length
-		$fields_to_check_length = array('email'=>12,'username'=>4);
-		$form_errors = array_merge( $form_errors,check_min_length($fields_to_check_length) );
+			# error due to minimum length
+			$fields_to_check_length = array('email'=>12,'username'=>4);
+			$form_errors = array_merge( $form_errors,check_min_length($fields_to_check_length) );
 
-		# error due to invalid email address
-		$form_errors = array_merge($form_errors, check_email($_POST)); #  check email requires an array ie. key value pair
+			# error due to invalid email address
+			$form_errors = array_merge($form_errors, check_email($_POST)); #  check email requires an array ie. key value pair
 
-		# check for valid image, BUT before that we have to check whether the user is trying to upload the image or not
-		isset( $_FILES['avatar']['name'] ) ? $avatar = $_FILES['avatar']['name'] : $avatar = null; # this gives avatar the file name which user uploads, and if he does not uploads then it would give null to avatar
-		if($avatar != null){
-			$form_errors = array_merge($form_errors, isValidImage($avatar));
-		
-		 # ---> delete the previous image if any found with this username --> whose session is going on
-			$extensions = array('jpg', 'png', 'gif', 'bmp');
-			for ($i=0; $i<3 ; $i++) { 
-			$userPic = "uploads/".$_SESSION['username'].".".$extensions[$i]; #--> image with this username which can be later on changed --> if username changes for that the code is below where the change takes place..
-				if (file_exists($userPic)) {
-					$found = true;
-					break;
+			# check for valid image, BUT before that we have to check whether the user is trying to upload the image or not
+			isset( $_FILES['avatar']['name'] ) ? $avatar = $_FILES['avatar']['name'] : $avatar = null; # this gives avatar the file name which user uploads, and if he does not uploads then it would give null to avatar
+			if($avatar != null){
+				$form_errors = array_merge($form_errors, isValidImage($avatar));
+			
+			 # ---> delete the previous image if any found with this username --> whose session is going on
+				$extensions = array('jpg', 'png', 'gif', 'bmp');
+				for ($i=0; $i<3 ; $i++) { 
+				$userPic = "uploads/".$_SESSION['username'].".".$extensions[$i]; #--> image with this username which can be later on changed --> if username changes for that the code is below where the change takes place..
+					if (file_exists($userPic)) {
+						$found = true;
+						break;
+					}
+				}
+				if ( isset($found) && $found === true  ) {
+					$userPic; # now if i have found that image store its name int this variable
+					unlink($userPic);
+					unset($found); #  --> as we have to use it later also
 				}
 			}
-			if ( isset($found) && $found === true  ) {
-				$userPic; # now if i have found that image store its name int this variable
-				unlink($userPic);
-				unset($found); #  --> as we have to use it later also
-			}
-		}
-	
+		
 
 
-		#---------------------------------------------------	**	ENDS  **	------------------------------------------------------------
+			#---------------------------------------------------	**	ENDS  **	------------------------------------------------------------
 
-		#--------------------------------    after validation this data should not CLASH with another user     ------------------------------
-		#---------------------------------------------- ie.	THERE IS NO ERROR IN THE FORM 		----------------------------------------------
-		if ( empty($form_errors) ) {# if there was NO validation error in the form
+			#--------------------------------    after validation this data should not CLASH with another user     ------------------------------
+			#---------------------------------------------- ie.	THERE IS NO ERROR IN THE FORM 		----------------------------------------------
+			if ( empty($form_errors) ) {# if there was NO validation error in the form
 
-			//checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ // $db --> PDO object we pass it because these function calls directly take them to their defination, so no file are added if we write them in the top of the utilities.php file but they will work if we include these file in the function defination
+				//checkDuplicasy($input, $columnName, $databaseName, $tableName, $db){ // $db --> PDO object we pass it because these function calls directly take them to their defination, so no file are added if we write them in the top of the utilities.php file but they will work if we include these file in the function defination
 
-			# checking duplicasy for the email--> firstly
-			$arrayReturned = checkDuplicasy_filterMe($email, 'email', 'register', 'users', $db);
-			if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for EMAIL in the database 
-					
-				$arrayReturned = checkDuplicasy_filterMe($username, 'username', 'register', 'users', $db);
+				# checking duplicasy for the email--> firstly
+				$arrayReturned = checkDuplicasy_filterMe($email, 'email', 'register', 'users', $db);
+				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for EMAIL in the database 
+						
+					$arrayReturned = checkDuplicasy_filterMe($username, 'username', 'register', 'users', $db);
 
-				if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
-					#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
+					if ($arrayReturned['status'] == false ) {# ie duplicasy was NOT found for USARNAME too.  ==> allow him to process 
+						#-------------------------------- NO DUPLICASY SO PROCESS THE FORM NOW -------------------------------------------------
 
-					# ==========================  check if the information written in it is changed or not ==================================
-					if ($_SESSION['username'] === $username  &&  $_SESSION['email'] === $email  &&  ($avatar == null) ) { # avatar will always be set whether by null or by the actuall file name 
-						echo "<script>
-							swal({
-								title: \"NO changes made !\",
-							  	text: \"to update your profile please make changes...\",
-							  	timer: 3000,
-							  	showConfirmButton: false
-							});
-						</script>";
-					}# =============================================    end of checking  =====================================================
-					else{#########################################		PUT DATA INTO THE TABLE 	########################################
+						# ==========================  check if the information written in it is changed or not ==================================
+						if ($_SESSION['username'] === $username  &&  $_SESSION['email'] === $email  &&  ($avatar == null) ) { # avatar will always be set whether by null or by the actuall file name 
+							echo "<script>
+								swal({
+									title: \"NO changes made !\",
+								  	text: \"to update your profile please make changes...\",
+								  	timer: 3000,
+								  	showConfirmButton: false
+								});
+							</script>";
+						}# =============================================    end of checking  =====================================================
+						else{#########################################		PUT DATA INTO THE TABLE 	########################################
 
-						try{
-							$sqlQuery= "UPDATE register.users
-										SET username = :username, email = :email
-										WHERE id = :id";
-							$statement = $db->prepare($sqlQuery);
-							$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
-							if ($row = $statement->rowcount() == 1  || $row = $statement->rowcount() == 0  ) { # NOTE: --> THE REASON why it is giving error when we 		only just upload image and not change any other data in the field, ---> BECAUSE now when this sql runs ,,, if the data is not changed OR 	if we rewrite the same data in it , then this sql statement says, NO ROW EFFECTED.. --> ie. nothing has changed.. yet
-								# so we have to include both the case ie. whether the fetched row is 1 OR  is 0 
-								# --> well dont wory it wil no give any problem as if the fields -->( any of them not changed then it will show the above message)
-								unset($_SESSION['email']);
+							try{
+								$sqlQuery= "UPDATE register.users
+											SET username = :username, email = :email
+											WHERE id = :id";
+								$statement = $db->prepare($sqlQuery);
+								$statement->execute( array(':username'=>$username, ':email'=>$email, ':id'=>$_SESSION['id']) );# now we will update the current users data
+								if ($row = $statement->rowcount() == 1  || $row = $statement->rowcount() == 0  ) { # NOTE: --> THE REASON why it is giving error when we 		only just upload image and not change any other data in the field, ---> BECAUSE now when this sql runs ,,, if the data is not changed OR 	if we rewrite the same data in it , then this sql statement says, NO ROW EFFECTED.. --> ie. nothing has changed.. yet
+									# so we have to include both the case ie. whether the fetched row is 1 OR  is 0 
+									# --> well dont wory it wil no give any problem as if the fields -->( any of them not changed then it will show the above message)
+									unset($_SESSION['email']);
 
 
-							if ($avatar != null) { # IE. IF THERE IS IMAGE UPLOADED THEN 
-								$fileName = $_FILES['avatar']['name']; # gives the original name of the file it also contains the extension with it..
-								$firstName = $username; # so if he is uploading a new image while changing his username --> so the same username will be used to save his image in the upload folder
-								$part = explode(".", $fileName); # will return an array --> the last one will be the index
-								$ext = end($part);
+								if ($avatar != null) { # IE. IF THERE IS IMAGE UPLOADED THEN 
+									$fileName = $_FILES['avatar']['name']; # gives the original name of the file it also contains the extension with it..
+									$firstName = $username; # so if he is uploading a new image while changing his username --> so the same username will be used to save his image in the upload folder
+									$part = explode(".", $fileName); # will return an array --> the last one will be the index
+									$ext = end($part);
 
-								$fileName =$firstName.".".$ext ;# --> now the file name is replaced by the username and the extension
+									$fileName =$firstName.".".$ext ;# --> now the file name is replaced by the username and the extension
 
-								# if the file of this name exists then we have to delete that file --> so that no user uploads a now file--> ie if the username is not changed and the image is only added
-								$extensions = array('jpg', 'png', 'gif', 'bmp');
-								for ($i=0; $i<3 ; $i++) { 
-									$userPic = "uploads/".$firstName.".".$extensions[$i];
-									if (file_exists($userPic)) {
-										$found = true;
-										break;
+									# if the file of this name exists then we have to delete that file --> so that no user uploads a now file--> ie if the username is not changed and the image is only added
+									$extensions = array('jpg', 'png', 'gif', 'bmp');
+									for ($i=0; $i<3 ; $i++) { 
+										$userPic = "uploads/".$firstName.".".$extensions[$i];
+										if (file_exists($userPic)) {
+											$found = true;
+											break;
+										}
 									}
-								}
-								if ( isset($found) && $found === true  ) {
-									 $userPic; # now if i have found that image store its name int this variable
-									 unlink($userPic);
-								}
+									if ( isset($found) && $found === true  ) {
+										 $userPic; # now if i have found that image store its name int this variable
+										 unlink($userPic);
+									}
 
-								$target = "uploads/".$fileName;
-								move_uploaded_file( $_FILES["avatar"]["tmp_name"], $target);
-								// echo $_FILES["avatar"]["tmp_name"];
-							}
-								$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
-								# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
-							}else{ # data was not successfully updated
-								$toEcho = popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
-							}
-						}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
-							echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
-						}#############################################    DATA INSERTION ENDS	##############################################
+									$target = "uploads/".$fileName;
+									move_uploaded_file( $_FILES["avatar"]["tmp_name"], $target);
+									// echo $_FILES["avatar"]["tmp_name"];
+								}
+									$toEcho = popupMessage("UPDATED",'the profile has been successfully updated !', 'success', 'profile.php');
+									# the reason why, when the process is successfull it get the same data back in the text menue... this is SIMILAR, ie , its html's property, when we fill the form then as soon as we submit the form all the field went back to blank as they were before, so here is the same thing going on, so for NOT TO HAPPEN THIS, se have to show this after the page is again loaded with th new data...
+								}else{ # data was not successfully updated
+									$toEcho = popupMessage("SORRY",'there was some error in updating your profile !', 'error', '#'); # ie at same page
+								}
+							}catch(PDOexception $ex){#flashMessage($message,$color='red')-->returns the string   --> by default red
+								echo flashMessage("something went wrong, WHILE INSERTING THE DATA INTO THE DATABASE -->".$ex->getMessage());
+							}#############################################    DATA INSERTION ENDS	##############################################
+						}
+						#----------------------------------------------	PROCESSING ENDS 	----------------------------------------------------
+					
+					}else{# ie duplicasy was found  for USERNAME
+						# no matter what is the status is either true or exception it will show the message
+						$result = flashMessage($arrayReturned['message']);# by default it is red
 					}
-					#----------------------------------------------	PROCESSING ENDS 	----------------------------------------------------
-				
-				}else{# ie duplicasy was found  for USERNAME
+					
+				}else{# ie duplicasy was found  for EMAIL
 					# no matter what is the status is either true or exception it will show the message
 					$result = flashMessage($arrayReturned['message']);# by default it is red
 				}
-				
-			}else{# ie duplicasy was found  for EMAIL
-				# no matter what is the status is either true or exception it will show the message
-				$result = flashMessage($arrayReturned['message']);# by default it is red
 			}
+		}else{
+			$result = popupMessage("HACKER ALERT !!",'this request originates from an unknown source !','error','profile.php');	
 		}
 	}
 

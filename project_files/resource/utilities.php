@@ -437,10 +437,21 @@ function isValidImage($file){
 }
 
 function _token(){
-	echo  $randomToken = base64_encode(openssl_random_pseudo_bytes(32))."open ssl<br>"; # --> this will generate a random token for us ..   32 is the bytes  
+	$randomToken = base64_encode(openssl_random_pseudo_bytes(32))."open ssl<br>"; # --> this will generate a random token for us ..   32 is the bytes  
 	# another way
-	echo $randomToken = md5(uniqid(rand(),true))."md5"; # uniqid --> is a builtin function provided by php only  --> not muchj sequre
+	//echo $randomToken = md5(uniqid(rand(),true))."md5"; # uniqid --> is a builtin function provided by php only  --> not much secure 
+	$_SESSION['token'] = $randomToken;
+	
+	return $_SESSION['token'];
 }
 
+function validate_token($requestToken){
+	if( isset($_SESSION['token']) && $requestToken === $_SESSION['token'] ){ # ie. if it is not set thet means request is coming from a third party (HACKER ALERT !)
+		unset($_SESSION['token']);
+		return true;
+	}
+	return false; # by default it will return false if we found thta the session variable is not set...
+
+}
 
 ?>

@@ -50,6 +50,7 @@
 		  		<div class="form-group">
 		          <label for="fileField5">Profile photo:</label>
 		          <input type="file" name="avatar" id="fileField5" >
+		          <input type="hidden" name="token" value="<?php echo _token() ?>">
 		          <button type="submit" class="btn btn-primary pull-right" name="edit_sbt">Save changes</button>
 		        </div>
 			</form>
