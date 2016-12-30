@@ -196,13 +196,13 @@ $message ="<script type='text/javascript'>
 				swal({
   					title: '{$title}',
   					text: '{$text}',
-  					timer: 4000,
+  					timer: 6000,
   					type: '{$type}',
   					showConfirmButton: false
 				});
 	  				setTimeout(function(){
 	    				window.location.href='{$page}'; 
-	  				}, 3000);
+	  				}, 5000);
 				</script>";
 
 	//$message = "$username";

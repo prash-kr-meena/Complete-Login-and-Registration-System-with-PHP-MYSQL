@@ -1,4 +1,5 @@
 <?php  
+include_once 'resource/send-email-gmail.php';
 
 if (isset($_POST['signup_sbt'])) { ## does both validation and data processing 
 
@@ -49,10 +50,32 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 					$statement->execute( array(':username'=>$username,':password'=>$hashed_password,':email'=>$email ) );
 
 					if($statement->rowcount()==1){ # ie if one row is changed theb ...
+						$user_id = $db->lastInsertId();
+						$encode_id = base64_encode("encodeUserid$user_id");
+						//prepare email body
+						$mail_body = '<html>
+										<body style="background-color:#CCCCCC; color:#000; font-family: Arial, Helvetica, sans-serif;
+										                line-height:1.8em;">
+											<h2>User Authentication: Code A Secured Login System</h2>
+											<p>Dear '.$username.'<br><br>Thank you for registering, please click on the link below to
+											confirm your email address</p>
+											<p><a href="http://localhost/activate.php?id='.$encode_id.'"> Confirm Email</a></p>
+											<p><strong>&copy;2016 ICT DesighHUB</strong></p>
+										</body>
+								</html>';
 
-						# popupMessage($title, $text, $type, $page)
-						$result = popupMessage("Hey {$username}!!",'Hurray, registration successfull','success','login.php');
+						$mail->addAddress($email, $username); #  $email is necessary BUT $username is optional..
+						$mail->Subject = "message from USER AUTHENTICATION SYSTEM.";
+						$mail->Body = $mail_body;
 
+						// error handiling for PHPmailer
+						if ($mail->Send()) {
+							# popupMessage($title, $text, $type, $page)
+							$result = popupMessage("Hey {$username}!!",'Hurray, registration successfull.<br>Please check your email for conformation link!','success','login.php');
+						}else{
+							$result = popupMessage("E-mail sending FAILED!!",$mail->ErrorInfo,'error','#');
+						}	
+					
 					}else{
 						$result = flashMessage("Signup unsuccessfull");
 					}

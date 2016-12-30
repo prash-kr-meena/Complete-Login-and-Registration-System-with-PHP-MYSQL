@@ -26,6 +26,7 @@
 				      	<a href="logout.php">logout</a> </p>
 			     <?php else: ?>
 			     	<p class="lead">You are not currently signed in <a href="login.php">login</a> Not a member yet? <a href="signup.php">signup</a></p>
+			     	<p><?php # echo !extension_loaded('openssl')?"not loaded":"loaded"; ?></p>
               <!-- now we dont need the logot file, i can call the logout function from here -->
 			     <?php endif ?>
 

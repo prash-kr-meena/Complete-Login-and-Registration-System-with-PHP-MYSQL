@@ -1,0 +1,10 @@
+know about wamp..for extension but 
+not able to found all the extension in the xampp --> php.ini file
+
+-> openssl.dll
+-> socket
+-> smtp --> not found 
+
+--> now search on net how to configure xampp to send email..  (BOOKMARKED -- and probabliy saved the pdf)
+	easy..
+
