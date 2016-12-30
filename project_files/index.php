@@ -39,4 +39,5 @@
     </div><!-- /.container -->
 
 <?php echo base64_encode('encodeuserid1'); ?>
+<?php echo _token(); ?>
 <?php include_once 'partials/footers.php'; ?>

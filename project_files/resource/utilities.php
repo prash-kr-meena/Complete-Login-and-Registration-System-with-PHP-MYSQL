@@ -436,6 +436,11 @@ function isValidImage($file){
 	return $form_errors;
 }
 
+function _token(){
+	echo  $randomToken = base64_encode(openssl_random_pseudo_bytes(32))."open ssl<br>"; # --> this will generate a random token for us ..   32 is the bytes  
+	# another way
+	echo $randomToken = md5(uniqid(rand(),true))."md5"; # uniqid --> is a builtin function provided by php only  --> not muchj sequre
+}
 
 
 ?>
