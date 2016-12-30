@@ -38,6 +38,5 @@
 
     </div><!-- /.container -->
 
-<?php 
-	include_once 'partials/footers.php';
-?>
+<?php echo base64_encode('encodeuserid1'); ?>
+<?php include_once 'partials/footers.php'; ?>

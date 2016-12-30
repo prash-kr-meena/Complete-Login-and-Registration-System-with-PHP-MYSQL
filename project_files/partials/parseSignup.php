@@ -56,11 +56,11 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 						$mail_body = '<html>
 										<body style="background-color:#CCCCCC; color:#000; font-family: Arial, Helvetica, sans-serif;
 										                line-height:1.8em;">
-											<h2>User Authentication: Code A Secured Login System</h2>
+											<h2>User Authentication System </h2>
 											<p>Dear '.$username.'<br><br>Thank you for registering, please click on the link below to
 											confirm your email address</p>
 											<p><a href="http://localhost/activate.php?id='.$encode_id.'"> Confirm Email</a></p>
-											<p><strong>&copy;2016 ICT DesighHUB</strong></p>
+											<p><strong>&copy;2016 Authentication System </strong></p>
 										</body>
 								</html>';
 
@@ -97,17 +97,17 @@ if (isset($_POST['signup_sbt'])) { ## does both validation and data processing
 		$user_id_array = explode("encodeuserid", $decode_id);
 		$id = $user_id_array[1];
 
-		$sql = "UPDATE users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work
+		$sql = "UPDATE register.users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work
 
 		$statement = $db->prepare($sql);
 		$statement->execute(array(':activated' => "1", ':id' => $id));
 
 		if ($statement->rowCount() == 1) {
-			$result = "<h2>Email Confirmed </h2>
-			<p class='lead'>Your email address has been verified, you can now <a href=\"login.php\">login</a> with your email and password.</p>";
+			$result = "<div class=\"container\"  style=\"padding-top:25%\"><h2>Email Confirmed </h2>
+			<p class='lead' style=\"padding-top:6px\">Your email address has been verified, you can now <a href=\"login.php\">login</a> with your email and password.</p></div>";
 		} else {
-			$result = "<p class='lead'>No changes made please contact site admin,
-		    if you have not confirmed your email before</p>";
+			$result = "<div class=\"container\" style=\"padding-top:30%\"><p class='lead'>No changes made please contact site admin,
+		    if you have not confirmed your email before</p></div>";
 		}
 	}
 }

@@ -12,7 +12,7 @@
 		<!--####################################  IF TRIES TO OPEN WITH PATH   ###########################################-->
 		<div class="container" align="center" style="padding-top: 30%" >
 			<section>
-				<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member 					please <a href="signup.php">signup</a>! </p>
+				<p class="lead">You are not authorized to view this page. Please <a href="login.php">login</a> ,if not a member please <a href="signup.php">signup</a>! </p>
 				<p class="lead">HACK US !  and please give us <a href="feedback.php">feedback</a>  on our security! </p>
 			</section>
 		</div>

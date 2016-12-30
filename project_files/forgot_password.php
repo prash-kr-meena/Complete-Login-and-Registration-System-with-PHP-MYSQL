@@ -27,10 +27,6 @@ include_once 'partials/parseForgotPassword.php';
 	<section class="col col-lg-7" >
 
 		<form action="forgot_password.php" method="post" >
-			<div class="form-group">
-    			<label for="emailField4">E-mail:</label>
-    			<input type="text" class="form-control" name="email"  id="emailField4" placeholder="E-mail">
-  			</div>
   			<div class="form-group" >
     			<label for="newPasswordField4">New-Password:</label>
     			<input type="password" class="form-control" name="new_password"  id="newPasswordField4" placeholder="New Password">
@@ -39,6 +35,7 @@ include_once 'partials/parseForgotPassword.php';
     			<label for="confirmPasswordField4">Confirm-Password:</label>
     			<input type="password" class="form-control" name="confirm_password" id="confirmPasswordField4" placeholder="Confirm Password">
   			</div>
+        <input type="hidden" name="user_id" value="<?php if(isset($id)) echo $id ;?>" >
   			<button type="submit" class="btn btn-primary pull-right" name="sbt">Reset password</button>
 		</form>
 	</section>

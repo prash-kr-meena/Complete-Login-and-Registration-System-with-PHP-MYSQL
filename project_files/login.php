@@ -41,7 +41,7 @@ include_once "resource/utilities.php";
     		<button type="submit" class="btn btn-primary pull-right" name="login_sbt">Sign in</button>
   		</div>	
   		</br>
-  		<a href="forgot_password.php">Forgot password ?</a>
+  		<a href="password_recovery.php">Forgot password ?</a>  <!-- previous recovery page  ->  forgot_password .php -->
 	</form>
 </section>
 <p><a href="index.php">Back</a></p>
