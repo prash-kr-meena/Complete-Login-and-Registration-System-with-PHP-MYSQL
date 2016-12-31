@@ -7,6 +7,7 @@
 
 
 		include_once 'partials/parseEditProfile.php';
+		include_once 'partials/parse_change_password.php';
 ?>
 <!--###################################################     the HTML PART  ###########################################################-->
 <?php if( !isset($_SESSION['username']) ) :?><!--user has not loged in so they are not authorized t see this page , THEY HAVE TO SIGN IN --> 
@@ -28,7 +29,6 @@
 <?php elseif( isset($_SESSION['username']) &&  isset($_GET['user_id'])  && ($id === $_SESSION['id']) ) : ?> <!--i could have used the else condition here, BUT IT ISMORE 										SECURE TO USE A IF(or else if ) CONDTION -> WHICH SPECIFICALLY FOLLOWS THE CONDITION AND THEN FURTHER PROCESS, rather than if all 										fails then it shows up ,, which if in any seniarion it fails then the else would run and they will be able to see the pages -->
 	<h2>Edit-Profile</h2><hr>
 	<div class="container">
-
 		<section class="col col-lg-7">
 			<?php  if (isset($result) ) echo $result;      # these are for successfull AND unsuccessful  messages  ?>	
 			<?php if (!empty($form_errors) )  echo show_errors($form_errors); # these are for error messages  ?>
@@ -45,9 +45,6 @@
 		    		<input type="type='text" class="form-control" name="username" id="usernameField5"  value="<?php echo $current_username;?>">
 		  		</div>
 		  		<div class="form-group">
-		    		<label for="password5">Password:</label>
-		    		<input type="text" class="form-control" name="password" id="password5" readonly="true" value="<?php echo $current_password;?>" >
-		  		<div class="form-group">
 		          <label for="fileField5">Profile photo:</label>
 		          <input type="file" name="avatar" id="fileField5" >
 		          <input type="hidden" name="token" value="<?php echo _token() ?>">
@@ -55,7 +52,35 @@
 		        </div>
 			</form>
 		</section>
-	
+	</div>
+
+	<br>
+
+	<div class="container">
+	<h4>Change Password</h4><hr>
+		<section class="col col-lg-7">
+			<?php  if (isset($result_2) ) echo $result_2;      # these are for successfull AND unsuccessful  messages  ?>	
+			<?php if (!empty($form_errors_2) )  echo show_errors($form_errors_2); # these are for error messages  ?>
+		</section>
+		<section class="col col-lg-7"><!--now making it form so that it can fubmet the cahnged values-->
+			<form action="#" method="post" enctype="multipart/form-data">
+		  		<div class="form-group">
+		    		<label for="current_password7">Current password:</label>
+		    		<input type="password" class="form-control" name="current_password" id="current_password7" placeholder="current password" value="" >
+		    	</div>
+		  		<div class="form-group">
+		    		<label for="new_password7">New password:</label>
+		    		<input type="password" class="form-control" name="new_password" id="new_password7" placeholder="new password" value="" >
+		    	</div>	
+		  		<div class="form-group">
+		    		<label for="confirm_password7">Confirm password:</label>
+		    		<input type="password" class="form-control" name="confirm_password" id="confirm_password7" placeholder="confirm password" value="" >
+		  		</div>
+		  			<input type="hidden" name="id" value="<?php if(isset($id)) echo $id; ?>">
+		        	<input type="hidden" name="token" value="<?php echo _token() ?>">
+		          	<button type="submit" class="btn btn-primary pull-right" name="change_btn">Change Password</button>
+			</form>
+		</section>
 	</div>
 	<?php  if (isset($toEcho) ) echo $toEcho;  # now the form will be loaded with thw new values and then after that the popup message will come   ?>	
 <?php else: ?>

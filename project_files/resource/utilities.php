@@ -2,7 +2,6 @@
 <?php 
 include_once 'Database.php';# added due to the checkDuplicasy() function ,but it does not working so added $db instead of this ===> THE REASON WHY ITS NOT WORKING IS THAT WHENWVER A FUNCTION IS CALLED IT DOES NOT GO THROUGH ALL THE SCRIPT OF THE utilities.php file IT SIMPLY GOES TO THE FUNCTION ADN PROCESS , AND NEVER READS THIS STATEMENT , SO DUE TO THIS ===> IT PRODUCES ERROR , WHAT MAY BE THE SOLUTION IS YOU INCLUDE THIS STATEMENT INSIDE THE FUNCTION DEFINATION
 
-
 ###########################################################################################################################
 /*	@param : $required_fields_array --> an array containing the list of all required fields
 	@return : array containing all errors	, and then this array will be merged with the error array that is declared in 			the signup page.
@@ -335,7 +334,7 @@ function isCookieValid($db){
 				echo popupMessage('Oops..',"this id does not exists in our database",'error','index.php');
 				echo popupMessage('try this!',"try deleting your cookies for this site..",'error','index.php');
 				$isValid = false;
-				signout();
+				redirectTO("logout");
 			}
 		}catch(PDOException $ex){
 			echo popupMessage('Oops..', "something went wrong ,WHILE CHECKING THE USER'S ID IN THE DATABASE,".$ex->getMessage(),'error','index.php');

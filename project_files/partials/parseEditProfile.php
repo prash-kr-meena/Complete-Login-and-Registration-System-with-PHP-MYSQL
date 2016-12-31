@@ -140,7 +140,7 @@
 		}else{
 			$result = popupMessage("HACKER ALERT !!",'this request originates from an unknown source !','error','profile.php');	
 		}
-	}
+	} # end if.
 
 	############################### 	for collecting the data from the databbase to show in the edit profile  page    #####################
 	######################################################    if he passes the SECURITY     ##################################################
