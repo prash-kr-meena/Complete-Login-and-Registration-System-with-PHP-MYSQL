@@ -8,6 +8,7 @@
 
 		include_once 'partials/parseEditProfile.php';
 		include_once 'partials/parse_change_password.php';
+		include_once 'partials/parse_deactivate.php';
 ?>
 <!--###################################################     the HTML PART  ###########################################################-->
 <?php if( !isset($_SESSION['username']) ) :?><!--user has not loged in so they are not authorized t see this page , THEY HAVE TO SIGN IN --> 
@@ -55,7 +56,7 @@
 	</div>
 
 	<br>
-
+	<!-- change password -->
 	<div class="container">
 	<h4>Change Password</h4><hr>
 		<section class="col col-lg-7">
@@ -79,6 +80,23 @@
 		  			<input type="hidden" name="id" value="<?php if(isset($id)) echo $id; ?>">
 		        	<input type="hidden" name="token" value="<?php echo _token() ?>">
 		          	<button type="submit" class="btn btn-primary pull-right" name="change_btn">Change Password</button>
+			</form>
+		</section>
+	</div>
+
+	<br>
+	<!-- deactivate your account -->
+	<div class="container">
+	<h4>Deactivate your account</h4><hr>
+		<section class="col col-lg-7">
+			<?php  if (isset($result_3) ) echo $result_3;  ?>	
+			<?php if (!empty($form_errors_3) )  echo show_errors($form_errors_3);  ?>
+		</section>
+		<section class="col col-lg-7">
+			<form action="#" method="post" enctype="multipart/form-data">
+		  			<input type="hidden" name="id" value="<?php if(isset($id)) echo $id; ?>">
+		        	<input type="hidden" name="token" value="<?php echo _token() ?>">
+		          	<button onclick="return confirm('Do you really want to deactivate your account ??')" type="submit" class="btn btn-danger btn-block pull-right" name="deactivate_btn">Deactivate your account</button>
 			</form>
 		</section>
 	</div>
