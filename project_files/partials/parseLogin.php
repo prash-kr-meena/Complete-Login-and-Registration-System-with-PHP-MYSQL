@@ -1,4 +1,5 @@
 <?php 
+include_once 'resource/session.php';
 # conditions to pass the login security validation and processing
 if ( isset($_POST['login_sbt'], $_POST['token']) ) {  //ie. if the login form is submitted then first validate this form and then if its 										valid process the form.
 	// good thing is we will use the same utilities function to validate our signin form.

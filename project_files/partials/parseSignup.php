@@ -1,4 +1,5 @@
 <?php  
+include_once 'resource/session.php';
 include_once 'resource/send-email-gmail.php';
 
 if (isset($_POST['signup_sbt'], $_POST['token'] ) ) { ## does both validation and data processing 
@@ -98,7 +99,7 @@ if (isset($_POST['signup_sbt'], $_POST['token'] ) ) { ## does both validation an
 	if(isset($_GET['id'])) {
 		$encoded_id = $_GET['id'];
 		$decode_id = base64_decode($encoded_id);
-		$user_id_array = explode("encodeuserid", $decode_id);
+		$user_id_array = explode("encodeUserid", $decode_id);
 		$id = $user_id_array[1];
 
 		$sql = "UPDATE register.users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work

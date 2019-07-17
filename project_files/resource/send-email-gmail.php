@@ -1,13 +1,14 @@
 <?php
 require 'class.phpmailer.php';
 $mail = new PHPMailer();
-$mail->IsSMTP();
-$mail->Mailer = 'smtp';
-$mail->SMTPAuth = true;
-$mail->SMTPSecure = 'tls';
+$mail->SMTPDebug = 0; // debugging : 0 none ,  1 = errors and messages, 2 = messages only
 
-$mail->Host = 'ssl://smtp.gmail.com';
-$mail->Port = 587;
+$mail->SMTPAuth = true;
+
+$mail->SMTPSecure = 'ssl';
+$mail->IsSMTP();
+$mail->Host = 'smtp.gmail.com';
+$mail->Port = 465;
 
 //auth information
 $mail->Username = "prashantkumarpk044@gmail.com";
