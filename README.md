@@ -21,4 +21,6 @@
 
 **Tables**
 
-*![Tables](project_files/tables.png)
+![Tables](project_files/tables.png)
+
+Change your database credentials in [Database.php](/project_files/resource/Database.php#L10)
