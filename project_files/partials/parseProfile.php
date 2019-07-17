@@ -28,7 +28,7 @@ if (isset($_SESSION['username']) ) {
 	# for email and other data we have to use the sql statement
 	try{
 		$sqlQuery = "SELECT * 
-					FROM register.users 
+					FROM users 
 					WHERE id = :id ";
 		$statement = $db->prepare($sqlQuery);
 		$statement->execute( array(':id'=>$id) );

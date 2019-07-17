@@ -79,7 +79,7 @@
 						else{#########################################		PUT DATA INTO THE TABLE 	########################################
 
 							try{
-								$sqlQuery= "UPDATE register.users
+								$sqlQuery= "UPDATE users
 											SET username = :username, email = :email
 											WHERE id = :id";
 								$statement = $db->prepare($sqlQuery);
@@ -173,7 +173,7 @@
 			# it means the same user is comming through the right path(ALTHOUGH WHAT THE USER CAN DO AFTER HE LOGES If he can copy that encrypted link value which is shown then he can write the path and put the value too..==> HE WILL BE ABLE TO DIRECTLY COME TO THE EDIT PROFILE PAGE WITHOUT CLICKING THE LINK)==> as in this case the encrypted id after the decode will match the value of the id which is present in the session
 			try{
 				$sqlQuery = "SELECT *
-							FROM register.users 
+							FROM users 
 							WHERE id = :id";
 				$statement = $db->prepare($sqlQuery);
 				$statement->execute( array(':id'=>$id) );

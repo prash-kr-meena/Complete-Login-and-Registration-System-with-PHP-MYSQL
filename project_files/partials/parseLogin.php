@@ -1,4 +1,5 @@
 <?php 
+include_once 'resource/session.php';
 # conditions to pass the login security validation and processing
 if ( isset($_POST['login_sbt'], $_POST['token']) ) {  //ie. if the login form is submitted then first validate this form and then if its 										valid process the form.
 	// good thing is we will use the same utilities function to validate our signin form.
@@ -26,7 +27,7 @@ if ( isset($_POST['login_sbt'], $_POST['token']) ) {  //ie. if the login form is
 
 			try{
 				// check if the user exists in the database  --> using the sql statement
-				$sqlQuery = "SELECT * FROM register.users WHERE username=:username";// here :username is the key of the array in execute fun.
+				$sqlQuery = "SELECT * FROM users WHERE username=:username";// here :username is the key of the array in execute fun.
 				$statement = $db->prepare($sqlQuery);
 				$statement->execute( array(':username'=> $user ) );
 

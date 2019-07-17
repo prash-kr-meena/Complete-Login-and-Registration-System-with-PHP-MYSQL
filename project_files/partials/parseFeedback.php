@@ -28,7 +28,7 @@ if ( empty($form_errors) ) { //ie. there is no error --> go ahead and process th
 	# storing this data into the feedback table into the register database
 	try{
 
-		$sqlQuery = " INSERT INTO register.feedback (sender_name, sender_email, message, send_date) 
+		$sqlQuery = " INSERT INTO feedback (sender_name, sender_email, message, send_date) 
 				 		VALUES (:Sender_Name, :Sender_Email, :message, now())";
 		$statement = $db->prepare($sqlQuery);
 		$statement->execute( array(':Sender_Name'=>$user, ':Sender_Email'=>$email, ':message'=>$message ) );

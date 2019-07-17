@@ -24,7 +24,7 @@ if (isset($_POST['recovery_btn'], $_POST['token'])) {
 			# collect form data
 			$email = $_POST['email'];
 			try{
-				$sqlQuery = "SELECT * FROM register.users WHERE email=:email";
+				$sqlQuery = "SELECT * FROM users WHERE email=:email";
 				$statement = $db->prepare($sqlQuery);
 				$statement->execute( array(':email'=>$email) );
 				if ( $row = $statement->fetch() ) {  #  ie, if  data is fetched   ie. user exists and we have to send him the reset link to his website

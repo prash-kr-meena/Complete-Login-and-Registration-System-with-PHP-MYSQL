@@ -38,7 +38,7 @@ include_once "resource/session.php";
 include_once "resource/Database.php";	
 include_once "resource/utilities.php";
 
-  $sqlQuery = "SELECT username FROM  register.users ";
+  $sqlQuery = "SELECT username FROM  users ";
 			$statement = $db->prepare($sqlQuery);
 			//var_dump($statement->execute());
 			$username = 'prashant';
@@ -87,7 +87,7 @@ include_once "resource/utilities.php";
 				echo $ex->getMessage();
 			}
 ////////////////////////////////////////   testing the scope of the variable   //////////////////////////////////////////////
-			$sqlQuery = "SELECT * FROM register.users ";
+			$sqlQuery = "SELECT * FROM users ";
 			$statement = $db->prepare($sqlQuery);	
 			//echo 'hi';
 			$statement->execute();

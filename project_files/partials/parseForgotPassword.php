@@ -31,7 +31,7 @@ if ( isset($_POST['sbt'], $_POST['token']) ) {  //ie. if the password reset form
 			// check if any user with this email exists in the database  --> using the sql statement
 			// if exist then allow him to change the password, but if not then donot allow him to change, show error
 			try{
-				$sqlQuery = "SELECT * FROM register.users WHERE id=:id";// here :eamil is the key of the array in execute fun.
+				$sqlQuery = "SELECT * FROM users WHERE id=:id";// here :eamil is the key of the array in execute fun.
 				$statement = $db->prepare($sqlQuery);
 				$statement->execute( array(':id'=> $id ) );
 
@@ -45,7 +45,7 @@ if ( isset($_POST['sbt'], $_POST['token']) ) {  //ie. if the password reset form
 						$hashed_password = password_hash($new_password,PASSWORD_DEFAULT);						//	CHECKED
 								# now put this password into the database,
 						try{
-							$sqlQuery = "UPDATE register.users 
+							$sqlQuery = "UPDATE users 
 										SET password = (:password)
 										WHERE id = :id ";
 							$statement = $db->prepare($sqlQuery);
