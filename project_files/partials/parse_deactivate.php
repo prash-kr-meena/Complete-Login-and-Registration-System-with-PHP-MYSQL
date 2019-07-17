@@ -12,7 +12,7 @@ if ( isset($_POST['deactivate_btn'], $_POST['token']) ) {
 			try{
 				# 	1. retrive user information id --> so as to get his username and his email address (to send mail with his name on it ofcource)
 				$sqlQuery_1= "SELECT * 
-							FROM register.users
+							FROM users
 							WHERE id = :id";
 				$statement_1 = $db->prepare($sqlQuery_1);
 				$statement_1->execute( array(':id'=>$id) );
@@ -22,7 +22,7 @@ if ( isset($_POST['deactivate_btn'], $_POST['token']) ) {
 
 					try{
 						#	2. deactivate the account.
-						$deactivate_query= "UPDATE register.users
+						$deactivate_query= "UPDATE users
 									SET activated = :activated	
 									WHERE id = :id";
 						$deactivate_user = $db->prepare($deactivate_query);
@@ -31,7 +31,7 @@ if ( isset($_POST['deactivate_btn'], $_POST['token']) ) {
 						if($deactivate_user->rowcount()==1){
 							#	3. Insert record into the trash table.
 							try{
-								$insert_query= "INSERT INTO  register.trash (user_id, deleted_at)
+								$insert_query= "INSERT INTO  trash (user_id, deleted_at)
 								VALUES ( :id, now() ) ";
 								$insert_record = $db->prepare($insert_query);
 								$insert_record->execute( array(':id'=>$id) );

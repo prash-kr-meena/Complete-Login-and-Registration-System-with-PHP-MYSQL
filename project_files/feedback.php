@@ -57,7 +57,7 @@ include_once 'partials/parseFeedback.php';
 <?php 
 
 	try{
-		$sqlQuery = "SELECT * FROM register.feedback";
+		$sqlQuery = "SELECT * FROM feedback";
 		$statement = $db->prepare($sqlQuery);
 		$statement->execute();
 
@@ -72,7 +72,7 @@ include_once 'partials/parseFeedback.php';
 		}
 
 	}catch(PDOException $ex){
-		$message = "An error occoured : DURING THE COLLECTING FEEDBACK FROM register.feedback ==> {$ex->getMessage()}";
+		$message = "An error occoured : DURING THE COLLECTING FEEDBACK FROM feedback ==> {$ex->getMessage()}";
 		echo $message;
 	}
 

@@ -314,7 +314,7 @@ function isCookieValid($db){
 		# CHECK IF THE ID RETREVIED EXISTS IN THE DATABASE OR NOT
 		try{
 			$sqlQuery = "SELECT * 
-						FROM register.users 
+						FROM users 
 						WHERE id = :id";
 			$statement=$db->prepare($sqlQuery);
 			$statement->execute( array(':id'=>$decryptId) );

@@ -27,7 +27,7 @@ if ( isset($_POST['change_btn'], $_POST['token']) ) {
 			if ($new_password === $confirm_password) {
 				# now check whether this password is same as the saved in the database...
 				try{
-					$sqlQuery = "SELECT * FROM register.users WHERE id=:id ";
+					$sqlQuery = "SELECT * FROM users WHERE id=:id ";
 					$statement = $db->prepare($sqlQuery);
 					$statement->execute( array(':id'=>$id) );
 					
@@ -37,7 +37,7 @@ if ( isset($_POST['change_btn'], $_POST['token']) ) {
 						if ( password_verify($current_password, $password) ) { # ie. the password matches
 							$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 							try{
-								$sqlQuery= "UPDATE register.users
+								$sqlQuery= "UPDATE users
 											SET password = :new_password
 											WHERE id = :id";
 								$statement = $db->prepare($sqlQuery);

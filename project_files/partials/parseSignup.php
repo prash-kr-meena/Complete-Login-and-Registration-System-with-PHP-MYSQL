@@ -45,7 +45,7 @@ if (isset($_POST['signup_sbt'], $_POST['token'] ) ) { ## does both validation an
 				$arrayReturned = checkDuplicasy($email, 'email', 'register', 'users', $db);
 				if ($arrayReturned['status'] == false ) {//ie no duplicasy for email found in the database	
 					try{
-						$sqlInsert = "INSERT INTO register.users (username, password, email, join_date) 
+						$sqlInsert = "INSERT INTO users (username, password, email, join_date) 
 										VALUES  (:username, :password, :email, now() ) ";
 
 						$statement = $db->prepare($sqlInsert);
@@ -102,7 +102,7 @@ if (isset($_POST['signup_sbt'], $_POST['token'] ) ) { ## does both validation an
 		$user_id_array = explode("encodeUserid", $decode_id);
 		$id = $user_id_array[1];
 
-		$sql = "UPDATE register.users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work
+		$sql = "UPDATE users SET activated =:activated WHERE id=:id AND activated='0'"; # so if the account has been already updated then this script will not work
 
 		$statement = $db->prepare($sql);
 		$statement->execute(array(':activated' => "1", ':id' => $id));

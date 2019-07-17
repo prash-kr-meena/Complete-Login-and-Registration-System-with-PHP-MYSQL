@@ -27,7 +27,7 @@ if ( isset($_POST['login_sbt'], $_POST['token']) ) {  //ie. if the login form is
 
 			try{
 				// check if the user exists in the database  --> using the sql statement
-				$sqlQuery = "SELECT * FROM register.users WHERE username=:username";// here :username is the key of the array in execute fun.
+				$sqlQuery = "SELECT * FROM users WHERE username=:username";// here :username is the key of the array in execute fun.
 				$statement = $db->prepare($sqlQuery);
 				$statement->execute( array(':username'=> $user ) );
 
